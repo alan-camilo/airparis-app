@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="com.alancamilo.airparis-module-airparis-mpp_androidMain" target="1.6" />
+      <module name="com.alancamilo.airparis-module-airparis-mpp_androidTest" target="1.6" />
+      <module name="com.alancamilo.airparis-module-mpp_androidMain" target="1.6" />
+      <module name="com.alancamilo.airparis-module-mpp_androidTest" target="1.6" />
+      <module name="module-airparis-mpp_androidMain" target="1.6" />
+      <module name="module-airparis-mpp_androidTest" target="1.6" />
+      <module name="module-mpp_androidMain" target="1.6" />
+      <module name="module-mpp_androidTest" target="1.6" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
