@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -36,7 +37,6 @@ android {
         exclude("META-INF/ASL2.0")
         exclude("META-INF/*.kotlin_module")
     }
-
 }
 
 dependencies {
@@ -49,8 +49,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
     implementation(project(":module-mpp"))
-    //TODO delete this dependency when coroutines will be in the module
+    // TODO delete this dependency when coroutines will be in the module
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3")
-
 }

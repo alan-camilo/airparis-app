@@ -21,7 +21,7 @@ val client = HttpClient() {
 
 @UnstableDefault
 suspend fun request(): String {
-    //val result = client.get<IndiceJour>("https://www.airparif.asso.fr/services/api/1.1/indiceJour?date=jour")
+    // val result = client.get<IndiceJour>("https://www.airparif.asso.fr/services/api/1.1/indiceJour?date=jour")
     val post: String = client.post() {
         url("https://www.airparif.asso.fr/services/api/1.1/episode")
         body = MultiPartFormDataContent(
@@ -33,6 +33,6 @@ suspend fun request(): String {
     val result = Json.parse(Episode.serializer().list, post)
     client.close()
     return "${result[0].date} ${result[0].detail}"
-    //return "${result.date} ${result.detail}"
-    //return result.toString()
+    // return "${result.date} ${result.detail}"
+    // return result.toString()
 }
