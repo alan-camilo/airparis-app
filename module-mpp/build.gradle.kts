@@ -1,5 +1,8 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
+val ktorVersion by extra("1.3.1")
+val serializationVersion by extra("0.20.0")
+
 buildscript {
     val kotlinVersion by extra("1.3.70")
     repositories {
@@ -15,8 +18,8 @@ buildscript {
 }
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
-    id("maven-publish")
+    kotlin("multiplatform")
+    kotlin("plugin.serialization") version "1.3.70"
 }
 
 repositories {
@@ -46,6 +49,12 @@ kotlin {
 
     sourceSets["commonMain"].dependencies {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
+        //Ktor
+        implementation("io.ktor:ktor-client-core:$ktorVersion")
+        implementation("io.ktor:ktor-client-json:$ktorVersion")
+        implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+        //Kotlinx serialization
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion")
     }
 
     sourceSets["commonTest"].dependencies {
@@ -55,6 +64,12 @@ kotlin {
 
     sourceSets["androidMain"].dependencies {
         implementation("org.jetbrains.kotlin:kotlin-stdlib")
+        //Ktor
+        implementation("io.ktor:ktor-client-android:$ktorVersion")
+        implementation("io.ktor:ktor-client-json-jvm:$ktorVersion")
+        implementation("io.ktor:ktor-client-serialization-jvm:$ktorVersion")
+        //Kotlinx serialization
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
     }
 
     sourceSets["androidTest"].dependencies {
