@@ -51,5 +51,6 @@ dependencies {
     implementation(project(":module-mpp"))
     //TODO delete this dependency when coroutines will be in the module
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3")
 
 }
