@@ -28,7 +28,7 @@ repositories {
     jcenter()
     mavenCentral()
 }
-group = "com.alancamilo.airparis"
+group = "com.airparis"
 version = "1.0"
 
 kotlin {

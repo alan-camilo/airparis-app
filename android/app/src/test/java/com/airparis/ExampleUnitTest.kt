@@ -1,4 +1,4 @@
-package com.alancamilo.airparis
+package com.airparis
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

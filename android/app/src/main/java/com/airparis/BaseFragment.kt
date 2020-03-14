@@ -1,4 +1,4 @@
-package com.alancamilo.airparis
+package com.airparis
 
 import airparis.base.BaseViewModel
 import airparis.base.Coordinator

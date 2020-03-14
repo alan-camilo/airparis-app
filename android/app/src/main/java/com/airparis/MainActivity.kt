@@ -1,4 +1,4 @@
-package com.alancamilo.airparis
+package com.airparis
 
 import android.os.Bundle
 import android.util.Log
