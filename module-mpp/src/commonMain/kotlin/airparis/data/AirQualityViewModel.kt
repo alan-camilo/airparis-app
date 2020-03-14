@@ -55,20 +55,3 @@ class AirQualityViewModel : BaseViewModel<AirQualityCoordinator, AirQualityState
         launch { airQualityRepo.fetchPollutionEpisode() }
     }
 }
-
-data class AirQualityState(
-    val dayIndex: IndiceJour,
-    val indexList: List<Indice>,
-    val pollutionEpisodeList: List<Episode>,
-    val day: Day
-) : State
-
-interface AirQualityActions : Actions {
-    fun fetchDayIndex(day: Day)
-    fun fetchIndex()
-    fun fetchPollutionEpisode()
-}
-
-interface AirQualityCoordinator : Coordinator {
-    fun showAirQuality(day: Day)
-}
