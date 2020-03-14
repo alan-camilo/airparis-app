@@ -3,7 +3,7 @@ package http.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class EpisodePm10(
+data class So2Details(
     val criteres: List<String>,
     val niveau: String,
     val type: String

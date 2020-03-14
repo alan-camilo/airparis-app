@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 data class Episode(
     val date: String,
     val detail: String?,
-    val no2: EpisodeNo2? = null,
-    val o3: EpisodeO3? = null,
-    val pm10: EpisodePm10? = null,
-    val so2: EpisodeSo2? = null
+    val no2: No2Details? = null,
+    val o3: O3Details? = null,
+    val pm10: Pm10Details? = null,
+    val so2: So2Details? = null
 )

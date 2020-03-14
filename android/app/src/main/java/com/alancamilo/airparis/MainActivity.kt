@@ -1,10 +1,12 @@
 package com.alancamilo.airparis
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import http.Client
-import http.util.Jour
+import http.AirparifAPI
+import http.util.Day
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -13,11 +15,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        GlobalScope.launch {
+        GlobalScope.launch(Dispatchers.Main) {
             try {
-                hello_world.text = Client.requestIndiceJour(Jour.TODAY).toString()
+                hello_world.text = AirparifAPI().requestDayIndex(Day.TODAY).toString()
             } catch (error: Throwable) {
-                hello_world.text = error.message
+                Log.e("MAIN_ACTIVITY", error.message)
             }
         }
     }

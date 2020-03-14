@@ -1,13 +1,11 @@
 package http
 
-import dispatchers.IO
+import base.IO
 import http.model.Episode
 import http.model.Indice
 import http.model.IndiceJour
-import http.util.Jour
+import http.util.Day
 import io.ktor.client.HttpClient
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.post
@@ -21,12 +19,9 @@ import kotlinx.serialization.builtins.list
 import kotlinx.serialization.json.Json
 
 @UnstableDefault
-object Client {
-    private val client = HttpClient() {
-        install(JsonFeature) {
-            serializer = KotlinxSerializer(Json.nonstrict)
-        }
-    }
+class AirparifAPI(private val client: HttpClient) {
+
+    constructor() : this(customHttpClient)
 
     private val body = MultiPartFormDataContent(
         formData {
@@ -34,7 +29,7 @@ object Client {
         }
     )
 
-    suspend fun requestIndiceJour(day: Jour): IndiceJour {
+    suspend fun requestDayIndex(day: Day): IndiceJour {
         val argument = ParametersBuilder().apply {
             append("date", day.value)
         }
@@ -45,30 +40,29 @@ object Client {
             parameters = argument
         )
         return withContext(IO) {
-            client.post<IndiceJour> {
+            val response = client.post<String> {
                 url(urlBuilder.buildString())
-                body = this@Client.body
+                body = this@AirparifAPI.body
             }
+            Json.parse(IndiceJour.serializer(), response)
         }
     }
 
-    suspend fun requestEpisodePollution(): List<Episode> {
+    suspend fun requestPollutionEpisode(): List<Episode> {
         return withContext(IO) {
             val response: String = client.post {
-                url(URL_EPISODE_POLLUTION.toString()) {
-                    body = this@Client.body
-                }
+                url(URL_EPISODE_POLLUTION)
+                body = this@AirparifAPI.body
             }
             Json.parse(Episode.serializer().list, response)
         }
     }
 
-    suspend fun requestIndice(): List<Indice> {
+    suspend fun requestIndex(): List<Indice> {
         return withContext(IO) {
             val response: String = client.post {
-                url(URL_INDICE.toString()) {
-                    body = this@Client.body
-                }
+                url(URL_INDICE)
+                body = this@AirparifAPI.body
             }
             Json.parse(Indice.serializer().list, response)
         }

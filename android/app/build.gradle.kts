@@ -5,6 +5,10 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint")
 }
 
+ktlint {
+    disabledRules.set(setOf("no-wildcard-imports"))
+}
+
 android {
     compileSdkVersion(29)
     buildToolsVersion("29.0.2")
@@ -24,6 +28,10 @@ android {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
+    }
+
+    dataBinding {
+        isEnabled = true
     }
 
     packagingOptions {

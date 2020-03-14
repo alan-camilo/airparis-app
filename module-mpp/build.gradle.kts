@@ -1,7 +1,8 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 val ktorVersion by extra("1.3.1")
-val serializationVersion by extra("0.20.0")
+val serializerVersion by extra("0.20.0")
+val kotlinVersion by extra("1.3.70")
 
 buildscript {
     val kotlinVersion by extra("1.3.70")
@@ -55,12 +56,13 @@ kotlin {
         implementation("io.ktor:ktor-client-json:$ktorVersion")
         implementation("io.ktor:ktor-client-serialization:$ktorVersion")
         // Kotlinx serialization
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializerVersion")
     }
 
     sourceSets["commonTest"].dependencies {
         implementation("org.jetbrains.kotlin:kotlin-test-common")
         implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
+        api("io.ktor:ktor-client-mock:$ktorVersion")
     }
 
     sourceSets["androidMain"].dependencies {
@@ -70,17 +72,28 @@ kotlin {
         implementation("io.ktor:ktor-client-json-jvm:$ktorVersion")
         implementation("io.ktor:ktor-client-serialization-jvm:$ktorVersion")
         // Kotlinx serialization
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializerVersion")
     }
 
     sourceSets["androidTest"].dependencies {
         implementation("org.jetbrains.kotlin:kotlin-test")
         implementation("org.jetbrains.kotlin:kotlin-test-junit")
+        api("io.ktor:ktor-client-mock-jvm:$ktorVersion")
     }
 
-    sourceSets["iosMain"].dependencies {}
+    sourceSets["iosMain"].dependencies {
+        // Ktor
+        implementation("io.ktor:ktor-client-ios:$ktorVersion")
+        implementation("io.ktor:ktor-client-json-native:$ktorVersion")
+        implementation("io.ktor:ktor-client-serialization-native:$ktorVersion")
+        // Kotlinx serializer
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$serializerVersion")
+    }
 
-    sourceSets["iosTest"].dependencies {}
+    sourceSets["iosTest"].dependencies {
+        api("io.ktor:ktor-client-mock:$ktorVersion")
+        implementation("kotlinx-coroutines-core-native:$kotlinVersion")
+    }
 }
 
 val packForXcode by tasks.creating(Sync::class) {
@@ -120,4 +133,8 @@ tasks.withType<Test> {
         events("passed", "skipped", "failed")
         showStandardStreams = true
     }
+}
+
+ktlint {
+    disabledRules.set(setOf("no-wildcard-imports"))
 }
