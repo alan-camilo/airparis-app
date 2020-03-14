@@ -1,4 +1,4 @@
-package test.data.http
+package airparis.test.data.http
 
 import airparis.data.http.URL_EPISODE_POLLUTION
 import airparis.data.http.URL_INDICE

@@ -1,10 +1,10 @@
-package data.http
+package airparis.data.http
 
-import base.IO
-import data.http.model.Episode
-import data.http.model.Indice
-import data.http.model.IndiceJour
-import data.http.model.util.Day
+import airparis.base.IO
+import airparis.data.http.model.Episode
+import airparis.data.http.model.Indice
+import airparis.data.http.model.IndiceJour
+import airparis.data.http.model.util.Day
 import io.ktor.client.HttpClient
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData

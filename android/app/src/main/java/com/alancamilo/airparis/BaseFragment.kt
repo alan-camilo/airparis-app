@@ -1,9 +1,9 @@
 package com.alancamilo.airparis
 
-import BaseViewModel
-import Coordinator
-import State
-import StateChangeListener
+import airparis.base.BaseViewModel
+import airparis.base.Coordinator
+import airparis.base.State
+import airparis.base.StateChangeListener
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -47,7 +47,7 @@ open class BaseFragment<CD : Coordinator, ST : State, VM : BaseViewModel<CD, ST>
         viewModel = vm
         viewModel.setStateChangeListener(this)
         this as? CD
-            ?: throw UninitializedPropertyAccessException("Fragment does not implement the Coordinator interface!")
+            ?: throw UninitializedPropertyAccessException("Fragment does not implement the base.Coordinator interface!")
         viewModel.setCoordinator(this as CD)
     }
 
@@ -71,7 +71,7 @@ open class BaseFragment<CD : Coordinator, ST : State, VM : BaseViewModel<CD, ST>
         return binding.root
     }
 
-    //region BaseViewModel lifecycle events
+    //region base.BaseViewModel lifecycle events
     override fun onStart() {
         super.onStart()
         viewModel.onActive()

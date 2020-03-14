@@ -1,8 +1,9 @@
-package base
+package airparis.base
 
 import kotlin.coroutines.CoroutineContext
 
-internal actual val Main: CoroutineDispatcher = NsQueueDispatcher(dispatch_get_main_queue())
+internal actual val Main: CoroutineDispatcher =
+    NsQueueDispatcher(dispatch_get_main_queue())
 
 internal actual val Background: CoroutineDispatcher = Main
 

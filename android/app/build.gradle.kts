@@ -20,7 +20,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.airparis.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -54,8 +54,8 @@ dependencies {
     implementation("androidx.core:core-ktx:1.2.0")
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
     testImplementation("junit:junit:4.12")
-    androidTestImplementation("androidx.test.ext:junit:1.1.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
+    androidTestImplementation("androidx.airparis.test.ext:junit:1.1.1")
+    androidTestImplementation("androidx.airparis.test.espresso:espresso-core:3.2.0")
     implementation(project(":module-mpp"))
     // TODO delete this dependency when coroutines will be in the module
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")

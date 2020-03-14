@@ -1,4 +1,4 @@
-package base
+package airparis.base
 
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.*
@@ -78,7 +78,8 @@ abstract class BaseViewModel<CD : Coordinator, ST : State> : CoroutineScope,
      * Set the associated [stateChangeListener] in order to receive changes to [State].
      */
     fun setStateChangeListener(stateChangeListener: StateChangeListener<ST>) {
-        this.stateChangeListener = buildWeakRef(stateChangeListener)
+        this.stateChangeListener =
+            buildWeakRef(stateChangeListener)
     }
 
     /**

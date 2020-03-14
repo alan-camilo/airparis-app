@@ -1,4 +1,4 @@
-package data.http
+package airparis.data.http
 
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature

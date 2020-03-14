@@ -1,4 +1,4 @@
-package base
+package airparis.base
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

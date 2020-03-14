@@ -1,4 +1,4 @@
-package base
+package airparis.base
 
 interface WeakRef<T : Any> {
     val value: T?

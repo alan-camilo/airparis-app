@@ -1,10 +1,10 @@
-package data
+package airparis.data
 
-import data.http.AirparifAPI
-import data.http.model.Episode
-import data.http.model.Indice
-import data.http.model.IndiceJour
-import data.http.model.util.Day
+import airparis.data.http.AirparifAPI
+import airparis.data.http.model.Episode
+import airparis.data.http.model.Indice
+import airparis.data.http.model.IndiceJour
+import airparis.data.http.model.util.Day
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 
 class AirQualityRepository(private val airparifAPI: AirparifAPI) {

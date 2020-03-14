@@ -1,4 +1,4 @@
-package data.http
+package airparis.data.http
 
 import io.ktor.http.Url
 

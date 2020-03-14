@@ -1,4 +1,4 @@
-package base
+package airparis.base
 
 import airparis.base.WeakRef
 import kotlin.native.ref.WeakReference

@@ -1,21 +1,22 @@
-package data
+package airparis.data
 
-import base.Actions
-import base.BaseViewModel
-import base.Coordinator
-import base.State
-import data.http.AirparifAPI
-import data.http.model.Episode
-import data.http.model.Indice
-import data.http.model.IndiceJour
-import data.http.model.util.Day
+import airparis.base.Actions
+import airparis.base.BaseViewModel
+import airparis.base.Coordinator
+import airparis.base.State
+import airparis.data.http.AirparifAPI
+import airparis.data.http.model.Episode
+import airparis.data.http.model.Indice
+import airparis.data.http.model.IndiceJour
+import airparis.data.http.model.util.Day
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 
 class AirQualityViewModel : BaseViewModel<AirQualityCoordinator, AirQualityState>(),
     AirQualityActions {
 
-    private val airQualityRepo = AirQualityRepository(AirparifAPI())
+    private val airQualityRepo =
+        AirQualityRepository(AirparifAPI())
 
     override fun getInitialState(): AirQualityState =
         AirQualityState(

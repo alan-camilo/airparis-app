@@ -1,10 +1,7 @@
-package test.data.http
+package airparis.test.data.http
 
 import airparis.base.runBlocking
 import airparis.data.http.AirparifAPI
-import test.data.http.mockResponseBadJson
-import test.data.http.mockResponseBadRequest
-import test.data.http.mockResponseOK
 import airparis.data.http.model.util.Day
 import io.ktor.client.features.ClientRequestException
 import kotlin.test.Test

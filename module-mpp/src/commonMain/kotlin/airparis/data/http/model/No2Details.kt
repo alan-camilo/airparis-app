@@ -1,4 +1,4 @@
-package data.http.model
+package airparis.data.http.model
 
 import kotlinx.serialization.Serializable
 
