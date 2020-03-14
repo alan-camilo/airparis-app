@@ -1,6 +1,6 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
-val ktorVersion by extra("1.3.1")
+val ktorVersion by extra("1.3.2")
 val serializerVersion by extra("0.20.0")
 val kotlinVersion by extra("1.3.70")
 
@@ -92,7 +92,7 @@ kotlin {
 
     sourceSets["iosTest"].dependencies {
         api("io.ktor:ktor-client-mock:$ktorVersion")
-        implementation("kotlinx-coroutines-core-native:$kotlinVersion")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:1.3.4")
     }
 }
 
