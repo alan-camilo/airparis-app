@@ -1,6 +1,5 @@
 package airparis.base
 
-import airparis.base.WeakRef
 import kotlin.native.ref.WeakReference
 
 class iOSWeakRef<T : Any>(val weakValue: WeakReference<T>) :

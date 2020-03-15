@@ -1,12 +1,7 @@
 package airparis.data
 
-import airparis.base.Actions
 import airparis.base.BaseViewModel
-import airparis.base.Coordinator
-import airparis.base.State
 import airparis.data.http.AirparifAPI
-import airparis.data.http.model.Episode
-import airparis.data.http.model.Indice
 import airparis.data.http.model.IndiceJour
 import airparis.data.http.model.util.Day
 import kotlinx.coroutines.channels.consumeEach

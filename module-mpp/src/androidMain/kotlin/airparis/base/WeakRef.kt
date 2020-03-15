@@ -1,6 +1,5 @@
 package airparis.base
 
-import airparis.base.WeakRef
 import java.lang.ref.WeakReference
 
 class AndroidWeakRef<T : Any>(val weakValue: WeakReference<T>) :
