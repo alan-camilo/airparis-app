@@ -15,13 +15,5 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        GlobalScope.launch(Dispatchers.Main) {
-            try {
-                hello_world.text = AirparifAPI()
-                    .requestDayIndex(Day.TODAY).toString()
-            } catch (error: Throwable) {
-                Log.e("MAIN_ACTIVITY", error.message)
-            }
-        }
     }
 }
