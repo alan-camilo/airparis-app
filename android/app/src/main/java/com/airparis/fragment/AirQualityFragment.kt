@@ -14,7 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with airparis.  If not, see <https://www.gnu.org/licenses/>.
 */
-package com.airparis
+package com.airparis.fragment
 
 import airparis.data.AirQualityCoordinator
 import airparis.data.AirQualityState
@@ -23,6 +23,8 @@ import airparis.data.http.model.util.Day
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import com.airparis.BR
+import com.airparis.R
 import com.airparis.databinding.AirQualityFragmentBinding
 
 class AirQualityFragment :
@@ -30,7 +32,10 @@ class AirQualityFragment :
     AirQualityCoordinator {
 
     override fun onAttach(context: Context) {
-        initialize(R.layout.air_quality_fragment, BR.actions, BR.state, AirQualityViewModel())
+        initialize(
+            R.layout.air_quality_fragment,
+            BR.actions,
+            BR.state, AirQualityViewModel())
         super.onAttach(context)
     }
 

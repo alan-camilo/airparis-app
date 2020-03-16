@@ -14,7 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with airparis.  If not, see <https://www.gnu.org/licenses/>.
 */
-package com.airparis
+package com.airparis.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -22,7 +22,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import com.airparis.R
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,7 +39,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.notification -> true
+            R.id.notification -> {
+                val intent = Intent(this, NotificationSettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
             R.id.about -> {
                 val intent = Intent(this, AboutActivity::class.java)
                 startActivity(intent)

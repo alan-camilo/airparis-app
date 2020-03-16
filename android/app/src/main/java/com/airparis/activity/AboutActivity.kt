@@ -1,7 +1,8 @@
-package com.airparis
+package com.airparis.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.airparis.R
 
 class AboutActivity : AppCompatActivity() {
 

@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">airparis</string>
+    <string name="app_name">AirParis Qualité de l\'air</string>
+    <string name="notification">Notification</string>
+    <string name="license_text"> This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.</string>
+    <string name="git_url"><u>https://framagit.org/alan-camilo/airparis-app</u></string>
+    <string name="developed_by">Developed by par Alan C. Herrera</string>
+    <string name="about">About</string>
+    <string name="copyleft" translatable="false">Copyleft 2020</string>
 </resources>

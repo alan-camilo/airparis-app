@@ -14,7 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with airparis.  If not, see <https://www.gnu.org/licenses/>.
 */
-package com.airparis
+package com.airparis.fragment
 
 import airparis.base.BaseViewModel
 import airparis.base.Coordinator

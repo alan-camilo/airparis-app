@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_name">AirParis Qualité de l\'air</string>
+    <string name="about" translatable="false">A propos</string>
+    <string name="notification" translatable="false">Notification</string>
+    <string name="license_text" translatable="false">Ce programme est un logiciel libre; vous pouvez le redistribuer ou le modifier suivant les termes de la GNU General Public License telle que publiée par la Free Software Foundation; soit la version 3 de la licence, soit toute version ultérieure.</string>
+    <string name="git_url" translatable="false"><u>https://framagit.org/alan-camilo/airparis-app</u></string>
+    <string name="developed_by" translatable="false">Application développée par Alan C. Herrera</string>
+</resources>
