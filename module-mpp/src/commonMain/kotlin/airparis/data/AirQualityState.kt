@@ -23,8 +23,7 @@ import airparis.data.http.model.IndiceJour
 import airparis.data.http.model.util.Day
 
 data class AirQualityState(
-    val dayIndex: IndiceJour,
+    val dayIndexMap: MutableMap<Day, IndiceJour>,
     val indexList: List<Indice>,
-    val pollutionEpisodeList: List<Episode>,
-    val day: Day
+    val pollutionEpisodeList: List<Episode>
 ) : State

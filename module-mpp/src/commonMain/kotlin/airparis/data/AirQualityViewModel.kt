@@ -20,6 +20,7 @@ import airparis.base.BaseViewModel
 import airparis.data.http.AirparifAPI
 import airparis.data.http.model.IndiceJour
 import airparis.data.http.model.util.Day
+import airparis.data.http.model.util.toDay
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 
@@ -31,28 +32,40 @@ class AirQualityViewModel : BaseViewModel<AirQualityCoordinator, AirQualityState
 
     override fun getInitialState(): AirQualityState =
         AirQualityState(
-            IndiceJour("", null, null, null, null),
+            hashMapOf(
+                Day.YESTERDAY to IndiceJour("", null, null, null, null),
+                Day.TODAY to IndiceJour("", null, null, null, null),
+                Day.TOMORROW to IndiceJour("", null, null, null, null)
+            ),
             emptyList(),
-            emptyList(),
-            Day.TODAY
+            emptyList()
         )
 
     init {
         launch {
             airQualityRepo.subscribeDayIndex().consumeEach { dayIndex ->
-                stateChannel.mutate { it.copy(dayIndex = dayIndex) }
+                stateChannel.mutate { airQualityState ->
+                    dayIndex.date.toDay()?.let {
+                        airQualityState.dayIndexMap[it] = dayIndex
+                    }
+                    airQualityState.copy()
+                }
             }
             airQualityRepo.subscribeIndex().consumeEach { list ->
-                stateChannel.mutate { it.copy(indexList = list) }
+                stateChannel.mutate { airQualityState -> airQualityState.copy(indexList = list) }
             }
             airQualityRepo.subscribePollutionEpisode().consumeEach { list ->
-                stateChannel.mutate { it.copy(pollutionEpisodeList = list) }
+                stateChannel.mutate { airQualityState ->
+                    airQualityState.copy(
+                        pollutionEpisodeList = list
+                    )
+                }
             }
         }
     }
 
     override fun fetchDayIndex(day: Day) {
-        stateChannel.mutate { it.copy(day = day) }
+        stateChannel.mutate { it.copy() }
         launch { airQualityRepo.fetchDayIndex(day) }
     }
 

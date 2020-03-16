@@ -16,5 +16,39 @@ along with airparis.  If not, see <https://www.gnu.org/licenses/>.
 */
 package airparis.test.data
 
+import airparis.data.http.model.util.Day
+import airparis.data.http.model.util.toDay
+import com.soywiz.klock.DateTimeTz
+import com.soywiz.klock.days
+import kotlin.test.Test
+import kotlin.test.assertTrue
+
 class DateTest {
+
+    @Test
+    fun `test YESTERDAY fun dateToDayObject`() {
+        val yesterday = (DateTimeTz.nowLocal() - 1.days).format("dd/MM/yyyy")
+        val day = yesterday.toDay()
+        assertTrue {
+            day == Day.YESTERDAY
+        }
+    }
+
+    @Test
+    fun `test TODAY fun dateToDayObject`() {
+        val today = DateTimeTz.nowLocal().format("dd/MM/yyyy")
+        val day = today.toDay()
+        assertTrue {
+            day == Day.TODAY
+        }
+    }
+
+    @Test
+    fun `test TOMMOROW fun dateToDayObject`() {
+        val tomorrow = (DateTimeTz.nowLocal() + 1.days).format("dd/MM/yyyy")
+        val day = tomorrow.toDay()
+        assertTrue {
+            day == Day.TOMORROW
+        }
+    }
 }

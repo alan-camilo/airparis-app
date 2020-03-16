@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <import type="airparis.data.http.model.util.Day"/>
         <variable
             name="actions"
             type="airparis.data.AirQualityActions" />
@@ -21,11 +21,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/pager"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
+
         <TextView
             android:id="@+id/day_index"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{state.dayIndex.toString()}"
+            android:text="@{state.dayIndexMap.get(Day.TODAY).component2().component1().toString()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -34,8 +39,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/day_index"
             android:text="@string/app_name"
+            app:layout_constraintStart_toStartOf="@id/day_index"
             app:layout_constraintTop_toBottomOf="@id/day_index" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

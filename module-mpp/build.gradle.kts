@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 val ktorVersion by extra("1.3.2")
 val serializerVersion by extra("0.20.0")
 val kotlinVersion by extra("1.3.70")
+val klockVersion by extra("1.7.0")
 
 buildscript {
     val kotlinVersion by extra("1.3.70")
@@ -57,12 +58,16 @@ kotlin {
         implementation("io.ktor:ktor-client-serialization:$ktorVersion")
         // Kotlinx serialization
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializerVersion")
+        //Date and time lib Klock
+        implementation("com.soywiz.korlibs.klock:klock:$klockVersion")
     }
 
     sourceSets["commonTest"].dependencies {
         implementation("org.jetbrains.kotlin:kotlin-test-common")
         implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
         api("io.ktor:ktor-client-mock:$ktorVersion")
+        //Date and time lib Klock
+        implementation("com.soywiz.korlibs.klock:klock:$klockVersion")
     }
 
     sourceSets["androidMain"].dependencies {
