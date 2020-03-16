@@ -1,2 +1,2 @@
-A simple app to see the air quality in Paris.
+A simple app to display the air quality in Paris and receive notifications.
 
