@@ -62,6 +62,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
     implementation(project(":module-mpp"))
+    implementation("com.codesgood:justifiedtextview:1.1.0")
     // TODO delete this dependency when coroutines will be in the module
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.4")
