@@ -53,30 +53,21 @@ along with airparis.  If not, see <https://www.gnu.org/licenses/>.
 open class BaseFragment<CD : Coordinator, ST : State, VM : BaseViewModel<CD, ST>, out B : ViewDataBinding> :
     Fragment(), StateChangeListener<ST> {
 
-    private var isBindingInitialized: Boolean = false
-    private var isInitialized: Boolean = false
     @LayoutRes
     private var bindingLayoutId: Int = 0
-    private var actionsBindingVariableId: Int = 0
-    private var stateBindingVariableId: Int = 0
-
-    protected lateinit var binding: ViewDataBinding
     protected lateinit var viewModel: VM
     private var state: ST? = null
+    private var isInitialized = false
 
     /**
      * Initialize all DataBinding variables.
      */
     protected fun initialize(
         @LayoutRes bindingLayoutId: Int,
-        @IdRes actionsBindingVariableId: Int,
-        @IdRes stateBindingVariableId: Int,
         vm: VM
     ) {
         isInitialized = true
         this.bindingLayoutId = bindingLayoutId
-        this.actionsBindingVariableId = actionsBindingVariableId
-        this.stateBindingVariableId = stateBindingVariableId
         viewModel = vm
         viewModel.setStateChangeListener(this)
         this as? CD
@@ -86,8 +77,6 @@ open class BaseFragment<CD : Coordinator, ST : State, VM : BaseViewModel<CD, ST>
 
     override fun onStateChange(state: ST) {
         this.state = state
-        if (isBindingInitialized)
-            binding.setVariable(stateBindingVariableId, state)
     }
 
     override fun onCreateView(
@@ -97,11 +86,7 @@ open class BaseFragment<CD : Coordinator, ST : State, VM : BaseViewModel<CD, ST>
     ): View? {
         if (!isInitialized)
             throw UninitializedPropertyAccessException("initialize() not called!")
-        binding = DataBindingUtil.inflate<B>(inflater, bindingLayoutId, container, false)
-        binding.setVariable(actionsBindingVariableId, viewModel)
-        binding.setVariable(stateBindingVariableId, state)
-        isBindingInitialized = true
-        return binding.root
+        return inflater.inflate(this.bindingLayoutId, container, false)
     }
 
     //region base.BaseViewModel lifecycle events

@@ -30,8 +30,6 @@ class AirQualityDetailsFragment :
     override fun onAttach(context: Context) {
         initialize(
             R.layout.fragment_air_quality_details,
-            BR.actions,
-            BR.state,
             AirQualityViewModel()
         )
         super.onAttach(context)
@@ -50,14 +48,6 @@ class AirQualityDetailsFragment :
         }
     }
 
-    /*override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_air_quality_details, container, false)
-    }*/
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         day?.let {
             viewModel.fetchDayIndex(it)
@@ -68,11 +58,14 @@ class AirQualityDetailsFragment :
     override fun onStateChange(state: AirQualityState) {
         state.dayIndexMap[day]?.global?.let {
             it.url_carte?.let { url ->
-                Picasso.get().load(url).into(map_iv);
+                Picasso.get().load(url).into(map_iv)
             }
             it.indice?.let { index ->
                 day_index.text = index.toString()
             }
+        }
+        state.dayIndexMap[day]?.url_carte?.let { url ->
+            Picasso.get().load(url).into(map_iv);
         }
         super.onStateChange(state)
     }
