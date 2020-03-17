@@ -1,4 +1,4 @@
-package com.airparis
+package com.airparis.fragment
 
 import airparis.data.AirQualityCoordinator
 import airparis.data.AirQualityState
@@ -6,15 +6,15 @@ import airparis.data.AirQualityViewModel
 import airparis.data.http.model.util.Day
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.airparis.BR
+import com.airparis.R
 import com.airparis.databinding.FragmentAirQualityDetailsBinding
-import com.airparis.fragment.BaseFragment
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_air_quality_details.*
 
-const val DAY_ARG = "DAY"
+const val POSITION_ARG = "position"
 
 /**
  * A simple [Fragment] subclass.
@@ -25,40 +25,59 @@ class AirQualityDetailsFragment :
     BaseFragment<AirQualityCoordinator, AirQualityState, AirQualityViewModel, FragmentAirQualityDetailsBinding>(),
     AirQualityCoordinator {
 
-    private var day: String? = null
+    private var day: Day? = null
 
     override fun onAttach(context: Context) {
         initialize(
-            R.layout.fragment_air_quality_collection,
+            R.layout.fragment_air_quality_details,
             BR.actions,
-            BR.state, AirQualityViewModel())
+            BR.state,
+            AirQualityViewModel()
+        )
         super.onAttach(context)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            day = it.getString(DAY_ARG)
+            val position = it.getInt(POSITION_ARG)
+            day = when (position) {
+                0 -> Day.YESTERDAY
+                1 -> Day.TODAY
+                2 -> Day.TOMORROW
+                else -> null
+            }
         }
     }
 
-    override fun onCreateView(
+    /*override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_air_quality_details, container, false)
-    }
+    }*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.fetchDayIndex(Day.TODAY)
+        day?.let {
+            viewModel.fetchDayIndex(it)
+        }
         super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onStateChange(state: AirQualityState) {
-        state.dayIndexMap[Day.TODAY]?.global?.url_carte?.let {
-            Picasso.get().load(it).into(map_iv);
+        state.dayIndexMap[day]?.global?.let {
+            it.url_carte?.let { url ->
+                Picasso.get().load(url).into(map_iv);
+            }
+            it.indice?.let { index ->
+                day_index.text = index.toString()
+            }
         }
         super.onStateChange(state)
+    }
+
+    override fun showAirQuality(day: Day) {
+        TODO("Not yet implemented")
     }
 }

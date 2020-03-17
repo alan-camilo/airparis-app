@@ -6,4 +6,7 @@
     <string name="developed_by">Developed by par Alan C. Herrera</string>
     <string name="about">About</string>
     <string name="copyleft" translatable="false">Copyleft 2020</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
 </resources>

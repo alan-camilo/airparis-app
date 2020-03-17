@@ -16,5 +16,19 @@ along with airparis.  If not, see <https://www.gnu.org/licenses/>.
 */
 package com.airparis.fragment
 
-class AirQualityCollectionAdapter {
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.adapter.FragmentStateAdapter
+
+class AirQualityCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+    override fun getItemCount(): Int = 3
+
+    override fun createFragment(position: Int): Fragment {
+        // Return a NEW fragment instance in createFragment(int)
+        val fragment = AirQualityDetailsFragment()
+        fragment.arguments = Bundle().apply {
+            putInt(POSITION_ARG, position)
+        }
+        return fragment
+    }
 }

@@ -1,14 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".AirQualityDetailsFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+        <import type="airparis.data.http.model.util.Day" />
+
+        <variable
+            name="actions"
+            type="airparis.data.AirQualityActions" />
+
+        <variable
+            name="state"
+            type="airparis.data.AirQualityState" />
+
+        <variable
+            name="view"
+            type="com.airparis.fragment.AirQualityDetailsFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        tools:context=".fragment.AirQualityDetailsFragment">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/day_index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <!--android:text="@{state.dayIndexMap.get(Day.TODAY).component2().component1().toString()}"-->
+
+         <ImageView
+             android:id="@+id/map_iv"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@id/day_index" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
