@@ -6,9 +6,10 @@ import airparis.data.AirQualityViewModel
 import airparis.data.http.model.util.Day
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.airparis.BR
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.airparis.R
 import com.airparis.databinding.FragmentAirQualityDetailsBinding
 import com.squareup.picasso.Picasso
@@ -22,7 +23,7 @@ const val POSITION_ARG = "position"
  * create an instance of this fragment.
  */
 class AirQualityDetailsFragment :
-    BaseFragment<AirQualityCoordinator, AirQualityState, AirQualityViewModel, FragmentAirQualityDetailsBinding>(),
+    BaseFragment<AirQualityCoordinator, AirQualityState, AirQualityViewModel>(),
     AirQualityCoordinator {
 
     private var day: Day? = null
@@ -51,21 +52,41 @@ class AirQualityDetailsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         day?.let {
             viewModel.fetchDayIndex(it)
+            viewModel.fetchPollutionEpisode()
         }
         super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onStateChange(state: AirQualityState) {
-        state.dayIndexMap[day]?.global?.let {
+        val dayIndex = state.dayIndexMap[day]
+        dayIndex?.global?.let {
             it.url_carte?.let { url ->
                 Picasso.get().load(url).into(map_iv)
             }
             it.indice?.let { index ->
-                day_index.text = index.toString()
+                global_index_tv.text = getString(R.string.global_index, index)
             }
         }
-        state.dayIndexMap[day]?.url_carte?.let { url ->
+        dayIndex?.url_carte?.let { url ->
             Picasso.get().load(url).into(map_iv);
+        }
+        dayIndex?.pm10?.indice?.let {
+            pm10_index_tv.text = getString(R.string.pm10_index, it)
+        }
+        dayIndex?.no2?.indice?.let {
+            no2_index_tv.text = getString(R.string.no2_index, it)
+        }
+        dayIndex?.o3?.indice?.let {
+            o3_index_tv.text = getString(R.string.o3_index, it)
+        }
+        val pollutionEpisode = state.pollutionEpisodeList.firstOrNull { episode ->
+            episode.date == day?.value
+        }
+        if (pollutionEpisode?.detail == null) {
+            pollution_advice_tv.visibility = View.GONE
+        } else {
+            pollution_advice_tv.visibility = View.VISIBLE
+            pollution_advice_tv.text = pollutionEpisode.detail
         }
         super.onStateChange(state)
     }

@@ -24,10 +24,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 
 /*
@@ -50,7 +47,7 @@ along with airparis.  If not, see <https://www.gnu.org/licenses/>.
 /**
  * Base [Fragment] used to map a [BaseViewModel] and handle its lifecycle events.
  */
-open class BaseFragment<CD : Coordinator, ST : State, VM : BaseViewModel<CD, ST>, out B : ViewDataBinding> :
+open class BaseFragment<CD : Coordinator, ST : State, VM : BaseViewModel<CD, ST>> :
     Fragment(), StateChangeListener<ST> {
 
     @LayoutRes

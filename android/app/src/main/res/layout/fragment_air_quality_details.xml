@@ -2,44 +2,59 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <import type="airparis.data.http.model.util.Day" />
-
-        <variable
-            name="actions"
-            type="airparis.data.AirQualityActions" />
-
-        <variable
-            name="state"
-            type="airparis.data.AirQualityState" />
-
-        <variable
-            name="view"
-            type="com.airparis.fragment.AirQualityDetailsFragment" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragment.AirQualityDetailsFragment">
 
         <TextView
-            android:id="@+id/day_index"
+            android:id="@+id/global_index_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-        <!--android:text="@{state.dayIndexMap.get(Day.TODAY).component2().component1().toString()}"-->
 
-         <ImageView
-             android:id="@+id/map_iv"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             app:layout_constraintEnd_toEndOf="parent"
-             app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintTop_toBottomOf="@id/day_index" />
+        <TextView
+            android:id="@+id/pm10_index_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/global_index_tv" />
+
+        <TextView
+            android:id="@+id/no2_index_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pm10_index_tv" />
+
+        <TextView
+            android:id="@+id/o3_index_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/no2_index_tv" />
+
+        <TextView
+            android:id="@+id/pollution_advice_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/o3_index_tv" />
+
+
+        <ImageView
+            android:id="@+id/map_iv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pollution_advice_tv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
