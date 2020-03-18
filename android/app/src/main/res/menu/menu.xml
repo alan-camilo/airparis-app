@@ -5,6 +5,10 @@
         android:icon="@drawable/baseline_notifications_none_white_24"
         app:showAsAction="ifRoom"
         android:title="@string/notification" />
+    <item android:id="@+id/refresh"
+        android:icon="@drawable/baseline_refresh_white_24"
+        android:title="@string/refresh"
+        app:showAsAction="ifRoom" />
     <item android:id="@+id/about"
         android:title="@string/about"
         app:showAsAction="never">

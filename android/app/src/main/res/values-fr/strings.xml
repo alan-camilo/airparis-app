@@ -13,4 +13,5 @@
     <string name="pm10_index">Particules fines (PM10) : %d</string>
     <string name="o3_index">Ozone : %d</string>
     <string name="no2_index">Dioxyde d\'azote : %d</string>
+    <string name="refresh">Rafraîchir</string>
 </resources>

@@ -18,13 +18,17 @@ package com.airparis.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.airparis.R
+import com.airparis.fragment.CollectionAirQualityFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +53,17 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
                 true
             }
+            R.id.refresh -> {
+                refreshCollectionFragment()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun refreshCollectionFragment() {
+        Log.d(MainActivity::class.simpleName, "refreshCollectionFragment")
+        val fragment = supportFragmentManager.fragments.first() as CollectionAirQualityFragment
+        fragment.refresh()
     }
 }

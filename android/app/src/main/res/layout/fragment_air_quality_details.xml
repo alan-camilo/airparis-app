@@ -7,6 +7,13 @@
         android:layout_height="match_parent"
         tools:context=".fragment.AirQualityDetailsFragment">
 
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/global_index_tv"
             android:layout_width="wrap_content"

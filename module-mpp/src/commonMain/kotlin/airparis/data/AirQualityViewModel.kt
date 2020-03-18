@@ -51,9 +51,13 @@ class AirQualityViewModel : BaseViewModel<AirQualityCoordinator, AirQualityState
                     airQualityState.copy()
                 }
             }
+        }
+        launch {
             airQualityRepo.subscribeIndex().consumeEach { list ->
                 stateChannel.mutate { airQualityState -> airQualityState.copy(indexList = list) }
             }
+        }
+        launch {
             airQualityRepo.subscribePollutionEpisode().consumeEach { list ->
                 stateChannel.mutate { airQualityState ->
                     airQualityState.copy(
@@ -65,17 +69,17 @@ class AirQualityViewModel : BaseViewModel<AirQualityCoordinator, AirQualityState
     }
 
     override fun fetchDayIndex(day: Day) {
-        stateChannel.mutate { it.copy() }
+        //stateChannel.mutate { it.copy() }
         launch { airQualityRepo.fetchDayIndex(day) }
     }
 
     override fun fetchIndex() {
-        stateChannel.mutate { it.copy() }
+        //stateChannel.mutate { it.copy() }
         launch { airQualityRepo.fetchIndex() }
     }
 
     override fun fetchPollutionEpisode() {
-        stateChannel.mutate { it.copy() }
+        //stateChannel.mutate { it.copy() }
         launch { airQualityRepo.fetchPollutionEpisode() }
     }
 }

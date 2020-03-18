@@ -51,7 +51,7 @@ open class BaseFragment<CD : Coordinator, ST : State, VM : BaseViewModel<CD, ST>
     Fragment(), StateChangeListener<ST> {
 
     @LayoutRes
-    private var bindingLayoutId: Int = 0
+    private var layoutId: Int = 0
     protected lateinit var viewModel: VM
     private var state: ST? = null
     private var isInitialized = false
@@ -60,11 +60,11 @@ open class BaseFragment<CD : Coordinator, ST : State, VM : BaseViewModel<CD, ST>
      * Initialize all DataBinding variables.
      */
     protected fun initialize(
-        @LayoutRes bindingLayoutId: Int,
+        @LayoutRes layoutId: Int,
         vm: VM
     ) {
         isInitialized = true
-        this.bindingLayoutId = bindingLayoutId
+        this.layoutId = layoutId
         viewModel = vm
         viewModel.setStateChangeListener(this)
         this as? CD
@@ -83,7 +83,7 @@ open class BaseFragment<CD : Coordinator, ST : State, VM : BaseViewModel<CD, ST>
     ): View? {
         if (!isInitialized)
             throw UninitializedPropertyAccessException("initialize() not called!")
-        return inflater.inflate(this.bindingLayoutId, container, false)
+        return inflater.inflate(this.layoutId, container, false)
     }
 
     //region base.BaseViewModel lifecycle events
