@@ -1,9 +1,10 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 val ktorVersion by extra("1.3.2")
 val serializerVersion by extra("0.20.0")
 val kotlinVersion by extra("1.3.70")
-val klockVersion by extra("1.7.0")
+val klockVersion by extra("1.8.4")
 
 buildscript {
     val kotlinVersion by extra("1.3.70")
@@ -131,6 +132,12 @@ val packForXcode by tasks.creating(Sync::class) {
 }
 
 tasks.getByName("build").dependsOn(packForXcode)
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
 
 tasks.withType<Test> {
     testLogging {
