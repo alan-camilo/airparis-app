@@ -16,9 +16,9 @@ along with airparis.  If not, see <https://www.gnu.org/licenses/>.
 */
 package airparis.base
 
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Runnable
-import kotlin.coroutines.CoroutineContext
 
 internal actual val Main: CoroutineDispatcher =
     NsQueueDispatcher(dispatch_get_main_queue())

@@ -98,7 +98,7 @@ class AirQualityDetailsFragment :
             }
         }
         dayIndex.url_carte?.let { url ->
-            Picasso.get().load(url).into(map_iv);
+            Picasso.get().load(url).into(map_iv)
         }
         dayIndex.pm10?.indice?.let {
             pm10_index_tv.text = getString(R.string.pm10_index, it)

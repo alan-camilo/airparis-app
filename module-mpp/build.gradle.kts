@@ -59,7 +59,7 @@ kotlin {
         implementation("io.ktor:ktor-client-serialization:$ktorVersion")
         // Kotlinx serialization
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializerVersion")
-        //Date and time lib Klock
+        // Date and time lib Klock
         implementation("com.soywiz.korlibs.klock:klock:$klockVersion")
     }
 
@@ -67,7 +67,7 @@ kotlin {
         implementation("org.jetbrains.kotlin:kotlin-test-common")
         implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
         api("io.ktor:ktor-client-mock:$ktorVersion")
-        //Date and time lib Klock
+        // Date and time lib Klock
         implementation("com.soywiz.korlibs.klock:klock:$klockVersion")
     }
 

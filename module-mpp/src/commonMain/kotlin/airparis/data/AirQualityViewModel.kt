@@ -69,17 +69,17 @@ class AirQualityViewModel : BaseViewModel<AirQualityCoordinator, AirQualityState
     }
 
     override fun fetchDayIndex(day: Day) {
-        //stateChannel.mutate { it.copy() }
+        // stateChannel.mutate { it.copy() }
         launch { airQualityRepo.fetchDayIndex(day) }
     }
 
     override fun fetchIndex() {
-        //stateChannel.mutate { it.copy() }
+        // stateChannel.mutate { it.copy() }
         launch { airQualityRepo.fetchIndex() }
     }
 
     override fun fetchPollutionEpisode() {
-        //stateChannel.mutate { it.copy() }
+        // stateChannel.mutate { it.copy() }
         launch { airQualityRepo.fetchPollutionEpisode() }
     }
 }

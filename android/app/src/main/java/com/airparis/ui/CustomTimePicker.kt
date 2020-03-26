@@ -20,7 +20,6 @@ import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.M
 import android.widget.TimePicker
 
-
 @Suppress("DEPRECATION")
 fun TimePicker.getMinuteComp(): Int {
     return when {

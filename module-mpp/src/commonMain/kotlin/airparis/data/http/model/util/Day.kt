@@ -14,7 +14,7 @@ fun String.toDay(): Day? {
     val yesterday = today - 1.days
     val tomorrow = today + 1.days
     val regex = Regex("^\\d\\d")
-    return when(regex.find(this)?.value?.toInt()) {
+    return when (regex.find(this)?.value?.toInt()) {
         yesterday.dayOfMonth -> Day.YESTERDAY
         today.dayOfMonth -> Day.TODAY
         tomorrow.dayOfMonth -> Day.TOMORROW

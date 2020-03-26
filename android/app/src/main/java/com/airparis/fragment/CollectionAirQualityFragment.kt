@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.airparis.R
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.fragment_air_quality_collection.*
 import java.lang.ref.WeakReference
+import kotlinx.android.synthetic.main.fragment_air_quality_collection.*
 
 class CollectionAirQualityFragment : Fragment(), Refresh {
 
@@ -23,7 +23,8 @@ class CollectionAirQualityFragment : Fragment(), Refresh {
     private var detailsFragmentList: Array<WeakReference<AirQualityDetailsFragment>?> = arrayOfNulls(3)
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         savedInstanceState?.let {

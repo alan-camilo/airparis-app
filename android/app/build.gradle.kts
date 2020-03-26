@@ -68,10 +68,10 @@ dependencies {
     implementation("com.codesgood:justifiedtextview:1.1.0")
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.google.android.material:material:1.1.0")
-    //WorkManager
+    // WorkManager
     implementation("androidx.work:work-runtime-ktx:$work_version")
     androidTestImplementation("androidx.work:work-testing:$work_version")
-    //Hyperion debug tool
+    // Hyperion debug tool
     debugImplementation("com.willowtreeapps.hyperion:hyperion-core:0.9.27")
     debugImplementation("com.willowtreeapps.hyperion:hyperion-attr:0.9.27")
     debugImplementation("com.willowtreeapps.hyperion:hyperion-build-config:0.9.27")
