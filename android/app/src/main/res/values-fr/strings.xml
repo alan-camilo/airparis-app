@@ -14,4 +14,6 @@
     <string name="o3_index">Ozone : %d</string>
     <string name="no2_index">Dioxyde d\'azote : %d</string>
     <string name="refresh">Rafraîchir</string>
+    <string name="notification_channel_name">Bulletin quotidien</string>
+    <string name="notification_channel_description">Bulletin quotidien de la qualité de l\'air à Paris</string>
 </resources>

@@ -25,7 +25,6 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.airparis.R
 import com.airparis.fragment.CollectionAirQualityFragment
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
