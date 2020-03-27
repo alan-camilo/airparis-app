@@ -43,14 +43,16 @@ class NotifyWork(
     context: Context,
     params: WorkerParameters
 ) : Worker(context, params) {
+    private val notification_id = 1
+    private val alert_id = 2
+
     override fun doWork(): Result {
-        val id = inputData.getLong(NOTIFICATION_ID, 0).toInt()
         GlobalScope.launch {
             val indexList = AirparifAPI().requestIndex()
             val indexToday = indexList.firstOrNull { it.date == Day.TODAY.value }?.indice
             Log.d(NotifyWork::class.simpleName, "indexList = $indexList\nindexToday=$indexToday")
             if (indexToday != null) {
-                sendNotification(id, indexToday.toString())
+                sendNotification(notification_id, indexToday.toString())
             } else {
                 // TODO notification error
             }

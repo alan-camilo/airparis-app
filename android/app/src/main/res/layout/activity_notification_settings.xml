@@ -6,15 +6,44 @@
     android:layout_height="match_parent"
     tools:context=".activity.NotificationSettingsActivity">
 
-    <Button
-        android:id="@+id/btn_time_picker"
-        android:layout_width="wrap_content"
+    <CheckBox
+        android:id="@+id/checkbox_notifications"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="showTimePickerDialog"
-        android:text="time picker"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="25dp"
+        android:checked="false"
+        android:onClick="onCheckBoxClicked"
+        android:text="@string/activate_notifications"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_time_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:onClick="showTimePickerDialog"
+        android:enabled="false"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:layout_marginTop="15dp"
+        android:drawableStart="@drawable/outline_access_time_black_24"
+        app:layout_constraintStart_toStartOf="@id/checkbox_notifications"
+        app:layout_constraintEnd_toEndOf="@id/checkbox_notifications"
+        app:layout_constraintTop_toBottomOf="@+id/checkbox_notifications" />
+
+    <CheckBox
+        android:id="@+id/checkbox_alerts"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:checked="true"
+        android:onClick="onCheckBoxClicked"
+        android:text="@string/activate_alerts"
+        app:layout_constraintEnd_toEndOf="@id/checkbox_notifications"
+        app:layout_constraintStart_toStartOf="@id/checkbox_notifications"
+        app:layout_constraintTop_toBottomOf="@id/btn_time_picker" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

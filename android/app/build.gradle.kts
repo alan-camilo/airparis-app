@@ -72,7 +72,7 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:$work_version")
     androidTestImplementation("androidx.work:work-testing:$work_version")
     // Hyperion debug tool
-    debugImplementation("com.willowtreeapps.hyperion:hyperion-core:0.9.27")
+    /*debugImplementation("com.willowtreeapps.hyperion:hyperion-core:0.9.27")
     debugImplementation("com.willowtreeapps.hyperion:hyperion-attr:0.9.27")
     debugImplementation("com.willowtreeapps.hyperion:hyperion-build-config:0.9.27")
     debugImplementation("com.willowtreeapps.hyperion:hyperion-crash:0.9.27")
@@ -80,7 +80,7 @@ dependencies {
     debugImplementation("com.willowtreeapps.hyperion:hyperion-measurement:0.9.27")
     debugImplementation("com.willowtreeapps.hyperion:hyperion-phoenix:0.9.27")
     debugImplementation("com.willowtreeapps.hyperion:hyperion-recorder:0.9.27")
-    debugImplementation("com.willowtreeapps.hyperion:hyperion-shared-preferences:0.9.27")
+    debugImplementation("com.willowtreeapps.hyperion:hyperion-shared-preferences:0.9.27")*/
     // TODO delete this dependency when coroutines will be in the module
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.4")

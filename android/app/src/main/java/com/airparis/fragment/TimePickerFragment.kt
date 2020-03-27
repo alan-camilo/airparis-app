@@ -22,17 +22,8 @@ import android.os.Bundle
 import android.text.format.DateFormat
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
-import androidx.work.Data
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
-import com.airparis.ui.getHourComp
-import com.airparis.ui.getMinuteComp
-import com.airparis.work.NotifyWork
-import com.airparis.work.NotifyWork.Companion.NOTIFICATION_ID
+import com.airparis.activity.NotificationSettingsActivity
 import java.util.*
-import java.util.Calendar.*
-import java.util.concurrent.TimeUnit
 
 class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
 
@@ -47,29 +38,9 @@ class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener 
     }
 
     override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
-        val currentDate = Calendar.getInstance()
-        val dueDate = Calendar.getInstance()
-        dueDate.set(HOUR_OF_DAY, view.getHourComp())
-        dueDate.set(MINUTE, view.getMinuteComp())
-        dueDate.set(SECOND, 0)
-
-        if (dueDate.before(currentDate)) {
-            dueDate.add(HOUR_OF_DAY, 24)
-        }
-        val data = Data.Builder().putInt(NOTIFICATION_ID, 0).build()
-        val delay = dueDate.timeInMillis - currentDate.timeInMillis
-        scheduleNotification(delay, data)
+        val parent = activity as NotificationSettingsActivity
+        parent.onTimeSet(hourOfDay, minute)
     }
 
-    private fun scheduleNotification(delay: Long, data: Data) {
-        val notificationWork = OneTimeWorkRequest.Builder(NotifyWork::class.java)
-            .setInitialDelay(delay, TimeUnit.MILLISECONDS)
-            .setInputData(data)
-            .build()
-        val instanceWorkManager = WorkManager.getInstance(context!!)
-        instanceWorkManager.beginUniqueWork(
-            NotifyWork.NOTIFICATION_WORK,
-            ExistingWorkPolicy.REPLACE, notificationWork
-        ).enqueue()
-    }
+
 }
