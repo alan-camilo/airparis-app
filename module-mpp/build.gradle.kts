@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val ktorVersion by extra("1.3.2")
 val serializerVersion by extra("0.20.0")
 val kotlinVersion by extra("1.3.70")
-val klockVersion by extra("1.8.4")
+val klockVersion by extra("1.10.0")
 
 buildscript {
     val kotlinVersion by extra("1.3.70")
