@@ -23,8 +23,6 @@ import com.airparis.util.ALERT_SHARED_PREFERENCE
 import com.airparis.util.NOTIFICATION_SHARED_PREFERENCE
 import com.airparis.util.TIME_SHARED_PREFERENCE
 import org.joda.time.DateTime
-import org.joda.time.DateTimeZone
-import org.joda.time.Interval
 import org.joda.time.format.DateTimeFormat
 
 class NotificationSettingsModel(context: Context) {
@@ -58,7 +56,7 @@ class NotificationSettingsModel(context: Context) {
             field = value
         }
 
-    //Initialize preferences with SharedPreferences values or default values
+    // Initialize preferences with SharedPreferences values or default values
     init {
         val pref = sharedPref.getLong(TIME_SHARED_PREFERENCE, 0L)
         timePreference = if (pref == 0L) {
@@ -83,5 +81,5 @@ class NotificationSettingsModel(context: Context) {
         return delay
     }
 
-    fun getTimeHour() =  DateTime(timePreference).toString(formatter)
+    fun getTimeHour() = DateTime(timePreference).toString(formatter)
 }

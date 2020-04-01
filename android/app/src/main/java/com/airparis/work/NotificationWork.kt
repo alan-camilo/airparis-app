@@ -30,7 +30,6 @@ import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.O
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationCompat.PRIORITY_DEFAULT
 import androidx.core.app.NotificationCompat.PRIORITY_HIGH
 import androidx.work.*
 import androidx.work.ListenableWorker.Result.success
@@ -43,8 +42,6 @@ import com.airparis.util.scheduleNotification
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
-import org.joda.time.format.DateTimeFormat
-import java.util.concurrent.TimeUnit
 
 class NotificationWork(
     private val context: Context,
@@ -76,7 +73,7 @@ class NotificationWork(
     }
 
     private fun setNextDayNotification() {
-        //enqueue next day notif
+        // enqueue next day notif
         val sharedPreferences = context.getSharedPreferences(
             SHARED_PREFERENCES, Context.MODE_PRIVATE
         )

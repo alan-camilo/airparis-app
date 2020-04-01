@@ -26,7 +26,6 @@ import com.airparis.work.NotificationWork
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 
 class NotificationSettingsPresenter(private val context: Context) {
 
@@ -39,7 +38,7 @@ class NotificationSettingsPresenter(private val context: Context) {
         } else {
             unscheduleNotification()
         }
-        //For debugging
+        // For debugging
         GlobalScope.launch((Dispatchers.Main)) {
             val workManager = WorkManager.getInstance(context)
             val future =
@@ -66,7 +65,7 @@ class NotificationSettingsPresenter(private val context: Context) {
     fun getAlertPreference() = model.isAlerted
 
     private fun scheduleNotification(delay: Long) {
-        Log.d(NotificationSettingsPresenter::class.simpleName, "scheduleNotification delay=$delay hours=${delay/1000/3600}")
+        Log.d(NotificationSettingsPresenter::class.simpleName, "scheduleNotification delay=$delay hours=${delay / 1000 / 3600}")
         scheduleNotification(context, delay)
     }
 
@@ -76,7 +75,3 @@ class NotificationSettingsPresenter(private val context: Context) {
 
     private fun subscribeAlerts() {}
 }
-
-
-
-

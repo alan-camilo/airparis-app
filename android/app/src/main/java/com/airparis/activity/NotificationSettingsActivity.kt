@@ -58,4 +58,3 @@ class NotificationSettingsActivity : AppCompatActivity() {
         btn_time_picker.text = presenter.getTimeHour()
     }
 }
-

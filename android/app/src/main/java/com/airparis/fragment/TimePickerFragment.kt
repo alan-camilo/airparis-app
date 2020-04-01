@@ -41,6 +41,4 @@ class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener 
         val parent = activity as NotificationSettingsActivity
         parent.onTimeSet(view, hourOfDay, minute)
     }
-
-
 }

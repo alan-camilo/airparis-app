@@ -17,10 +17,8 @@ along with airparis.  If not, see <https://www.gnu.org/licenses/>.
 package com.airparis.util
 
 import android.content.Context
-import android.util.Log
 import androidx.work.*
 import com.airparis.R
-import com.airparis.presenter.NotificationSettingsPresenter
 import com.airparis.work.NotificationWork
 import java.util.concurrent.TimeUnit
 
