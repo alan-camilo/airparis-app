@@ -17,7 +17,12 @@ along with airparis.  If not, see <https://www.gnu.org/licenses/>.
 package com.airparis.util
 
 import android.content.Context
+import android.util.Log
+import androidx.work.*
 import com.airparis.R
+import com.airparis.presenter.NotificationSettingsPresenter
+import com.airparis.work.NotificationWork
+import java.util.concurrent.TimeUnit
 
 fun indexToHumanReadableString(index: Int, context: Context): String? {
     return when {
@@ -33,3 +38,21 @@ fun indexToHumanReadableString(index: Int, context: Context): String? {
 const val TIME_SHARED_PREFERENCE = "time_shared_preferences"
 const val NOTIFICATION_SHARED_PREFERENCE = "notification_shared_preferences"
 const val ALERT_SHARED_PREFERENCE = "alert_shared_preferences"
+
+fun scheduleNotification(context: Context, delay: Long) {
+    val constraint = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+    val notificationWork = OneTimeWorkRequest.Builder(NotificationWork::class.java)
+        .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+        .setConstraints(constraint)
+        .build()
+    val instanceWorkManager = WorkManager.getInstance(context)
+    instanceWorkManager.beginUniqueWork(
+        NotificationWork.NOTIFICATION_WORK,
+        ExistingWorkPolicy.REPLACE, notificationWork
+    ).enqueue()
+}
+
+fun unscheduleNotification(context: Context) {
+    val instanceWorkManager = WorkManager.getInstance(context)
+    instanceWorkManager.cancelUniqueWork(NotificationWork.NOTIFICATION_WORK)
+}

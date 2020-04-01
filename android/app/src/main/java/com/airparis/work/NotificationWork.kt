@@ -39,6 +39,7 @@ import com.airparis.SHARED_PREFERENCES
 import com.airparis.activity.MainActivity
 import com.airparis.util.TIME_SHARED_PREFERENCE
 import com.airparis.util.indexToHumanReadableString
+import com.airparis.util.scheduleNotification
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
@@ -84,16 +85,7 @@ class NotificationWork(
             timePreference = DateTime(timePreference).plusDays(1).millis
         }
         val delay = timePreference - DateTime().millis
-        val constraint = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
-        val notificationWork = OneTimeWorkRequest.Builder(NotificationWork::class.java)
-            .setInitialDelay(delay, TimeUnit.MILLISECONDS)
-            .setConstraints(constraint)
-            .build()
-        val instanceWorkManager = WorkManager.getInstance(context)
-        instanceWorkManager.beginUniqueWork(
-            NOTIFICATION_WORK,
-            ExistingWorkPolicy.REPLACE, notificationWork
-        ).enqueue()
+        scheduleNotification(context, delay)
     }
 
     private fun sendNotification(id: Int, notificationContentText: String) {

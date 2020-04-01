@@ -20,6 +20,8 @@ import android.content.Context
 import android.util.Log
 import androidx.work.*
 import com.airparis.model.NotificationSettingsModel
+import com.airparis.util.scheduleNotification
+import com.airparis.util.unscheduleNotification
 import com.airparis.work.NotificationWork
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -65,21 +67,11 @@ class NotificationSettingsPresenter(private val context: Context) {
 
     private fun scheduleNotification(delay: Long) {
         Log.d(NotificationSettingsPresenter::class.simpleName, "scheduleNotification delay=$delay hours=${delay/1000/3600}")
-        val constraint = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
-        val notificationWork = OneTimeWorkRequest.Builder(NotificationWork::class.java)
-            .setInitialDelay(delay, TimeUnit.MILLISECONDS)
-            .setConstraints(constraint)
-            .build()
-        val instanceWorkManager = WorkManager.getInstance(context)
-        instanceWorkManager.beginUniqueWork(
-            NotificationWork.NOTIFICATION_WORK,
-            ExistingWorkPolicy.REPLACE, notificationWork
-        ).enqueue()
+        scheduleNotification(context, delay)
     }
 
     private fun unscheduleNotification() {
-        val instanceWorkManager = WorkManager.getInstance(context)
-        instanceWorkManager.cancelUniqueWork(NotificationWork.NOTIFICATION_WORK)
+        unscheduleNotification(context)
     }
 
     private fun subscribeAlerts() {}
