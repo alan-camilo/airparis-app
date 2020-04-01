@@ -39,7 +39,7 @@ class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener 
 
     override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
         val parent = activity as NotificationSettingsActivity
-        parent.onTimeSet(hourOfDay, minute)
+        parent.onTimeSet(view, hourOfDay, minute)
     }
 
 

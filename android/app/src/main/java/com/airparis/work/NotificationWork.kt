@@ -31,33 +31,69 @@ import android.os.Build.VERSION_CODES.O
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_DEFAULT
+import androidx.core.app.NotificationCompat.PRIORITY_HIGH
+import androidx.work.*
 import androidx.work.ListenableWorker.Result.success
-import androidx.work.Worker
-import androidx.work.WorkerParameters
 import com.airparis.R
+import com.airparis.SHARED_PREFERENCES
 import com.airparis.activity.MainActivity
+import com.airparis.util.TIME_SHARED_PREFERENCE
+import com.airparis.util.indexToHumanReadableString
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
+import java.util.concurrent.TimeUnit
 
-class NotifyWork(
-    context: Context,
+class NotificationWork(
+    private val context: Context,
     params: WorkerParameters
 ) : Worker(context, params) {
     private val notification_id = 1
     private val alert_id = 2
 
     override fun doWork(): Result {
+        val baseMessage = context.getString(R.string.notification_text)
         GlobalScope.launch {
             val indexList = AirparifAPI().requestIndex()
             val indexToday = indexList.firstOrNull { it.date == Day.TODAY.value }?.indice
-            Log.d(NotifyWork::class.simpleName, "indexList = $indexList\nindexToday=$indexToday")
+            Log.d(NotificationWork::class.simpleName, "indexList = $indexList\nindexToday=$indexToday")
             if (indexToday != null) {
-                sendNotification(notification_id, indexToday.toString())
+                try {
+                    val humanReadable = indexToHumanReadableString(indexToday, context)
+                    val formattedMessage = String.format(baseMessage, humanReadable, indexToday)
+                    sendNotification(notification_id, formattedMessage)
+                } catch (throwable: Throwable) {
+                    Log.e(NotificationWork::class.simpleName, "message=${throwable.message} cause=${throwable.cause}")
+                }
             } else {
-                // TODO notification error
+                sendNotification(notification_id, "ERROR INDEXTODAY NULL")
             }
         }
+        setNextDayNotification()
         return success()
+    }
+
+    private fun setNextDayNotification() {
+        //enqueue next day notif
+        val sharedPreferences = context.getSharedPreferences(
+            SHARED_PREFERENCES, Context.MODE_PRIVATE
+        )
+        var timePreference = sharedPreferences.getLong(TIME_SHARED_PREFERENCE, 0L)
+        while (timePreference < DateTime().millis) {
+            timePreference = DateTime(timePreference).plusDays(1).millis
+        }
+        val delay = timePreference - DateTime().millis
+        val constraint = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+        val notificationWork = OneTimeWorkRequest.Builder(NotificationWork::class.java)
+            .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+            .setConstraints(constraint)
+            .build()
+        val instanceWorkManager = WorkManager.getInstance(context)
+        instanceWorkManager.beginUniqueWork(
+            NOTIFICATION_WORK,
+            ExistingWorkPolicy.REPLACE, notificationWork
+        ).enqueue()
     }
 
     private fun sendNotification(id: Int, notificationContentText: String) {
@@ -74,7 +110,7 @@ class NotifyWork(
             .setContentTitle(titleNotification)
             .setContentText(notificationContentText)
             .setContentIntent(pendingIntent)
-            .setPriority(PRIORITY_DEFAULT)
+            .setPriority(PRIORITY_HIGH)
             .setAutoCancel(true)
 
         if (SDK_INT >= O) {
@@ -86,7 +122,7 @@ class NotifyWork(
                 NotificationChannel(
                     NOTIFICATION_CHANNEL_ID,
                     channelName,
-                    NotificationManager.IMPORTANCE_DEFAULT
+                    NotificationManager.IMPORTANCE_HIGH
                 ).apply {
                     description = channelDescription
                 }

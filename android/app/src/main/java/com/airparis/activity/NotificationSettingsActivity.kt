@@ -3,11 +3,14 @@ package com.airparis.activity
 import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
+import android.widget.TimePicker
 import androidx.appcompat.app.AppCompatActivity
 import com.airparis.R
-import com.airparis.presenter.NotificationSettingsPresenter
 import com.airparis.fragment.TimePickerFragment
+import com.airparis.presenter.NotificationSettingsPresenter
 import kotlinx.android.synthetic.main.activity_notification_settings.*
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 
 const val timePreference = "time_preference"
 const val notificationPreference = "notification_preference"
@@ -21,9 +24,9 @@ class NotificationSettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification_settings)
         presenter = NotificationSettingsPresenter(this)
-        btn_time_picker.text = presenter.getTimePreference()
+        btn_time_picker.text = presenter.getTimeHour()
         btn_time_picker.isEnabled = presenter.getNotifyPreference()
-        checkbox_alerts.isChecked =  presenter.getAlertPreference()
+        checkbox_alerts.isChecked = presenter.getAlertPreference()
         checkbox_notifications.isChecked = presenter.getNotifyPreference()
     }
 
@@ -48,10 +51,11 @@ class NotificationSettingsActivity : AppCompatActivity() {
         TimePickerFragment().show(supportFragmentManager, "timePicker")
     }
 
-    fun onTimeSet(hourOfDay: Int, minute: Int) {
-        val fullHour = "$hourOfDay:$minute"
-        presenter.setNotificationCalendar(fullHour)
-        btn_time_picker.text = fullHour
+    fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
+        val dateTime = DateTime().withTime(hourOfDay, minute, 0, 0)
+            .withZone(DateTimeZone.getDefault())
+        presenter.setTimePreference(dateTime.millis)
+        btn_time_picker.text = presenter.getTimeHour()
     }
 }
 

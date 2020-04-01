@@ -17,11 +17,13 @@ along with airparis.  If not, see <https://www.gnu.org/licenses/>.
 package com.airparis.presenter
 
 import android.content.Context
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
+import android.util.Log
+import androidx.work.*
 import com.airparis.model.NotificationSettingsModel
-import com.airparis.work.NotifyWork
+import com.airparis.work.NotificationWork
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 class NotificationSettingsPresenter(private val context: Context) {
@@ -32,6 +34,17 @@ class NotificationSettingsPresenter(private val context: Context) {
         model.isNotified = value
         if (value) {
             scheduleNotification(model.getNotificationDelay())
+        } else {
+            unscheduleNotification()
+        }
+        //For debugging
+        GlobalScope.launch((Dispatchers.Main)) {
+            val workManager = WorkManager.getInstance(context)
+            val future =
+                workManager.getWorkInfosForUniqueWork(NotificationWork.NOTIFICATION_WORK)
+            val workInfo = future.await().firstOrNull()
+            Log.d(NotificationSettingsPresenter::class.simpleName, "work state=${workInfo?.state} " +
+                    "\noutputData=${workInfo?.outputData}\nprogress=${workInfo?.progress}")
         }
     }
 
@@ -39,26 +52,34 @@ class NotificationSettingsPresenter(private val context: Context) {
         model.isAlerted = value
     }
 
-    fun setNotificationCalendar(fullHour: String) {
-        model.timePreference = fullHour
+    fun setTimePreference(timeInMillis: Long) {
+        model.timePreference = timeInMillis
         scheduleNotification(model.getNotificationDelay())
     }
 
-    fun getTimePreference(): String = model.timePreference
+    fun getTimeHour() = model.getTimeHour()
 
     fun getNotifyPreference() = model.isNotified
 
     fun getAlertPreference() = model.isAlerted
 
     private fun scheduleNotification(delay: Long) {
-        val notificationWork = OneTimeWorkRequest.Builder(NotifyWork::class.java)
+        Log.d(NotificationSettingsPresenter::class.simpleName, "scheduleNotification delay=$delay hours=${delay/1000/3600}")
+        val constraint = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+        val notificationWork = OneTimeWorkRequest.Builder(NotificationWork::class.java)
             .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+            .setConstraints(constraint)
             .build()
         val instanceWorkManager = WorkManager.getInstance(context)
         instanceWorkManager.beginUniqueWork(
-            NotifyWork.NOTIFICATION_WORK,
+            NotificationWork.NOTIFICATION_WORK,
             ExistingWorkPolicy.REPLACE, notificationWork
         ).enqueue()
+    }
+
+    private fun unscheduleNotification() {
+        val instanceWorkManager = WorkManager.getInstance(context)
+        instanceWorkManager.cancelUniqueWork(NotificationWork.NOTIFICATION_WORK)
     }
 
     private fun subscribeAlerts() {}

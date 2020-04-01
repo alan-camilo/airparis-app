@@ -17,34 +17,34 @@ along with airparis.  If not, see <https://www.gnu.org/licenses/>.
 package com.airparis.model
 
 import android.content.Context
+import android.util.Log
 import com.airparis.SHARED_PREFERENCES
-import java.text.SimpleDateFormat
-import java.util.*
-
-const val timeSharedPreferences = "time_shared_preferences"
-const val notificationSharedPreferences = "notification_shared_preferences"
-const val alertSharedPreferences = "alert_shared_preferences"
+import com.airparis.util.ALERT_SHARED_PREFERENCE
+import com.airparis.util.NOTIFICATION_SHARED_PREFERENCE
+import com.airparis.util.TIME_SHARED_PREFERENCE
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
+import org.joda.time.Interval
+import org.joda.time.format.DateTimeFormat
 
 class NotificationSettingsModel(context: Context) {
 
+    private val formatter = DateTimeFormat.forPattern("HH:mm")
     private val sharedPref = context.getSharedPreferences(
         SHARED_PREFERENCES, Context.MODE_PRIVATE
     )
-    private var notificationCalendar: Calendar = Calendar.getInstance()
-    var timePreference: String = ""
-        get() = SimpleDateFormat("HH:mm", Locale.FRANCE).format(notificationCalendar.time)
+    var timePreference: Long = 0L
         set(value) {
             with(sharedPref.edit()) {
-                putString(timeSharedPreferences, value)
+                putLong(TIME_SHARED_PREFERENCE, value)
                 apply()
             }
             field = value
-            notificationCalendar.time = SimpleDateFormat("HH:mm", Locale.FRANCE).parse(value)!!
         }
     var isNotified: Boolean = false
         set(value) {
             with(sharedPref.edit()) {
-                putBoolean(notificationSharedPreferences, value)
+                putBoolean(NOTIFICATION_SHARED_PREFERENCE, value)
                 apply()
             }
             field = value
@@ -52,7 +52,7 @@ class NotificationSettingsModel(context: Context) {
     var isAlerted: Boolean = false
         set(value) {
             with(sharedPref.edit()) {
-                putBoolean(alertSharedPreferences, value)
+                putBoolean(ALERT_SHARED_PREFERENCE, value)
                 apply()
             }
             field = value
@@ -60,23 +60,28 @@ class NotificationSettingsModel(context: Context) {
 
     //Initialize preferences with SharedPreferences values or default values
     init {
-        val pref = sharedPref.getString(timeSharedPreferences, null)
-        if (pref == null || pref == "") {
-            timePreference = "09:00"
-            notificationCalendar.time = SimpleDateFormat("HH:mm", Locale.FRANCE).parse("09:00")!!
+        val pref = sharedPref.getLong(TIME_SHARED_PREFERENCE, 0L)
+        timePreference = if (pref == 0L) {
+            DateTime().withTime(9, 0, 0, 0).millis
         } else {
-            timePreference = pref
-            notificationCalendar.time = SimpleDateFormat("HH:mm", Locale.FRANCE).parse(pref)!!
+            pref
         }
-        isNotified = sharedPref.getBoolean(notificationSharedPreferences, false)
-        isAlerted = sharedPref.getBoolean(alertSharedPreferences, true)
+        isNotified = sharedPref.getBoolean(NOTIFICATION_SHARED_PREFERENCE, false)
+        isAlerted = sharedPref.getBoolean(ALERT_SHARED_PREFERENCE, true)
     }
 
     fun getNotificationDelay(): Long {
-        val currentDate = Calendar.getInstance()
-        while (notificationCalendar.before(currentDate)) {
-            notificationCalendar.add(Calendar.HOUR_OF_DAY, 24)
+        val now = DateTime()
+        while (timePreference < now.millis) {
+            timePreference = DateTime(timePreference).plusDays(1).millis
         }
-        return notificationCalendar.timeInMillis - currentDate.timeInMillis
+        val delay = timePreference - now.millis
+        Log.d(
+            NotificationSettingsModel::class.simpleName,
+            "now=${now.toString(formatter)} dueDate=${DateTime(timePreference).toString(formatter)} interval en minutes=${delay / 1000 / 60}"
+        )
+        return delay
     }
+
+    fun getTimeHour() =  DateTime(timePreference).toString(formatter)
 }
