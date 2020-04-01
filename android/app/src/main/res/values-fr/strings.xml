@@ -23,7 +23,7 @@
     <string name="mediocre">moyen</string>
     <string name="high">élevée</string>
     <string name="very_high">très élevée</string>
-    <string name="notification_text">Pollution %1$s, l\'indice est de %2$d</string>
+    <string name="notification_text">Pollution %1$s : l\'indice est de %2$d</string>
     <string name="error">erreur</string>
     <string name="notification_time_setting">réglage heure notification</string>
 </resources>
