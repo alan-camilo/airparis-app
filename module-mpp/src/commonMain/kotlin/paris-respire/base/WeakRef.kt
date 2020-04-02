@@ -1,7 +1,0 @@
-package paris-respire.base
-
-interface WeakRef<T : Any> {
-    val value: T?
-}
-
-expect fun <T : Any> buildWeakRef(value: T): WeakRef<T>

@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/airQualityFragment"
-        android:name="fr.paris-respire.fragment.CollectionAirQualityFragment"
+        android:name="fr.parisrespire.fragment.CollectionAirQualityFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

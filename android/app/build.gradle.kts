@@ -17,7 +17,7 @@ android {
     buildToolsVersion("29.0.2")
 
     defaultConfig {
-        applicationId = "fr.paris-respire"
+        applicationId = "fr.parisrespire"
         minSdkVersion(21)
         targetSdkVersion(29)
         versionCode = 1
