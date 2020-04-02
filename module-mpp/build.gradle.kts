@@ -30,7 +30,7 @@ repositories {
     jcenter()
     mavenCentral()
 }
-group = "com.airparis"
+group = "fr.paris-respire"
 version = "1.0"
 
 kotlin {
