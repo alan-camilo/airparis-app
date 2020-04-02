@@ -10,3 +10,4 @@ captures/
 .name
 markdown-navigator*.xml
 .idea/
+google-services.json
