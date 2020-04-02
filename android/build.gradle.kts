@@ -6,13 +6,15 @@ buildscript {
         google()
         jcenter()
         maven("https://plugins.gradle.org/m2/")
+        maven("https://maven.fabric.io/public")
+
     }
     dependencies {
         classpath("com.android.tools.build:gradle:3.6.1")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("org.jlleitschuh.gradle:ktlint-gradle:9.2.1")
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath("com.google.gms:google-services:4.3.3")
+        classpath("io.fabric.tools:gradle:1.31.2")
     }
 }
 

@@ -6,6 +6,8 @@ plugins {
     kotlin("android.extensions")
     kotlin("kapt")
     id("org.jlleitschuh.gradle.ktlint")
+    id("com.google.gms.google-services")
+    id("io.fabric")
 }
 
 ktlint {
@@ -89,4 +91,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.4")
     // Joda time
     implementation("joda-time:joda-time:2.10.5")
+    //Firebase & crashlytics
+    implementation("com.google.firebase:firebase-analytics:17.3.0")
+    implementation("com.crashlytics.sdk.android:crashlytics:2.10.1")
 }
