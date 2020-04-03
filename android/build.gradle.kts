@@ -7,7 +7,6 @@ buildscript {
         jcenter()
         maven("https://plugins.gradle.org/m2/")
         maven("https://maven.fabric.io/public")
-
     }
     dependencies {
         classpath("com.android.tools.build:gradle:3.6.1")
@@ -24,6 +23,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven("https://dl.bintray.com/icerockdev/moko")
     }
 }
 

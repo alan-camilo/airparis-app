@@ -94,4 +94,6 @@ dependencies {
     //Firebase & crashlytics
     implementation("com.google.firebase:firebase-analytics:17.3.0")
     implementation("com.crashlytics.sdk.android:crashlytics:2.10.1")
+    //MVVM
+    implementation("dev.icerock.moko:mvvm:0.6.0")
 }
