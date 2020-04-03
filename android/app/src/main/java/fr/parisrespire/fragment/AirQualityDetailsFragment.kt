@@ -1,17 +1,17 @@
 package fr.parisrespire.fragment
 
-import parisrespire.data.AirQualityCoordinator
-import parisrespire.data.AirQualityState
-import parisrespire.data.AirQualityViewModel
-import parisrespire.data.http.model.util.Day
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
-import fr.parisrespire.R
 import com.squareup.picasso.Picasso
+import fr.parisrespire.R
 import kotlinx.android.synthetic.main.fragment_air_quality_details.*
+import parisrespire.data.AirQualityCoordinator
+import parisrespire.data.AirQualityState
+import parisrespire.data.AirQualityViewModel
+import parisrespire.data.http.model.util.Day
 
 const val POSITION_ARG = "position"
 
@@ -118,7 +118,6 @@ class AirQualityDetailsFragment :
             pollution_advice_tv.visibility = View.VISIBLE
             pollution_advice_tv.text = pollutionEpisode.detail
         }
-        super.onStateChange(state)
     }
 
     override fun showAirQuality(day: Day) {
