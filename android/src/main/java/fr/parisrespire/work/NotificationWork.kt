@@ -16,8 +16,6 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 */
 package fr.parisrespire.work
 
-import parisrespire.data.http.AirparifAPI
-import parisrespire.data.http.model.util.Day
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent.getActivity
@@ -42,6 +40,8 @@ import fr.parisrespire.util.scheduleNotification
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
+import parisrespire.data.http.AirparifAPI
+import parisrespire.data.http.model.util.Day
 
 class NotificationWork(
     private val context: Context,

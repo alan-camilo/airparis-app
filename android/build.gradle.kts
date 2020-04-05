@@ -91,9 +91,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.4")
     // Joda time
     implementation("joda-time:joda-time:2.10.5")
-    //Firebase & crashlytics
+    // Firebase & crashlytics
     implementation("com.google.firebase:firebase-analytics:17.3.0")
     implementation("com.crashlytics.sdk.android:crashlytics:2.10.1")
-    //MVVM
+    // MVVM
     implementation("dev.icerock.moko:mvvm:0.6.0")
 }

@@ -16,16 +16,16 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 */
 package fr.parisrespire.fragment
 
-import parisrespire.base.BaseViewModel
-import parisrespire.base.Coordinator
-import parisrespire.base.State
-import parisrespire.base.StateChangeListener
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import parisrespire.base.BaseViewModel
+import parisrespire.base.Coordinator
+import parisrespire.base.State
+import parisrespire.base.StateChangeListener
 
 /*
 This file is part of Paris respire.
