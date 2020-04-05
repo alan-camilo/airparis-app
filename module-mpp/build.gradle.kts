@@ -6,32 +6,41 @@ val serializerVersion by extra("0.20.0")
 val kotlinVersion by extra("1.3.70")
 val klockVersion by extra("1.10.0")
 
-buildscript {
-    val kotlinVersion by extra("1.3.70")
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath("com.android.tools.build:gradle:3.6.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
-
 plugins {
     kotlin("multiplatform")
+    id("com.android.library")
     kotlin("plugin.serialization") version "1.3.70"
     id("org.jlleitschuh.gradle.ktlint")
 }
 
-repositories {
-    jcenter()
-    mavenCentral()
+android {
+    compileSdkVersion(29)
+    buildToolsVersion("29.0.2")
+
+    defaultConfig {
+        minSdkVersion(21)
+        targetSdkVersion(29)
+    }
+
+    // By default the android gradle plugin expects to find the kotlin source files in
+    // the folder `main` and the test in the folder `test`. This is to be able place
+    // the source code files inside androidMain and androidTest folders
+    sourceSets {
+        getByName("main") {
+            manifest.srcFile("src/androidMain/AndroidManifest.xml")
+            java.srcDirs(file("src/androidMain/kotlin"))
+            res.srcDirs(file("src/androidMain/res"))
+        }
+        getByName("test") {
+            java.srcDirs(file("src/androidTest/kotlin"))
+            res.srcDirs(file("src/androidTest/res"))
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
 }
-group = "fr.parisrespire"
-version = "1.0"
 
 kotlin {
     // select iOS target platform depending on the Xcode environment variables
@@ -49,7 +58,9 @@ kotlin {
         }
     }
 
-    jvm("android")
+    targets {
+        targetFromPreset(presets.getByName("android"), "android")
+    }
 
     sourceSets["commonMain"].dependencies {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
@@ -61,6 +72,8 @@ kotlin {
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializerVersion")
         // Date and time lib Klock
         implementation("com.soywiz.korlibs.klock:klock:$klockVersion")
+        //MVVM
+        implementation("dev.icerock.moko:mvvm:0.6.0")
     }
 
     sourceSets["commonTest"].dependencies {
@@ -79,6 +92,8 @@ kotlin {
         implementation("io.ktor:ktor-client-serialization-jvm:$ktorVersion")
         // Kotlinx serialization
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializerVersion")
+        //MVVM
+        implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     }
 
     sourceSets["androidTest"].dependencies {
