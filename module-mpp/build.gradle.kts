@@ -72,7 +72,7 @@ kotlin {
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializerVersion")
         // Date and time lib Klock
         implementation("com.soywiz.korlibs.klock:klock:$klockVersion")
-        //MVVM
+        // MVVM
         implementation("dev.icerock.moko:mvvm:0.6.0")
     }
 
@@ -92,7 +92,7 @@ kotlin {
         implementation("io.ktor:ktor-client-serialization-jvm:$ktorVersion")
         // Kotlinx serialization
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializerVersion")
-        //MVVM
+        // MVVM
         implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     }
 

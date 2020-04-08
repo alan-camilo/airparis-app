@@ -9,6 +9,10 @@
     <string name="today">Aujourd\'hui</string>
     <string name="tomorrow">Demain</string>
     <string name="global_index">Global : %d</string>
+    <string name="pm10">particules fines</string>
+    <string name="o3">ozone</string>
+    <string name="no2">dioxyde d\'azote</string>
+    <string name="so2">dioxyde de soufre</string>
     <string name="pm10_index">Particules fines (PM10) : %d</string>
     <string name="o3_index">Ozone : %d</string>
     <string name="no2_index">Dioxyde d\'azote : %d</string>
@@ -19,10 +23,13 @@
     <string name="activate_alerts">Activer les alertes pollution</string>
     <string name="very_low">très faible</string>
     <string name="low">faible</string>
-    <string name="mediocre">moyen</string>
+    <string name="mediocre">moyenne</string>
     <string name="high">élevée</string>
     <string name="very_high">très élevée</string>
     <string name="notification_text">Pollution %1$s : l\'indice est de %2$d</string>
     <string name="error">erreur</string>
-    <string name="notification_time_setting">réglage heure notification</string>
+    <string name="alert_channel_name">Alerte pollution</string>
+    <string name="alert_channel_description">Alerte pollution à Paris</string>
+    <string name="alert">alerte</string>
+    <string name="information">information</string>
 </resources>

@@ -19,8 +19,10 @@ package fr.parisrespire.util
 import android.content.Context
 import androidx.work.*
 import fr.parisrespire.R
+import fr.parisrespire.work.AlertWork
 import fr.parisrespire.work.NotificationWork
 import java.util.concurrent.TimeUnit
+import org.joda.time.DateTime
 
 fun indexToHumanReadableString(index: Int, context: Context): String? {
     return when {
@@ -53,4 +55,31 @@ fun scheduleNotification(context: Context, delay: Long) {
 fun unscheduleNotification(context: Context) {
     val instanceWorkManager = WorkManager.getInstance(context)
     instanceWorkManager.cancelUniqueWork(NotificationWork.NOTIFICATION_WORK)
+}
+
+fun scheduleAlert(context: Context) {
+    val constraint = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+    val notificationWork = OneTimeWorkRequest.Builder(AlertWork::class.java)
+        .setInitialDelay(getAlertDelay(), TimeUnit.MILLISECONDS)
+        .setConstraints(constraint)
+        .build()
+    val instanceWorkManager = WorkManager.getInstance(context)
+    instanceWorkManager.beginUniqueWork(
+        AlertWork.ALERT_WORK,
+        ExistingWorkPolicy.KEEP, notificationWork
+    ).enqueue()
+}
+
+fun unscheduleAlert(context: Context) {
+    val instanceWorkManager = WorkManager.getInstance(context)
+    instanceWorkManager.cancelUniqueWork(AlertWork.ALERT_WORK)
+}
+
+private fun getAlertDelay(): Long {
+    var dueTime = DateTime().withTime(11, 5, 0, 0)
+    val now = DateTime()
+    if (dueTime.millis < now.millis) {
+        dueTime = dueTime.plusDays(1)
+    }
+    return dueTime.millis - now.millis
 }

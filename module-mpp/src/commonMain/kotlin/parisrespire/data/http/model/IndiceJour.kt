@@ -5,10 +5,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class IndiceJour(
     val date: String,
-    val global: Global? = null,
-    val no2: No2? = null,
-    val o3: O3? = null,
-    val pm10: Pm10? = null,
+    val global: PollutantIndex? = null,
+    val no2: PollutantIndex? = null,
+    val o3: PollutantIndex? = null,
+    val pm10: PollutantIndex? = null,
     val url_carte: String? = null,
     val indices: String? = null
 ) {

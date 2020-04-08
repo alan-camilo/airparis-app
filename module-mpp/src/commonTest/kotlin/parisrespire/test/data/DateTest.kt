@@ -16,12 +16,12 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 */
 package parisrespire.test.data
 
-import parisrespire.data.http.model.util.Day
-import parisrespire.data.http.model.util.toDay
 import com.soywiz.klock.DateTimeTz
 import com.soywiz.klock.days
 import kotlin.test.Test
 import kotlin.test.assertTrue
+import parisrespire.data.http.model.util.Day
+import parisrespire.data.http.model.util.toDay
 
 class DateTest {
 

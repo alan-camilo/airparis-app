@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="alert_message">
+        <item quantity="one">niveau d\'%1$s demain pour le polluant : %2$s</item>
+        <item quantity="other">niveau d\'%1$s demain pour les polluants : %2$s</item>
+    </plurals>
+</resources>

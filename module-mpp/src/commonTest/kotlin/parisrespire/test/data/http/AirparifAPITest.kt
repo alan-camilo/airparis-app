@@ -16,14 +16,16 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 */
 package parisrespire.test.data.http
 
-import parisrespire.base.runBlocking
-import parisrespire.data.http.AirparifAPI
-import parisrespire.data.http.model.util.Day
 import io.ktor.client.features.ClientRequestException
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlinx.serialization.json.JsonDecodingException
+import parisrespire.base.runBlocking
+import parisrespire.data.http.AirparifAPI
+import parisrespire.data.http.model.util.Day
+import parisrespire.data.http.model.util.PollutionLevel
 
 class AirparifAPITest {
 
@@ -98,6 +100,11 @@ class AirparifAPITest {
         runBlocking {
             val result = AirparifAPI(mockResponseOK).requestPollutionEpisode()
             assertNotNull(result)
+            assertEquals(result.first().so2?.niveau, PollutionLevel.ALERT.value)
+            assertEquals(
+                result.last().detail,
+                "Il est conseillé d'éviter les déplacements en Ile de France"
+            )
         }
     }
 

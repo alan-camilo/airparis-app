@@ -16,9 +16,6 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 */
 package parisrespire.test.data.http
 
-import parisrespire.data.http.URL_EPISODE_POLLUTION
-import parisrespire.data.http.URL_INDICE
-import parisrespire.data.http.URL_INDICE_JOUR
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respondBadRequest
@@ -26,6 +23,9 @@ import io.ktor.client.engine.mock.respondOk
 import io.ktor.http.Url
 import io.ktor.http.fullPath
 import io.ktor.http.hostWithPort
+import parisrespire.data.http.URL_EPISODE_POLLUTION
+import parisrespire.data.http.URL_INDICE
+import parisrespire.data.http.URL_INDICE_JOUR
 
 val mockResponseOK = HttpClient(MockEngine) {
     engine {
@@ -115,17 +115,37 @@ const val jsonIndiceJour = "{\n" +
         "    }\n" +
         "}"
 
-const val jsonEpisodePollution = "[\n" +
-        "    {\n" +
-        "        \"date\": \"hier\",\n" +
-        "        \"detail\": \"\"\n" +
+const val jsonEpisodePollution = "[ \n" +
+        "    { \n" +
+        "        \"date\" : \"hier\", \n" +
+        "        \"o3\" : {\n" +
+        "            \"type\" : \"constate\",\n" +
+        "            \"niveau\" : \"info\", \n" +
+        "            \"criteres\": [\"km\", \"pop\"] \n" +
+        "        }, \n" +
+        "        \"so2\" : {\n" +
+        "            \"type\" : \"constate\", \n" +
+        "            \"niveau\" : \"alerte\", \n" +
+        "            \"criteres\": [\"pop\"] \n" +
+        "        },\n" +
+        "        \"detail\": \"\" \n" +
+        "    }, \n" +
+        "    { \n" +
+        "        \"date\" : \"jour\", \n" +
+        "        \"detail\": \"\" \n" +
         "    },\n" +
-        "    {\n" +
-        "        \"date\": \"jour\",\n" +
-        "        \"detail\": \"\"\n" +
-        "    },\n" +
-        "    {\n" +
-        "        \"date\": \"demain\",\n" +
-        "        \"detail\": \"\"\n" +
+        "    { \n" +
+        "        \"date\" : \"demain\",\n" +
+        "        \"no2\" : {\n" +
+        "            \"type\" : \"constate\",\n" +
+        "            \"niveau\" : \"info\",\n" +
+        "            \"criteres\": [\"km\"] \n" +
+        "        }, \n" +
+        "        \"so2\" : { \n" +
+        "            \"type\" : \"constate\", \n" +
+        "            \"niveau\" : \"alerte\", \n" +
+        "            \"criteres\": [\"km\"] \n" +
+        "        },\n" +
+        "        \"detail\": \"Il est conseillé d'éviter les déplacements en Ile de France\" \n" +
         "    }\n" +
         "]"

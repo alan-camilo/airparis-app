@@ -16,6 +16,7 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 */
 package fr.parisrespire.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -24,13 +25,23 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import fr.parisrespire.R
+import fr.parisrespire.SHARED_PREFERENCES
 import fr.parisrespire.fragment.CollectionAirQualityFragment
+import fr.parisrespire.util.ALERT_SHARED_PREFERENCE
+import fr.parisrespire.util.scheduleAlert
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val sharedPreferences = getSharedPreferences(
+            SHARED_PREFERENCES, Context.MODE_PRIVATE
+        )
+        val isAlerted = sharedPreferences.getBoolean(ALERT_SHARED_PREFERENCE, true)
+        if (isAlerted) {
+            scheduleAlert(this)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

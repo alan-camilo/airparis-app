@@ -16,13 +16,13 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 */
 package parisrespire.data
 
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
 import parisrespire.base.BaseViewModel
 import parisrespire.data.http.AirparifAPI
 import parisrespire.data.http.model.IndiceJour
 import parisrespire.data.http.model.util.Day
 import parisrespire.data.http.model.util.toDay
-import kotlinx.coroutines.channels.consumeEach
-import kotlinx.coroutines.launch
 
 class AirQualityViewModel : BaseViewModel<AirQualityCoordinator, AirQualityState>(),
     AirQualityActions {

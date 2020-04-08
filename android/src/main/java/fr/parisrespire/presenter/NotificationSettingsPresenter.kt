@@ -20,7 +20,9 @@ import android.content.Context
 import android.util.Log
 import androidx.work.*
 import fr.parisrespire.model.NotificationSettingsModel
+import fr.parisrespire.util.scheduleAlert
 import fr.parisrespire.util.scheduleNotification
+import fr.parisrespire.util.unscheduleAlert
 import fr.parisrespire.util.unscheduleNotification
 import fr.parisrespire.work.NotificationWork
 import kotlinx.coroutines.Dispatchers
@@ -51,6 +53,11 @@ class NotificationSettingsPresenter(private val context: Context) {
 
     fun setAlertPreference(value: Boolean) {
         model.isAlerted = value
+        if (value) {
+            scheduleAlert(context)
+        } else {
+            unscheduleAlert(context)
+        }
     }
 
     fun setTimePreference(timeInMillis: Long) {
@@ -58,7 +65,7 @@ class NotificationSettingsPresenter(private val context: Context) {
         scheduleNotification(model.getNotificationDelay())
     }
 
-    fun getTimeHour() = model.getTimeHour()
+    fun getTimeHour(): String = model.getTimeHour()
 
     fun getNotifyPreference() = model.isNotified
 
@@ -72,6 +79,4 @@ class NotificationSettingsPresenter(private val context: Context) {
     private fun unscheduleNotification() {
         unscheduleNotification(context)
     }
-
-    private fun subscribeAlerts() {}
 }

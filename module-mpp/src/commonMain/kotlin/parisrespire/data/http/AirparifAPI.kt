@@ -1,10 +1,5 @@
 package parisrespire.data.http
 
-import parisrespire.base.IO
-import parisrespire.data.http.model.Episode
-import parisrespire.data.http.model.Indice
-import parisrespire.data.http.model.IndiceJour
-import parisrespire.data.http.model.util.Day
 import io.ktor.client.HttpClient
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
@@ -17,6 +12,11 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.builtins.list
 import kotlinx.serialization.json.Json
+import parisrespire.base.IO
+import parisrespire.data.http.model.Episode
+import parisrespire.data.http.model.Indice
+import parisrespire.data.http.model.IndiceJour
+import parisrespire.data.http.model.util.Day
 
 @UnstableDefault
 class AirparifAPI(private val client: HttpClient) {

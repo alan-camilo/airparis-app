@@ -81,5 +81,5 @@ class NotificationSettingsModel(context: Context) {
         return delay
     }
 
-    fun getTimeHour() = DateTime(timePreference).toString(formatter)
+    fun getTimeHour(): String = DateTime(timePreference).toString(formatter)
 }

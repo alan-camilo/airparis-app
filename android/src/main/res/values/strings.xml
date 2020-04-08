@@ -10,6 +10,10 @@
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="global_index">Global: %d</string>
+    <string name="pm10">particulate matter</string>
+    <string name="o3">ozone</string>
+    <string name="no2">nitrogen</string>
+    <string name="so2">sulfur dioxide</string>
     <string name="pm10_index">Particulate matter (PM10): %d</string>
     <string name="o3_index">Ozone: %d</string>
     <string name="no2_index">Nitrogen dioxide: %d</string>
@@ -25,5 +29,8 @@
     <string name="very_high">very high</string>
     <string name="notification_text">%1$s pollution: the index is %2$d</string>
     <string name="error">error</string>
-    <string name="notification_time_setting">notification time setting</string>
+    <string name="alert_channel_name">Pollution alert</string>
+    <string name="alert_channel_description">Pollution alert in Paris</string>
+    <string name="alert">alert</string>
+    <string name="information">information</string>
 </resources>
