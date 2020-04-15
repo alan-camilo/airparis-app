@@ -26,11 +26,11 @@ import org.joda.time.DateTime
 
 fun indexToHumanReadableString(index: Int, context: Context): String? {
     return when {
-        index in 0..24 -> context.getString(R.string.very_low)
-        index in 25..49 -> context.getString(R.string.low)
+        index in 0..24 -> context.getString(R.string.very_good)
+        index in 25..49 -> context.getString(R.string.good)
         index in 50..74 -> context.getString(R.string.mediocre)
-        index in 75..99 -> context.getString(R.string.high)
-        index > 100 -> context.getString(R.string.very_high)
+        index in 75..99 -> context.getString(R.string.bad)
+        index > 100 -> context.getString(R.string.very_bad)
         else -> null
     }
 }

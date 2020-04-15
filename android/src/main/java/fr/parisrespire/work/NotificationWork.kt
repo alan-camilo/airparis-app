@@ -92,7 +92,7 @@ class NotificationWork(
         val manager =
             applicationContext.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
-        val title = applicationContext.getString(R.string.notification_channel_name)
+        val title = applicationContext.getString(R.string.notification_channel_description)
         val pendingIntent = getActivity(applicationContext, 0, intent, 0)
         val notification = NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.oxygen_24)

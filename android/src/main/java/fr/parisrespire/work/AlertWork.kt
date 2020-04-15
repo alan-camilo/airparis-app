@@ -75,7 +75,7 @@ class AlertWork(
         val manager =
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        val title = applicationContext.getString(R.string.alert_channel_name)
+        val title = applicationContext.getString(R.string.alert_channel_description)
         val pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, 0)
         val notification = NotificationCompat.Builder(
             applicationContext,

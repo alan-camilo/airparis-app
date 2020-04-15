@@ -21,12 +21,12 @@
     <string name="notification_channel_description">Bulletin quotidien de la qualité de l\'air à Paris</string>
     <string name="activate_notifications">Activer les notifications quotidiennes</string>
     <string name="activate_alerts">Activer les alertes pollution</string>
-    <string name="very_low">très faible</string>
-    <string name="low">faible</string>
+    <string name="very_good">très bonne</string>
+    <string name="good">bonne</string>
     <string name="mediocre">moyenne</string>
-    <string name="high">élevée</string>
-    <string name="very_high">très élevée</string>
-    <string name="notification_text">Pollution %1$s : l\'indice est de %2$d</string>
+    <string name="bad">mauvaise</string>
+    <string name="very_bad">très mauvaise</string>
+    <string name="notification_text">la qualité de l\'air est %1$s aujourd\'hui : l\'indice est de %2$d</string>
     <string name="error">erreur</string>
     <string name="alert_channel_name">Alerte pollution</string>
     <string name="alert_channel_description">Alerte pollution à Paris</string>

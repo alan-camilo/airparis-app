@@ -22,12 +22,12 @@
     <string name="notification_channel_description">Daily notification of the Paris air quality report</string>
     <string name="activate_notifications">Activate daily notifications</string>
     <string name="activate_alerts">Activate pollution alerts</string>
-    <string name="very_low">very low</string>
-    <string name="low">low</string>
+    <string name="very_good">very good</string>
+    <string name="good">good</string>
     <string name="mediocre">mediocre</string>
-    <string name="high">high</string>
-    <string name="very_high">very high</string>
-    <string name="notification_text">%1$s pollution: the index is %2$d</string>
+    <string name="bad">bad</string>
+    <string name="very_bad">very bad</string>
+    <string name="notification_text">the air quality is %1$s today: the index is %2$d</string>
     <string name="error">error</string>
     <string name="alert_channel_name">Pollution alert</string>
     <string name="alert_channel_description">Pollution alert in Paris</string>
