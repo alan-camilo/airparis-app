@@ -28,9 +28,19 @@
     <string name="bad">bad</string>
     <string name="very_bad">very bad</string>
     <string name="notification_text">the air quality is %1$s today: the index is %2$d</string>
-    <string name="error">error</string>
     <string name="alert_channel_name">Pollution alert</string>
     <string name="alert_channel_description">Pollution alert in Paris</string>
     <string name="alert">alert</string>
     <string name="information">information</string>
+    <string name="error_no_data">error no air quality data</string>
+    <string name="error_network">network error</string>
+    <string name="error_unknown">unknown error</string>
+    <string name="error_bad_client_request">error bad client request</string>
+    <string name="error_server">server error</string>
+    <string name="error_redirect">redirection error</string>
+    <string name="error_timeout">error request timeout</string>
+    <string name="error_send_count">error max requests number exceeded</string>
+    <string name="error_bad_json">error unexpected json</string>
+    <string name="error_serialization">error deserialization impossible</string>
+    <string name="error_socket_timeout">error no data connection</string>
 </resources>

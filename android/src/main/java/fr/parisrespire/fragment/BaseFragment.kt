@@ -23,7 +23,6 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import parisrespire.base.BaseViewModel
-import parisrespire.base.Coordinator
 import parisrespire.base.State
 import parisrespire.base.StateChangeListener
 
@@ -47,7 +46,7 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 /**
  * Base [Fragment] used to map a [BaseViewModel] and handle its lifecycle events.
  */
-open class BaseFragment<CD : Coordinator, ST : State, VM : BaseViewModel<CD, ST>> :
+open class BaseFragment<ST : State, VM : BaseViewModel<ST>> :
     Fragment(), StateChangeListener<ST> {
 
     @LayoutRes
@@ -67,9 +66,6 @@ open class BaseFragment<CD : Coordinator, ST : State, VM : BaseViewModel<CD, ST>
         this.layoutId = layoutId
         viewModel = vm
         viewModel.setStateChangeListener(this)
-        this as? CD
-            ?: throw UninitializedPropertyAccessException("Fragment does not implement the base.Coordinator interface!")
-        viewModel.setCoordinator(this as CD)
     }
 
     override fun onStateChange(state: ST) {

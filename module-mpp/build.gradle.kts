@@ -74,6 +74,8 @@ kotlin {
         implementation("com.soywiz.korlibs.klock:klock:$klockVersion")
         // MVVM
         implementation("dev.icerock.moko:mvvm:0.6.0")
+        // Logger
+        implementation("com.github.florent37:multiplatform-log:1.0.5")
     }
 
     sourceSets["commonTest"].dependencies {

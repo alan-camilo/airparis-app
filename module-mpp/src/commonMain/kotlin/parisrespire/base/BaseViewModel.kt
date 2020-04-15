@@ -8,7 +8,7 @@ import kotlinx.coroutines.channels.consumeEach
 /**
  * Base ViewModel used when defining each separate screen.
  */
-abstract class BaseViewModel<CD : Coordinator, ST : State> : CoroutineScope,
+abstract class BaseViewModel<ST : State> : CoroutineScope,
     Actions {
 
     /**
@@ -26,11 +26,6 @@ abstract class BaseViewModel<CD : Coordinator, ST : State> : CoroutineScope,
      * A [WeakRef] value pointing to the [StateChangeListener] being used to display the current [State].
      */
     protected var stateChangeListener: WeakRef<StateChangeListener<ST>>? = null
-
-    /**
-     * A [WeakRef] value pointing to the [Coordinator] being used to handle navigation on the current [StateChangeListener].
-     */
-    protected var coordinator: WeakRef<CD>? = null
 
     private val job = Job()
     override val coroutineContext: CoroutineContext
@@ -66,13 +61,6 @@ abstract class BaseViewModel<CD : Coordinator, ST : State> : CoroutineScope,
         job.cancel()
     }
     //endregion
-
-    /**
-     * Set the associated [coordinator] in order to receive navigation callbacks.
-     */
-    fun setCoordinator(coordinator: CD) {
-        this.coordinator = buildWeakRef(coordinator)
-    }
 
     /**
      * Set the associated [stateChangeListener] in order to receive changes to [State].

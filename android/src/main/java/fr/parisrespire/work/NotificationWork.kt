@@ -122,6 +122,43 @@ class NotificationWork(
         manager.notify(notificationId, notification.build())
     }
 
+    /*private fun sendErrorNotification() {
+        val intent = Intent(applicationContext, MainActivity::class.java)
+        intent.flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
+
+        val manager =
+            applicationContext.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+        val title = applicationContext.getString(R.string.notification_channel_description)
+        val pendingIntent = getActivity(applicationContext, 0, intent, 0)
+        val notification = NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL_ID)
+            .setSmallIcon(R.drawable.baseline_error_outline_24)
+            .setContentTitle(title)
+            .setContentText(text)
+            .setContentIntent(pendingIntent)
+            .setPriority(PRIORITY_HIGH)
+            .setAutoCancel(true)
+
+        if (SDK_INT >= O) {
+            notification.setChannelId(NOTIFICATION_CHANNEL_ID)
+            val channelDescription =
+                applicationContext.getString(R.string.notification_channel_description)
+            val channelName = applicationContext.getString(R.string.notification_channel_name)
+            val channel =
+                NotificationChannel(
+                    NOTIFICATION_CHANNEL_ID,
+                    channelName,
+                    NotificationManager.IMPORTANCE_HIGH
+                ).apply {
+                    description = channelDescription
+                }
+            channel.enableVibration(true)
+            manager.createNotificationChannel(channel)
+        }
+
+        manager.notify(notificationId, notification.build())
+    }
+*/
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "paris_respire_channel_01"
         const val NOTIFICATION_WORK = "paris_respire_notification_work"

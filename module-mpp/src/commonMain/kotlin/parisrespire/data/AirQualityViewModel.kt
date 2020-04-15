@@ -16,6 +16,7 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 */
 package parisrespire.data
 
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import parisrespire.base.BaseViewModel
@@ -24,8 +25,16 @@ import parisrespire.data.http.model.IndiceJour
 import parisrespire.data.http.model.util.Day
 import parisrespire.data.http.model.util.toDay
 
-class AirQualityViewModel : BaseViewModel<AirQualityCoordinator, AirQualityState>(),
+class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) :
+    BaseViewModel<AirQualityState>(),
     AirQualityActions {
+
+    private val errorHandler = CoroutineExceptionHandler { _, error ->
+        when (error) {
+            is CustomException -> uiExceptionHandler.showError(error)
+            else -> throw error
+        }
+    }
 
     private val airQualityRepo =
         AirQualityRepository(AirparifAPI())
@@ -69,17 +78,18 @@ class AirQualityViewModel : BaseViewModel<AirQualityCoordinator, AirQualityState
     }
 
     override fun fetchDayIndex(day: Day) {
-        // stateChannel.mutate { it.copy() }
-        launch { airQualityRepo.fetchDayIndex(day) }
+        launch(errorHandler) {
+            airQualityRepo.fetchDayIndex(day)
+        }
     }
 
     override fun fetchIndex() {
-        // stateChannel.mutate { it.copy() }
-        launch { airQualityRepo.fetchIndex() }
+        launch(errorHandler) { airQualityRepo.fetchIndex() }
     }
 
     override fun fetchPollutionEpisode() {
-        // stateChannel.mutate { it.copy() }
-        launch { airQualityRepo.fetchPollutionEpisode() }
+        launch(errorHandler) {
+            airQualityRepo.fetchPollutionEpisode()
+        }
     }
 }

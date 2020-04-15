@@ -1,5 +1,6 @@
 package parisrespire.data.http
 
+import com.github.florent37.log.Logger
 import io.ktor.client.HttpClient
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
@@ -13,6 +14,7 @@ import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.builtins.list
 import kotlinx.serialization.json.Json
 import parisrespire.base.IO
+import parisrespire.data.ExceptionWrapper
 import parisrespire.data.http.model.Episode
 import parisrespire.data.http.model.Indice
 import parisrespire.data.http.model.IndiceJour
@@ -39,32 +41,47 @@ class AirparifAPI(private val client: HttpClient) {
             encodedPath = PATH_INDICE_JOUR,
             parameters = argument
         )
-        return withContext(IO) {
-            val response = client.post<String> {
-                url(urlBuilder.buildString())
-                body = this@AirparifAPI.body
+        try {
+            return withContext(IO) {
+                val response = client.post<String> {
+                    url(urlBuilder.buildString())
+                    body = this@AirparifAPI.body
+                }
+                Json.parse(IndiceJour.serializer(), response)
             }
-            Json.parse(IndiceJour.serializer(), response)
+        } catch (throwable: Throwable) {
+            Logger.e("AirparifAPI", throwable.toString())
+            throw ExceptionWrapper(throwable).getCustomException()
         }
     }
 
     suspend fun requestPollutionEpisode(): List<Episode> {
-        return withContext(IO) {
-            val response: String = client.post {
-                url(URL_EPISODE_POLLUTION)
-                body = this@AirparifAPI.body
+        try {
+            return withContext(IO) {
+                val response: String = client.post {
+                    url(URL_EPISODE_POLLUTION)
+                    body = this@AirparifAPI.body
+                }
+                Json.parse(Episode.serializer().list, response)
             }
-            Json.parse(Episode.serializer().list, response)
+        } catch (throwable: Throwable) {
+            Logger.e("AirparifAPI", throwable.toString())
+            throw ExceptionWrapper(throwable).getCustomException()
         }
     }
 
     suspend fun requestIndex(): List<Indice> {
-        return withContext(IO) {
-            val response: String = client.post {
-                url(URL_INDICE)
-                body = this@AirparifAPI.body
+        try {
+            return withContext(IO) {
+                val response: String = client.post {
+                    url(URL_INDICE)
+                    body = this@AirparifAPI.body
+                }
+                Json.parse(Indice.serializer().list, response)
             }
-            Json.parse(Indice.serializer().list, response)
+        } catch (throwable: Throwable) {
+            Logger.e("AirparifAPI", throwable.toString())
+            throw ExceptionWrapper(throwable).getCustomException()
         }
     }
 }

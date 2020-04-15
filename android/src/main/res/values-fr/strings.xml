@@ -27,9 +27,19 @@
     <string name="bad">mauvaise</string>
     <string name="very_bad">très mauvaise</string>
     <string name="notification_text">la qualité de l\'air est %1$s aujourd\'hui : l\'indice est de %2$d</string>
-    <string name="error">erreur</string>
     <string name="alert_channel_name">Alerte pollution</string>
     <string name="alert_channel_description">Alerte pollution à Paris</string>
     <string name="alert">alerte</string>
     <string name="information">information</string>
+    <string name="error_no_data">erreur pas de données</string>
+    <string name="error_network">erreur réseau</string>
+    <string name="error_unknown">erreur inconnue</string>
+    <string name="error_bad_client_request">erreur requête client</string>
+    <string name="error_server">erreur serveur</string>
+    <string name="error_redirect">erreur de redirection</string>
+    <string name="error_timeout">erreur timeout</string>
+    <string name="error_send_count">erreur nombre de requêtes max dépassé</string>
+    <string name="error_bad_json">erreur json inattendu</string>
+    <string name="error_serialization">erreur désérialisation impossible</string>
+    <string name="error_socket_timeout">erreur pas de connexion réseau</string>
 </resources>

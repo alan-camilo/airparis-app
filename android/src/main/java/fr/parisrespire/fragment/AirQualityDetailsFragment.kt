@@ -5,12 +5,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.crashlytics.android.Crashlytics
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import fr.parisrespire.R
+import fr.parisrespire.util.getErrorMessage
 import kotlinx.android.synthetic.main.fragment_air_quality_details.*
-import parisrespire.data.AirQualityCoordinator
 import parisrespire.data.AirQualityState
 import parisrespire.data.AirQualityViewModel
+import parisrespire.data.CustomException
+import parisrespire.data.UIExceptionHandler
 import parisrespire.data.http.model.util.Day
 
 const val POSITION_ARG = "position"
@@ -21,8 +25,9 @@ const val POSITION_ARG = "position"
  * create an instance of this fragment.
  */
 class AirQualityDetailsFragment :
-    BaseFragment<AirQualityCoordinator, AirQualityState, AirQualityViewModel>(),
-    AirQualityCoordinator, Refresh {
+    BaseFragment<AirQualityState, AirQualityViewModel>(),
+    Refresh,
+    UIExceptionHandler {
 
     private var day: Day? = null
     private var position = -1
@@ -30,7 +35,7 @@ class AirQualityDetailsFragment :
     override fun onAttach(context: Context) {
         initialize(
             R.layout.fragment_air_quality_details,
-            AirQualityViewModel()
+            AirQualityViewModel(this)
         )
         super.onAttach(context)
     }
@@ -120,10 +125,6 @@ class AirQualityDetailsFragment :
         }
     }
 
-    override fun showAirQuality(day: Day) {
-        TODO("Not yet implemented")
-    }
-
     override fun refresh() {
         Log.d(AirQualityDetailsFragment::class.simpleName, "refresh() day=$day")
         day?.let {
@@ -131,5 +132,17 @@ class AirQualityDetailsFragment :
             viewModel.fetchDayIndex(it)
             viewModel.fetchPollutionEpisode()
         }
+    }
+
+    override fun showError(exception: CustomException) {
+        if (context == null) return
+        progress.visibility = View.GONE
+        Snackbar.make(
+            coordinator_layout,
+            getErrorMessage(context!!, exception),
+            Snackbar.LENGTH_LONG
+        ).show()
+        Log.e(AirQualityDetailsFragment::class.simpleName, exception.toString())
+        Crashlytics.logException(exception)
     }
 }
