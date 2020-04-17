@@ -26,7 +26,7 @@
     <string name="mediocre">moyenne</string>
     <string name="bad">mauvaise</string>
     <string name="very_bad">très mauvaise</string>
-    <string name="notification_text">la qualité de l\'air est %1$s aujourd\'hui : l\'indice est de %2$d</string>
+    <string name="notification_text">la qualité de l\'air est %1$s (indice %2$d)</string>
     <string name="alert_channel_name">Alerte pollution</string>
     <string name="alert_channel_description">Alerte pollution à Paris</string>
     <string name="alert">alerte</string>
@@ -41,5 +41,5 @@
     <string name="error_send_count">erreur nombre de requêtes max dépassé</string>
     <string name="error_bad_json">erreur json inattendu</string>
     <string name="error_serialization">erreur désérialisation impossible</string>
-    <string name="error_socket_timeout">erreur pas de connexion réseau</string>
+    <string name="error_socket_timeout">erreur réseau timeout</string>
 </resources>

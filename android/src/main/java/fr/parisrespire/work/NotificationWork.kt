@@ -36,11 +36,14 @@ import fr.parisrespire.R
 import fr.parisrespire.SHARED_PREFERENCES
 import fr.parisrespire.activity.MainActivity
 import fr.parisrespire.util.TIME_SHARED_PREFERENCE
+import fr.parisrespire.util.getErrorMessage
 import fr.parisrespire.util.indexToHumanReadableString
 import fr.parisrespire.util.scheduleNotification
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
+import parisrespire.data.CustomException
+import parisrespire.data.UnknownException
 import parisrespire.data.http.AirparifAPI
 import parisrespire.data.http.model.util.Day
 
@@ -53,19 +56,32 @@ class NotificationWork(
 
     override fun doWork(): Result {
         GlobalScope.launch {
-            val baseMessage = context.getString(R.string.notification_text)
+            val baseMessage = context.getString(R.string.notification_text).capitalize()
             try {
                 val indexList = AirparifAPI().requestIndex()
                 val indexToday = indexList.firstOrNull { it.date == Day.TODAY.value }?.indice
                 if (indexToday != null) {
                     val humanReadable = indexToHumanReadableString(indexToday, context)
                     val formattedMessage = String.format(baseMessage, humanReadable, indexToday)
-                    sendNotification(formattedMessage)
+                    sendNotification(formattedMessage, R.drawable.oxygen_24)
                 } else {
-                    sendNotification("ERROR INDEXTODAY NULL")
+                    sendNotification(
+                        context.getString(R.string.error_no_data),
+                        R.drawable.baseline_error_outline_24
+                    )
                 }
+            } catch (exception: CustomException) {
+                Crashlytics.logException(exception)
+                sendNotification(
+                    getErrorMessage(context, exception),
+                    R.drawable.baseline_error_outline_24
+                )
             } catch (throwable: Throwable) {
                 Crashlytics.logException(throwable)
+                sendNotification(
+                    getErrorMessage(context, UnknownException(throwable)),
+                    R.drawable.baseline_error_outline_24
+                )
             }
         }
         setNextDayNotification()
@@ -85,17 +101,17 @@ class NotificationWork(
         scheduleNotification(context, delay)
     }
 
-    private fun sendNotification(text: String) {
+    private fun sendNotification(text: String, icon: Int) {
         val intent = Intent(applicationContext, MainActivity::class.java)
         intent.flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
 
         val manager =
             applicationContext.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
-        val title = applicationContext.getString(R.string.notification_channel_description)
+        val title = applicationContext.getString(R.string.notification_channel_name)
         val pendingIntent = getActivity(applicationContext, 0, intent, 0)
         val notification = NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(R.drawable.oxygen_24)
+            .setSmallIcon(icon)
             .setContentTitle(title)
             .setContentText(text)
             .setContentIntent(pendingIntent)
@@ -122,43 +138,6 @@ class NotificationWork(
         manager.notify(notificationId, notification.build())
     }
 
-    /*private fun sendErrorNotification() {
-        val intent = Intent(applicationContext, MainActivity::class.java)
-        intent.flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
-
-        val manager =
-            applicationContext.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-
-        val title = applicationContext.getString(R.string.notification_channel_description)
-        val pendingIntent = getActivity(applicationContext, 0, intent, 0)
-        val notification = NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(R.drawable.baseline_error_outline_24)
-            .setContentTitle(title)
-            .setContentText(text)
-            .setContentIntent(pendingIntent)
-            .setPriority(PRIORITY_HIGH)
-            .setAutoCancel(true)
-
-        if (SDK_INT >= O) {
-            notification.setChannelId(NOTIFICATION_CHANNEL_ID)
-            val channelDescription =
-                applicationContext.getString(R.string.notification_channel_description)
-            val channelName = applicationContext.getString(R.string.notification_channel_name)
-            val channel =
-                NotificationChannel(
-                    NOTIFICATION_CHANNEL_ID,
-                    channelName,
-                    NotificationManager.IMPORTANCE_HIGH
-                ).apply {
-                    description = channelDescription
-                }
-            channel.enableVibration(true)
-            manager.createNotificationChannel(channel)
-        }
-
-        manager.notify(notificationId, notification.build())
-    }
-*/
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "paris_respire_channel_01"
         const val NOTIFICATION_WORK = "paris_respire_notification_work"
