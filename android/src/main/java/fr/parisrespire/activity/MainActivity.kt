@@ -18,6 +18,7 @@ package fr.parisrespire.activity
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -64,6 +65,17 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.refresh -> {
                 refreshCollectionFragment()
+                true
+            }
+            R.id.donate -> {
+                val webIntent: Intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X3Q8Y8E5CPNN6&source=url")
+                )
+                startActivity(webIntent)
+                true
+            }
+            R.id.rate -> {
                 true
             }
             else -> super.onOptionsItemSelected(item)
