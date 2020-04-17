@@ -43,4 +43,6 @@
     <string name="error_bad_json">error unexpected json</string>
     <string name="error_serialization">error deserialization impossible</string>
     <string name="error_socket_timeout">error network timeout</string>
+    <string name="donate">Offer me a beer</string>
+    <string name="rate">Rate the app</string>
 </resources>

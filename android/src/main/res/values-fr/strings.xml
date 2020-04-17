@@ -42,4 +42,6 @@
     <string name="error_bad_json">erreur json inattendu</string>
     <string name="error_serialization">erreur désérialisation impossible</string>
     <string name="error_socket_timeout">erreur réseau timeout</string>
+    <string name="donate">M\'offrir une bière</string>
+    <string name="rate">Noter l\'application</string>
 </resources>

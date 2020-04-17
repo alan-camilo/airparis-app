@@ -9,8 +9,13 @@
         android:icon="@drawable/baseline_refresh_white_24"
         android:title="@string/refresh"
         app:showAsAction="ifRoom" />
+    <item android:id="@+id/rate"
+        android:title="@string/rate"
+        app:showAsAction="never"/>
+    <item android:id="@+id/donate"
+        android:title="@string/donate"
+        app:showAsAction="never"/>
     <item android:id="@+id/about"
         android:title="@string/about"
-        app:showAsAction="never">
-    </item>
+        app:showAsAction="never"/>
 </menu>
