@@ -16,6 +16,7 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 */
 package parisrespire.data
 
+import com.github.florent37.log.Logger
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
@@ -31,7 +32,10 @@ class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) :
 
     private val errorHandler = CoroutineExceptionHandler { _, error ->
         when (error) {
-            is CustomException -> uiExceptionHandler.showError(error)
+            is CustomException -> {
+                Logger.e("AirQualityViewModel", error.throwable.toString())
+                uiExceptionHandler.showError(error)
+            }
             else -> throw error
         }
     }

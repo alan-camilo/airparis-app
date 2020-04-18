@@ -1,6 +1,5 @@
 package parisrespire.data.http
 
-import com.github.florent37.log.Logger
 import io.ktor.client.HttpClient
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
@@ -50,7 +49,6 @@ class AirparifAPI(private val client: HttpClient) {
                 Json.parse(IndiceJour.serializer(), response)
             }
         } catch (throwable: Throwable) {
-            Logger.e("AirparifAPI", throwable.toString())
             throw ExceptionWrapper(throwable).getCustomException()
         }
     }
@@ -65,7 +63,6 @@ class AirparifAPI(private val client: HttpClient) {
                 Json.parse(Episode.serializer().list, response)
             }
         } catch (throwable: Throwable) {
-            Logger.e("AirparifAPI", throwable.toString())
             throw ExceptionWrapper(throwable).getCustomException()
         }
     }
@@ -80,7 +77,6 @@ class AirparifAPI(private val client: HttpClient) {
                 Json.parse(Indice.serializer().list, response)
             }
         } catch (throwable: Throwable) {
-            Logger.e("AirparifAPI", throwable.toString())
             throw ExceptionWrapper(throwable).getCustomException()
         }
     }

@@ -142,7 +142,6 @@ class AirQualityDetailsFragment :
             getErrorMessage(context!!, exception),
             Snackbar.LENGTH_LONG
         ).show()
-        Log.e(AirQualityDetailsFragment::class.simpleName, exception.toString())
-        Crashlytics.logException(exception)
+        Crashlytics.logException(exception.throwable)
     }
 }
