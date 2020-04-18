@@ -21,6 +21,11 @@ actual object UserPreference {
         return sharedPreferences.getLong(key, defValue)
     }
 
+    actual fun getString(key: String, defValue: String?): String? {
+        checkSharedPreferences()
+        return sharedPreferences.getString(key, defValue)
+    }
+
     actual fun set(key: String, value: Boolean) {
         with(sharedPreferences.edit()) {
             putBoolean(key, value)
@@ -31,6 +36,13 @@ actual object UserPreference {
     actual fun set(key: String, value: Long) {
         with(sharedPreferences.edit()) {
             putLong(key, value)
+            apply()
+        }
+    }
+
+    actual fun set(key: String, value: String?) {
+        with(sharedPreferences.edit()) {
+            putString(key, value)
             apply()
         }
     }

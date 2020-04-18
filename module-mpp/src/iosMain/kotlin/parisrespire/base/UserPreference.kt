@@ -10,9 +10,16 @@ actual object UserPreference {
         return 0L
     }
 
+    actual fun getString(key: String, defValue: String?): String? {
+        return ""
+    }
+
     actual fun set(key: String, value: Boolean) {
     }
 
     actual fun set(key: String, value: Long) {
+    }
+
+    actual fun set(key: String, value: String?) {
     }
 }
