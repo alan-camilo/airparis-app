@@ -84,6 +84,8 @@ kotlin {
         api("io.ktor:ktor-client-mock:$ktorVersion")
         // Date and time lib Klock
         implementation("com.soywiz.korlibs.klock:klock:$klockVersion")
+        // Logger
+        implementation("com.github.florent37:multiplatform-log:1.0.5")
     }
 
     sourceSets["androidMain"].dependencies {

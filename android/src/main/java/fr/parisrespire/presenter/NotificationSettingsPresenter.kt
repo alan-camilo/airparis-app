@@ -19,7 +19,6 @@ package fr.parisrespire.presenter
 import android.content.Context
 import android.util.Log
 import androidx.work.*
-import fr.parisrespire.model.NotificationSettingsModel
 import fr.parisrespire.util.scheduleAlert
 import fr.parisrespire.util.scheduleNotification
 import fr.parisrespire.util.unscheduleAlert
@@ -28,10 +27,11 @@ import fr.parisrespire.work.NotificationWork
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import parisrespire.data.NotificationSettingsModel
 
 class NotificationSettingsPresenter(private val context: Context) {
 
-    private val model = NotificationSettingsModel(context)
+    private val model = NotificationSettingsModel()
 
     fun setNotifyPreference(value: Boolean) {
         model.isNotified = value

@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
+        android:name=".ParisRespireApplication"
         android:allowBackup="true"
         android:icon="@drawable/oxygen_24"
         android:label="@string/app_name"

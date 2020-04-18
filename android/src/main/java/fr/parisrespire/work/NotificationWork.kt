@@ -33,15 +33,15 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.crashlytics.android.Crashlytics
 import fr.parisrespire.R
-import fr.parisrespire.SHARED_PREFERENCES
 import fr.parisrespire.activity.MainActivity
-import fr.parisrespire.util.TIME_SHARED_PREFERENCE
 import fr.parisrespire.util.getErrorMessage
 import fr.parisrespire.util.indexToHumanReadableString
 import fr.parisrespire.util.scheduleNotification
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
+import parisrespire.base.SHARED_PREFERENCES
+import parisrespire.base.TIME_SHARED_PREFERENCE
 import parisrespire.data.CustomException
 import parisrespire.data.UnknownException
 import parisrespire.data.http.AirparifAPI

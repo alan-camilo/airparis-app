@@ -16,13 +16,13 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 */
 package parisrespire.test.data.http
 
-import io.ktor.client.features.ClientRequestException
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
-import kotlinx.serialization.json.JsonDecodingException
 import parisrespire.base.runBlocking
+import parisrespire.data.CustomClientRequestException
+import parisrespire.data.CustomJsonException
 import parisrespire.data.http.AirparifAPI
 import parisrespire.data.http.model.util.Day
 import parisrespire.data.http.model.util.PollutionLevel
@@ -41,7 +41,7 @@ class AirparifAPITest {
     @Test
     fun testRequestIndexBadRequest() {
         runBlocking {
-            assertFailsWith<ClientRequestException> {
+            assertFailsWith<CustomClientRequestException> {
                 AirparifAPI(
                     mockResponseBadRequest
                 ).requestIndex()
@@ -52,7 +52,7 @@ class AirparifAPITest {
     @Test
     fun testRequestIndexParserException() {
         runBlocking {
-            assertFailsWith<JsonDecodingException> {
+            assertFailsWith<CustomJsonException> {
                 AirparifAPI(
                     mockResponseBadJson
                 ).requestIndex()
@@ -74,7 +74,7 @@ class AirparifAPITest {
     @Test
     fun testRequestDayIndexBadRequest() {
         runBlocking {
-            assertFailsWith<ClientRequestException> {
+            assertFailsWith<CustomClientRequestException> {
                 AirparifAPI(mockResponseBadRequest).requestDayIndex(
                     Day.TODAY
                 )
@@ -85,7 +85,7 @@ class AirparifAPITest {
     @Test
     fun testRequestDayIndexParserException() {
         runBlocking {
-            assertFailsWith<JsonDecodingException> {
+            assertFailsWith<CustomJsonException> {
                 AirparifAPI(mockResponseBadJson).requestDayIndex(
                     Day.TODAY
                 )
@@ -111,7 +111,7 @@ class AirparifAPITest {
     @Test
     fun testRequestPollutionEpisodeBadRequest() {
         runBlocking {
-            assertFailsWith<ClientRequestException> {
+            assertFailsWith<CustomClientRequestException> {
                 AirparifAPI(mockResponseBadRequest).requestPollutionEpisode()
             }
         }
@@ -120,7 +120,7 @@ class AirparifAPITest {
     @Test
     fun testRequestPollutionEpisodeParserException() {
         runBlocking {
-            assertFailsWith<JsonDecodingException> {
+            assertFailsWith<CustomJsonException> {
                 AirparifAPI(mockResponseBadJson).requestPollutionEpisode()
             }
         }

@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.activity_notification_settings.*
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 
-
 const val timePreference = "time_preference"
 const val notificationPreference = "notification_preference"
 const val alertPreference = "alert_preference"

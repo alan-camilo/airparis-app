@@ -26,10 +26,10 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import fr.parisrespire.R
-import fr.parisrespire.SHARED_PREFERENCES
 import fr.parisrespire.fragment.CollectionAirQualityFragment
-import fr.parisrespire.util.ALERT_SHARED_PREFERENCE
 import fr.parisrespire.util.scheduleAlert
+import parisrespire.base.ALERT_SHARED_PREFERENCE
+import parisrespire.base.SHARED_PREFERENCES
 
 class MainActivity : AppCompatActivity() {
 
