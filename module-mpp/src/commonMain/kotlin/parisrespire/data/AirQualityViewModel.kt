@@ -1,99 +1,74 @@
-/*
-This file is part of Paris respire.
-
-Paris respire is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or any
-later version.
-
-Paris respire is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
-*/
 package parisrespire.data
 
 import com.github.florent37.log.Logger
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.channels.consumeEach
+import dev.icerock.moko.mvvm.livedata.LiveData
+import dev.icerock.moko.mvvm.livedata.MutableLiveData
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.launch
-import parisrespire.base.BaseViewModel
 import parisrespire.data.http.AirparifAPI
+import parisrespire.data.http.model.Episode
+import parisrespire.data.http.model.Indice
 import parisrespire.data.http.model.IndiceJour
 import parisrespire.data.http.model.util.Day
-import parisrespire.data.http.model.util.toDay
 
-class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) :
-    BaseViewModel<AirQualityState>(),
-    AirQualityActions {
+class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) : ViewModel() {
 
-    private val errorHandler = CoroutineExceptionHandler { _, error ->
-        when (error) {
-            is CustomException -> {
-                Logger.e("AirQualityViewModel", error.throwable.toString())
-                uiExceptionHandler.showError(error)
-            }
-            else -> throw error
-        }
-    }
+    private lateinit var day: Day
 
-    private val airQualityRepo =
-        AirQualityRepository(AirparifAPI())
+    private val _dayIndex = MutableLiveData<IndiceJour?>(null)
+    val dayIndex: LiveData<IndiceJour?> = _dayIndex
 
-    override fun getInitialState(): AirQualityState =
-        AirQualityState(
-            hashMapOf(
-                Day.YESTERDAY to IndiceJour("", null, null, null, null),
-                Day.TODAY to IndiceJour("", null, null, null, null),
-                Day.TOMORROW to IndiceJour("", null, null, null, null)
-            ),
-            emptyList(),
-            emptyList()
-        )
+    private val _indexList = MutableLiveData<Indice?>(null)
+    val index: LiveData<Indice?> = _indexList
 
-    init {
-        launch {
-            airQualityRepo.subscribeDayIndex().consumeEach { dayIndex ->
-                stateChannel.mutate { airQualityState ->
-                    dayIndex.date.toDay()?.let {
-                        airQualityState.dayIndexMap[it] = dayIndex
-                    }
-                    airQualityState.copy()
-                }
-            }
-        }
-        launch {
-            airQualityRepo.subscribeIndex().consumeEach { list ->
-                stateChannel.mutate { airQualityState -> airQualityState.copy(indexList = list) }
-            }
-        }
-        launch {
-            airQualityRepo.subscribePollutionEpisode().consumeEach { list ->
-                stateChannel.mutate { airQualityState ->
-                    airQualityState.copy(
-                        pollutionEpisodeList = list
-                    )
-                }
+    private val _pollutionEpisode = MutableLiveData<Episode?>(null)
+    val pollutionEpisode: LiveData<Episode?> = _pollutionEpisode
+
+    private val airparifApi = AirparifAPI()
+
+    fun init(day: Day) = run { this.day = day }
+
+    fun fetchDayIndex(day: Day) {
+        Logger.d("AirQualityViewModel", "fetchDayIndex()")
+        viewModelScope.launch {
+            try {
+                Logger.d("AirQualityViewModel", "fetchDayIndex launch")
+                val result = airparifApi.requestDayIndex(day)
+                _dayIndex.postValue(result)
+            } catch (exception: CustomException) {
+                Logger.e("AirQualityViewModel", exception.throwable.toString())
+                uiExceptionHandler.showError(exception)
+            } catch (throwable: Throwable) {
+                throw throwable
             }
         }
     }
 
-    override fun fetchDayIndex(day: Day) {
-        launch(errorHandler) {
-            airQualityRepo.fetchDayIndex(day)
+    fun fetchIndex() {
+        viewModelScope.launch {
+            try {
+                val result = airparifApi.requestIndex()
+                _indexList.postValue(result.firstOrNull { it.date == day.value })
+            } catch (exception: CustomException) {
+                Logger.e("AirQualityViewModel", exception.throwable.toString())
+                uiExceptionHandler.showError(exception)
+            } catch (throwable: Throwable) {
+                throw throwable
+            }
         }
     }
 
-    override fun fetchIndex() {
-        launch(errorHandler) { airQualityRepo.fetchIndex() }
-    }
-
-    override fun fetchPollutionEpisode() {
-        launch(errorHandler) {
-            airQualityRepo.fetchPollutionEpisode()
+    fun fetchPollutionEpisode() {
+        viewModelScope.launch {
+            try {
+                val result = airparifApi.requestPollutionEpisode()
+                _pollutionEpisode.postValue(result.firstOrNull { it.date == day.value })
+            } catch (exception: CustomException) {
+                Logger.e("AirQualityViewModel", exception.throwable.toString())
+                uiExceptionHandler.showError(exception)
+            } catch (throwable: Throwable) {
+                throw throwable
+            }
         }
     }
 }

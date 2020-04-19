@@ -36,9 +36,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val sharedPreferences = getSharedPreferences(
-            SHARED_PREFERENCES, Context.MODE_PRIVATE
-        )
+        val sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
         val isAlerted = sharedPreferences.getBoolean(ALERT_SHARED_PREFERENCE, true)
         if (isAlerted) {
             scheduleAlert(this)

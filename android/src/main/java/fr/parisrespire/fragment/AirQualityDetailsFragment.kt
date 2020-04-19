@@ -1,17 +1,18 @@
 package fr.parisrespire.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.crashlytics.android.Crashlytics
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
+import dev.icerock.moko.mvvm.MvvmFragment
+import dev.icerock.moko.mvvm.createViewModelFactory
 import fr.parisrespire.R
+import fr.parisrespire.databinding.FragmentAirQualityDetailsBinding
 import fr.parisrespire.util.getErrorMessage
 import kotlinx.android.synthetic.main.fragment_air_quality_details.*
-import parisrespire.data.AirQualityState
 import parisrespire.data.AirQualityViewModel
 import parisrespire.data.CustomException
 import parisrespire.data.UIExceptionHandler
@@ -19,25 +20,21 @@ import parisrespire.data.http.model.util.Day
 
 const val POSITION_ARG = "position"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AirQualityDetailsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AirQualityDetailsFragment :
-    BaseFragment<AirQualityState, AirQualityViewModel>(),
+    MvvmFragment<FragmentAirQualityDetailsBinding, AirQualityViewModel>(),
     Refresh,
     UIExceptionHandler {
 
+    override val layoutId = R.layout.fragment_air_quality_details
+    override val viewModelClass: Class<AirQualityViewModel> = AirQualityViewModel::class.java
+    override val viewModelVariableId: Int = dev.icerock.moko.mvvm.BR.viewModel
+
     private var day: Day? = null
     private var position = -1
+    private var snackbar: Snackbar? = null
 
-    override fun onAttach(context: Context) {
-        initialize(
-            R.layout.fragment_air_quality_details,
-            AirQualityViewModel(this)
-        )
-        super.onAttach(context)
+    override fun viewModelFactory(): ViewModelProvider.Factory {
+        return createViewModelFactory { AirQualityViewModel(this) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,10 +47,13 @@ class AirQualityDetailsFragment :
                 2 -> Day.TOMORROW
                 else -> null
             }
+            viewModel.init(day!!)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        displayLoading()
+        addObservers()
         day?.let {
             viewModel.fetchDayIndex(it)
             viewModel.fetchPollutionEpisode()
@@ -66,15 +66,6 @@ class AirQualityDetailsFragment :
         (parentFragment as CollectionAirQualityFragment).setCurrentPage(position, this)
     }
 
-    override fun onStateChange(state: AirQualityState) {
-        if (state.dayIndexMap[day] != null && state.pollutionEpisodeList.isNotEmpty()) {
-            displayValues(state)
-        } else {
-            displayLoading()
-        }
-        Log.d(AirQualityDetailsFragment::class.simpleName, state.pollutionEpisodeList.toString())
-    }
-
     private fun displayLoading() {
         progress.visibility = View.VISIBLE
         global_index_tv.visibility = View.GONE
@@ -85,63 +76,46 @@ class AirQualityDetailsFragment :
         pollution_advice_tv.visibility = View.GONE
     }
 
-    private fun displayValues(state: AirQualityState) {
-        progress.visibility = View.GONE
-        global_index_tv.visibility = View.VISIBLE
-        map_iv.visibility = View.VISIBLE
-        pm10_index_tv.visibility = View.VISIBLE
-        no2_index_tv.visibility = View.VISIBLE
-        o3_index_tv.visibility = View.VISIBLE
-        pollution_advice_tv.visibility = View.VISIBLE
-        val dayIndex = state.dayIndexMap[day]!!
-        dayIndex.global?.let {
-            it.url_carte?.let { url ->
-                Picasso.get().load(url).into(map_iv)
+    private fun addObservers() {
+        viewModel.dayIndex.addObserver {
+            if (it == null) {
+                // picasso default image
+            } else if (context != null) {
+                Picasso.get().load(it.global?.url_carte).into(map_iv)
+                // make textviews visible
+                global_index_tv.visibility = View.VISIBLE
+                progress.visibility = View.GONE
+                global_index_tv.visibility = View.VISIBLE
+                map_iv.visibility = View.VISIBLE
+                pm10_index_tv.visibility = View.VISIBLE
+                no2_index_tv.visibility = View.VISIBLE
+                o3_index_tv.visibility = View.VISIBLE
             }
-            it.indice?.let { index ->
-                global_index_tv.text = getString(R.string.global_index, index)
+        }
+        viewModel.pollutionEpisode.addObserver {
+            if (it != null && context != null) {
+                pollution_advice_tv.visibility = View.VISIBLE
             }
-        }
-        dayIndex.url_carte?.let { url ->
-            Picasso.get().load(url).into(map_iv)
-        }
-        dayIndex.pm10?.indice?.let {
-            pm10_index_tv.text = getString(R.string.pm10_index, it)
-        }
-        dayIndex.no2?.indice?.let {
-            no2_index_tv.text = getString(R.string.no2_index, it)
-        }
-        dayIndex.o3?.indice?.let {
-            o3_index_tv.text = getString(R.string.o3_index, it)
-        }
-        val pollutionEpisode = state.pollutionEpisodeList.firstOrNull { episode ->
-            episode.date == day?.value
-        }
-        if (pollutionEpisode?.detail == null) {
-            pollution_advice_tv.visibility = View.GONE
-        } else {
-            pollution_advice_tv.visibility = View.VISIBLE
-            pollution_advice_tv.text = pollutionEpisode.detail
         }
     }
 
     override fun refresh() {
         Log.d(AirQualityDetailsFragment::class.simpleName, "refresh() day=$day")
-        day?.let {
-            displayLoading()
-            viewModel.fetchDayIndex(it)
-            viewModel.fetchPollutionEpisode()
-        }
+        displayLoading()
+        viewModel.fetchDayIndex(day!!)
+        viewModel.fetchPollutionEpisode()
+        snackbar?.dismiss()
     }
 
     override fun showError(exception: CustomException) {
         if (context == null) return
         progress.visibility = View.GONE
-        Snackbar.make(
+        snackbar = Snackbar.make(
             coordinator_layout,
             getErrorMessage(context!!, exception),
-            Snackbar.LENGTH_LONG
-        ).show()
+            Snackbar.LENGTH_INDEFINITE
+        )
+        snackbar?.show()
         Crashlytics.logException(exception.throwable)
     }
 }

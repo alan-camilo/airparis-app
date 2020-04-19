@@ -95,4 +95,6 @@ dependencies {
     implementation("com.crashlytics.sdk.android:crashlytics:2.10.1")
     // MVVM
     implementation("dev.icerock.moko:mvvm:0.6.0")
+    // Binding
+    kapt("com.android.databinding:compiler:3.6.2")
 }

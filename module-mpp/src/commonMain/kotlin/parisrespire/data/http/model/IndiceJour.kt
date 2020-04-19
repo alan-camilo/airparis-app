@@ -8,12 +8,10 @@ data class IndiceJour(
     val global: PollutantIndex? = null,
     val no2: PollutantIndex? = null,
     val o3: PollutantIndex? = null,
-    val pm10: PollutantIndex? = null,
-    val url_carte: String? = null,
-    val indices: String? = null
+    val pm10: PollutantIndex? = null
 ) {
     fun isEmpty() =
-        date.isEmpty() && global == null && no2 == null && o3 == null && pm10 == null && url_carte.isNullOrEmpty() && indices.isNullOrEmpty()
+        date.isEmpty() && global == null && no2 == null && o3 == null && pm10 == null
 
     fun isNotEmpty() =
         !isEmpty()
