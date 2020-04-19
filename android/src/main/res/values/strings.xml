@@ -45,4 +45,5 @@
     <string name="error_socket_timeout">error network timeout</string>
     <string name="donate">Offer me a beer</string>
     <string name="rate">Rate the app</string>
+    <string name="airparif_map_description">Map of the air quality</string>
 </resources>

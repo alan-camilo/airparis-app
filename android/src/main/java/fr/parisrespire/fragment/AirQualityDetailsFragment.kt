@@ -45,19 +45,16 @@ class AirQualityDetailsFragment :
                 0 -> Day.YESTERDAY
                 1 -> Day.TODAY
                 2 -> Day.TOMORROW
-                else -> null
+                else -> throw Exception("There must be only 3 instances of AirQualityDetailsFragment")
             }
-            viewModel.init(day!!)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         displayLoading()
         addObservers()
-        day?.let {
-            viewModel.fetchDayIndex(it)
-            viewModel.fetchPollutionEpisode()
-        }
+        viewModel.fetchDayIndex(day!!)
+        viewModel.fetchPollutionEpisode(day!!)
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -103,7 +100,7 @@ class AirQualityDetailsFragment :
         Log.d(AirQualityDetailsFragment::class.simpleName, "refresh() day=$day")
         displayLoading()
         viewModel.fetchDayIndex(day!!)
-        viewModel.fetchPollutionEpisode()
+        viewModel.fetchPollutionEpisode(day!!)
         snackbar?.dismiss()
     }
 

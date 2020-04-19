@@ -13,8 +13,6 @@ import parisrespire.data.http.model.util.Day
 
 class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) : ViewModel() {
 
-    private lateinit var day: Day
-
     private val _dayIndex = MutableLiveData<IndiceJour?>(null)
     val dayIndex: LiveData<IndiceJour?> = _dayIndex
 
@@ -25,8 +23,6 @@ class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) : 
     val pollutionEpisode: LiveData<Episode?> = _pollutionEpisode
 
     private val airparifApi = AirparifAPI()
-
-    fun init(day: Day) = run { this.day = day }
 
     fun fetchDayIndex(day: Day) {
         Logger.d("AirQualityViewModel", "fetchDayIndex()")
@@ -44,7 +40,7 @@ class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) : 
         }
     }
 
-    fun fetchIndex() {
+    fun fetchIndex(day: Day) {
         viewModelScope.launch {
             try {
                 val result = airparifApi.requestIndex()
@@ -58,7 +54,7 @@ class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) : 
         }
     }
 
-    fun fetchPollutionEpisode() {
+    fun fetchPollutionEpisode(day: Day) {
         viewModelScope.launch {
             try {
                 val result = airparifApi.requestPollutionEpisode()
