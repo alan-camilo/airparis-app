@@ -1,6 +1,5 @@
 package fr.parisrespire.mpp.data
 
-import fr.parisrespire.mpp.data.*
 import io.ktor.client.features.*
 import java.net.SocketTimeoutException
 import kotlinx.serialization.SerializationException

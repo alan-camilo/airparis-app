@@ -11,12 +11,12 @@ import dev.icerock.moko.mvvm.MvvmFragment
 import dev.icerock.moko.mvvm.createViewModelFactory
 import fr.parisrespire.R
 import fr.parisrespire.databinding.FragmentAirQualityDetailsBinding
-import fr.parisrespire.util.getErrorMessage
-import kotlinx.android.synthetic.main.fragment_air_quality_details.*
 import fr.parisrespire.mpp.data.AirQualityViewModel
 import fr.parisrespire.mpp.data.CustomException
 import fr.parisrespire.mpp.data.UIExceptionHandler
 import fr.parisrespire.mpp.data.http.model.util.Day
+import fr.parisrespire.util.getErrorMessage
+import kotlinx.android.synthetic.main.fragment_air_quality_details.*
 
 const val POSITION_ARG = "position"
 

@@ -16,12 +16,12 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 */
 package fr.parisrespire.mpp.data
 
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import fr.parisrespire.mpp.data.http.AirparifAPI
 import fr.parisrespire.mpp.data.http.model.Episode
 import fr.parisrespire.mpp.data.http.model.Indice
 import fr.parisrespire.mpp.data.http.model.IndiceJour
 import fr.parisrespire.mpp.data.http.model.util.Day
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 
 class AirQualityRepository(private val airparifAPI: AirparifAPI) {
     private val dayIndexChannel = ConflatedBroadcastChannel<IndiceJour>()

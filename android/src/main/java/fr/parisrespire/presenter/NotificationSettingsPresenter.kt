@@ -19,6 +19,7 @@ package fr.parisrespire.presenter
 import android.content.Context
 import android.util.Log
 import androidx.work.*
+import fr.parisrespire.mpp.data.NotificationSettingsModel
 import fr.parisrespire.util.scheduleAlert
 import fr.parisrespire.util.scheduleNotification
 import fr.parisrespire.util.unscheduleAlert
@@ -27,7 +28,6 @@ import fr.parisrespire.work.NotificationWork
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import fr.parisrespire.mpp.data.NotificationSettingsModel
 
 class NotificationSettingsPresenter(private val context: Context) {
 

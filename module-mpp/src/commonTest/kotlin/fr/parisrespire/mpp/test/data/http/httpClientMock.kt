@@ -16,6 +16,9 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 */
 package fr.parisrespire.mpp.test.data.http
 
+import fr.parisrespire.mpp.data.http.URL_EPISODE_POLLUTION
+import fr.parisrespire.mpp.data.http.URL_INDICE
+import fr.parisrespire.mpp.data.http.URL_INDICE_JOUR
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respondBadRequest
@@ -23,9 +26,6 @@ import io.ktor.client.engine.mock.respondOk
 import io.ktor.http.Url
 import io.ktor.http.fullPath
 import io.ktor.http.hostWithPort
-import fr.parisrespire.mpp.data.http.URL_EPISODE_POLLUTION
-import fr.parisrespire.mpp.data.http.URL_INDICE
-import fr.parisrespire.mpp.data.http.URL_INDICE_JOUR
 
 val mockResponseOK = HttpClient(MockEngine) {
     engine {

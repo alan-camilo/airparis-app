@@ -13,5 +13,4 @@ interface NotificationSettingsPresenter {
     fun getNotifyPreference(): Boolean
 
     fun getAlertPreference(): Boolean
-
 }

@@ -34,18 +34,18 @@ import androidx.work.WorkerParameters
 import com.crashlytics.android.Crashlytics
 import fr.parisrespire.R
 import fr.parisrespire.activity.MainActivity
-import fr.parisrespire.util.getErrorMessage
-import fr.parisrespire.util.indexToHumanReadableString
-import fr.parisrespire.util.scheduleNotification
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import org.joda.time.DateTime
 import fr.parisrespire.mpp.base.SHARED_PREFERENCES
 import fr.parisrespire.mpp.base.TIME_SHARED_PREFERENCE
 import fr.parisrespire.mpp.data.CustomException
 import fr.parisrespire.mpp.data.UnknownException
 import fr.parisrespire.mpp.data.http.AirparifAPI
 import fr.parisrespire.mpp.data.http.model.util.Day
+import fr.parisrespire.util.getErrorMessage
+import fr.parisrespire.util.indexToHumanReadableString
+import fr.parisrespire.util.scheduleNotification
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.joda.time.DateTime
 
 class NotificationWork(
     private val context: Context,

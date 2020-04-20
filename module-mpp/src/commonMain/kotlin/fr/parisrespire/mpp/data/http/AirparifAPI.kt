@@ -1,5 +1,13 @@
 package fr.parisrespire.mpp.data.http
 
+import fr.parisrespire.mpp.base.API_KEY_PREFERENCE
+import fr.parisrespire.mpp.base.IO
+import fr.parisrespire.mpp.base.UserPreference
+import fr.parisrespire.mpp.data.ExceptionWrapper
+import fr.parisrespire.mpp.data.http.model.Episode
+import fr.parisrespire.mpp.data.http.model.Indice
+import fr.parisrespire.mpp.data.http.model.IndiceJour
+import fr.parisrespire.mpp.data.http.model.util.Day
 import io.ktor.client.HttpClient
 import io.ktor.client.features.ClientRequestException
 import io.ktor.client.request.forms.MultiPartFormDataContent
@@ -14,22 +22,11 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.UnstableDefault
 import kotlinx.serialization.builtins.list
 import kotlinx.serialization.json.Json
-import fr.parisrespire.mpp.base.API_KEY_PREFERENCE
-import fr.parisrespire.mpp.base.IO
-import fr.parisrespire.mpp.base.UserPreference
-import fr.parisrespire.mpp.data.ExceptionWrapper
-import fr.parisrespire.mpp.data.http.model.Episode
-import fr.parisrespire.mpp.data.http.model.Indice
-import fr.parisrespire.mpp.data.http.model.IndiceJour
-import fr.parisrespire.mpp.data.http.model.util.Day
 
 @UnstableDefault
-class AirparifAPI(private val client: HttpClient) {
+class AirparifAPI(private val client: HttpClient, private val apiKeyRepository: ApiKeyRepository) {
 
-    constructor() : this(customHttpClient)
-
-    private val apiKeyRepository =
-        ApiKeyRepository()
+    constructor() : this(customHttpClient, ApiKeyRepositoryImpl())
 
     suspend fun requestDayIndex(day: Day): IndiceJour {
         val argument = ParametersBuilder().apply {

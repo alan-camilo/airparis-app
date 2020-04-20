@@ -3,15 +3,15 @@ package fr.parisrespire
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import fr.parisrespire.mpp.data.http.model.Episode
+import fr.parisrespire.mpp.data.http.model.PollutantDetails
+import fr.parisrespire.mpp.data.http.model.util.Day
+import fr.parisrespire.mpp.data.http.model.util.PollutionLevel
 import fr.parisrespire.work.AlertWorkUtil
 import junit.framework.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import fr.parisrespire.mpp.data.http.model.Episode
-import fr.parisrespire.mpp.data.http.model.PollutantDetails
-import fr.parisrespire.mpp.data.http.model.util.Day
-import fr.parisrespire.mpp.data.http.model.util.PollutionLevel
 
 @RunWith(AndroidJUnit4::class)
 class AlertWorkUtilTest {

@@ -29,12 +29,12 @@ import androidx.work.WorkerParameters
 import com.crashlytics.android.Crashlytics
 import fr.parisrespire.R
 import fr.parisrespire.activity.MainActivity
-import fr.parisrespire.util.scheduleAlert
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import fr.parisrespire.mpp.data.http.AirparifAPI
 import fr.parisrespire.mpp.data.http.model.Episode
 import fr.parisrespire.mpp.data.http.model.util.Day
+import fr.parisrespire.util.scheduleAlert
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class AlertWork(
     private val context: Context,

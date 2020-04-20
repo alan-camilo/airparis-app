@@ -27,9 +27,9 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import fr.parisrespire.R
 import fr.parisrespire.fragment.CollectionAirQualityFragment
-import fr.parisrespire.util.scheduleAlert
 import fr.parisrespire.mpp.base.ALERT_SHARED_PREFERENCE
 import fr.parisrespire.mpp.base.SHARED_PREFERENCES
+import fr.parisrespire.util.scheduleAlert
 
 class MainActivity : AppCompatActivity() {
 

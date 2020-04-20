@@ -16,16 +16,16 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 */
 package fr.parisrespire.mpp.test.data.http
 
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertNotNull
 import fr.parisrespire.mpp.base.runBlocking
 import fr.parisrespire.mpp.data.CustomClientRequestException
 import fr.parisrespire.mpp.data.CustomJsonException
 import fr.parisrespire.mpp.data.http.AirparifAPI
 import fr.parisrespire.mpp.data.http.model.util.Day
 import fr.parisrespire.mpp.data.http.model.util.PollutionLevel
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertNotNull
 
 class AirparifAPITest {
 
@@ -33,7 +33,7 @@ class AirparifAPITest {
     @Test
     fun testRequestIndex() {
         runBlocking {
-            val result = AirparifAPI(mockResponseOK)
+            val result = AirparifAPI(mockResponseOK, ApiKeyRepositoryMock())
                 .requestIndex()
             assertNotNull(result)
         }
@@ -44,7 +44,8 @@ class AirparifAPITest {
         runBlocking {
             assertFailsWith<CustomClientRequestException> {
                 AirparifAPI(
-                    mockResponseBadRequest
+                    mockResponseBadRequest,
+                    ApiKeyRepositoryMock()
                 ).requestIndex()
             }
         }
@@ -55,7 +56,8 @@ class AirparifAPITest {
         runBlocking {
             assertFailsWith<CustomJsonException> {
                 AirparifAPI(
-                    mockResponseBadJson
+                    mockResponseBadJson,
+                    ApiKeyRepositoryMock()
                 ).requestIndex()
             }
         }
@@ -66,7 +68,7 @@ class AirparifAPITest {
     @Test
     fun testRequestDayIndex() {
         runBlocking {
-            val result = AirparifAPI(mockResponseOK)
+            val result = AirparifAPI(mockResponseOK, ApiKeyRepositoryMock())
                 .requestDayIndex(Day.TODAY)
             assertNotNull(result)
         }
@@ -76,7 +78,7 @@ class AirparifAPITest {
     fun testRequestDayIndexBadRequest() {
         runBlocking {
             assertFailsWith<CustomClientRequestException> {
-                AirparifAPI(mockResponseBadRequest)
+                AirparifAPI(mockResponseBadRequest, ApiKeyRepositoryMock())
                     .requestDayIndex(
                     Day.TODAY
                 )
@@ -88,7 +90,7 @@ class AirparifAPITest {
     fun testRequestDayIndexParserException() {
         runBlocking {
             assertFailsWith<CustomJsonException> {
-                AirparifAPI(mockResponseBadJson).requestDayIndex(
+                AirparifAPI(mockResponseBadJson, ApiKeyRepositoryMock()).requestDayIndex(
                     Day.TODAY
                 )
             }
@@ -100,7 +102,7 @@ class AirparifAPITest {
     @Test
     fun testRequestPollutionEpisode() {
         runBlocking {
-            val result = AirparifAPI(mockResponseOK)
+            val result = AirparifAPI(mockResponseOK, ApiKeyRepositoryMock())
                 .requestPollutionEpisode()
             assertNotNull(result)
             assertEquals(result.first().so2?.niveau, PollutionLevel.ALERT.value)
@@ -115,7 +117,7 @@ class AirparifAPITest {
     fun testRequestPollutionEpisodeBadRequest() {
         runBlocking {
             assertFailsWith<CustomClientRequestException> {
-                AirparifAPI(mockResponseBadRequest)
+                AirparifAPI(mockResponseBadRequest, ApiKeyRepositoryMock())
                     .requestPollutionEpisode()
             }
         }
@@ -125,7 +127,7 @@ class AirparifAPITest {
     fun testRequestPollutionEpisodeParserException() {
         runBlocking {
             assertFailsWith<CustomJsonException> {
-                AirparifAPI(mockResponseBadJson).requestPollutionEpisode()
+                AirparifAPI(mockResponseBadJson, ApiKeyRepositoryMock()).requestPollutionEpisode()
             }
         }
     }

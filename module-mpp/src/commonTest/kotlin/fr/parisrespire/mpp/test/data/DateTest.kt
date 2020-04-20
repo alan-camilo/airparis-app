@@ -18,10 +18,10 @@ package fr.parisrespire.mpp.test.data
 
 import com.soywiz.klock.DateTimeTz
 import com.soywiz.klock.days
-import kotlin.test.Test
-import kotlin.test.assertTrue
 import fr.parisrespire.mpp.data.http.model.util.Day
 import fr.parisrespire.mpp.data.http.model.util.toDay
+import kotlin.test.Test
+import kotlin.test.assertTrue
 
 class DateTest {
 

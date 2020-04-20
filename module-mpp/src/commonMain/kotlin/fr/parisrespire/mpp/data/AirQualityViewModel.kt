@@ -4,12 +4,12 @@ import com.github.florent37.log.Logger
 import dev.icerock.moko.mvvm.livedata.LiveData
 import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import kotlinx.coroutines.launch
 import fr.parisrespire.mpp.data.http.AirparifAPI
 import fr.parisrespire.mpp.data.http.model.Episode
 import fr.parisrespire.mpp.data.http.model.Indice
 import fr.parisrespire.mpp.data.http.model.IndiceJour
 import fr.parisrespire.mpp.data.http.model.util.Day
+import kotlinx.coroutines.launch
 
 class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) : ViewModel() {
 
