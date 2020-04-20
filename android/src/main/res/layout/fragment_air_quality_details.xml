@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="parisrespire.data.AirQualityViewModel" />
+            type="fr.parisrespire.mpp.data.AirQualityViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

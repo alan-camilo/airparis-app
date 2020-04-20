@@ -32,9 +32,9 @@ import fr.parisrespire.activity.MainActivity
 import fr.parisrespire.util.scheduleAlert
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import parisrespire.data.http.AirparifAPI
-import parisrespire.data.http.model.Episode
-import parisrespire.data.http.model.util.Day
+import fr.parisrespire.mpp.data.http.AirparifAPI
+import fr.parisrespire.mpp.data.http.model.Episode
+import fr.parisrespire.mpp.data.http.model.util.Day
 
 class AlertWork(
     private val context: Context,

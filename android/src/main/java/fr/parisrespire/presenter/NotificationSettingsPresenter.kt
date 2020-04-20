@@ -27,7 +27,7 @@ import fr.parisrespire.work.NotificationWork
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import parisrespire.data.NotificationSettingsModel
+import fr.parisrespire.mpp.data.NotificationSettingsModel
 
 class NotificationSettingsPresenter(private val context: Context) {
 

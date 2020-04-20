@@ -40,12 +40,12 @@ import fr.parisrespire.util.scheduleNotification
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
-import parisrespire.base.SHARED_PREFERENCES
-import parisrespire.base.TIME_SHARED_PREFERENCE
-import parisrespire.data.CustomException
-import parisrespire.data.UnknownException
-import parisrespire.data.http.AirparifAPI
-import parisrespire.data.http.model.util.Day
+import fr.parisrespire.mpp.base.SHARED_PREFERENCES
+import fr.parisrespire.mpp.base.TIME_SHARED_PREFERENCE
+import fr.parisrespire.mpp.data.CustomException
+import fr.parisrespire.mpp.data.UnknownException
+import fr.parisrespire.mpp.data.http.AirparifAPI
+import fr.parisrespire.mpp.data.http.model.util.Day
 
 class NotificationWork(
     private val context: Context,
@@ -79,7 +79,9 @@ class NotificationWork(
             } catch (throwable: Throwable) {
                 Crashlytics.logException(throwable)
                 sendNotification(
-                    getErrorMessage(context, UnknownException(throwable)),
+                    getErrorMessage(context,
+                        UnknownException(throwable)
+                    ),
                     R.drawable.baseline_error_outline_24
                 )
             }

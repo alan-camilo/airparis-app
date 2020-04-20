@@ -18,9 +18,9 @@ package fr.parisrespire.work
 
 import android.content.Context
 import fr.parisrespire.R
-import parisrespire.data.http.model.Episode
-import parisrespire.data.http.model.PollutantDetails
-import parisrespire.data.http.model.util.PollutionLevel
+import fr.parisrespire.mpp.data.http.model.Episode
+import fr.parisrespire.mpp.data.http.model.PollutantDetails
+import fr.parisrespire.mpp.data.http.model.util.PollutionLevel
 
 class AlertWorkUtil(val context: Context) {
 

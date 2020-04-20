@@ -8,10 +8,10 @@ import junit.framework.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import parisrespire.data.http.model.Episode
-import parisrespire.data.http.model.PollutantDetails
-import parisrespire.data.http.model.util.Day
-import parisrespire.data.http.model.util.PollutionLevel
+import fr.parisrespire.mpp.data.http.model.Episode
+import fr.parisrespire.mpp.data.http.model.PollutantDetails
+import fr.parisrespire.mpp.data.http.model.util.Day
+import fr.parisrespire.mpp.data.http.model.util.PollutionLevel
 
 @RunWith(AndroidJUnit4::class)
 class AlertWorkUtilTest {

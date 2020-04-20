@@ -13,10 +13,10 @@ import fr.parisrespire.R
 import fr.parisrespire.databinding.FragmentAirQualityDetailsBinding
 import fr.parisrespire.util.getErrorMessage
 import kotlinx.android.synthetic.main.fragment_air_quality_details.*
-import parisrespire.data.AirQualityViewModel
-import parisrespire.data.CustomException
-import parisrespire.data.UIExceptionHandler
-import parisrespire.data.http.model.util.Day
+import fr.parisrespire.mpp.data.AirQualityViewModel
+import fr.parisrespire.mpp.data.CustomException
+import fr.parisrespire.mpp.data.UIExceptionHandler
+import fr.parisrespire.mpp.data.http.model.util.Day
 
 const val POSITION_ARG = "position"
 
@@ -34,7 +34,11 @@ class AirQualityDetailsFragment :
     private var snackbar: Snackbar? = null
 
     override fun viewModelFactory(): ViewModelProvider.Factory {
-        return createViewModelFactory { AirQualityViewModel(this) }
+        return createViewModelFactory {
+            AirQualityViewModel(
+                this
+            )
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

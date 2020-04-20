@@ -1,7 +1,7 @@
 package fr.parisrespire
 
 import android.app.Application
-import parisrespire.base.UserPreference
+import fr.parisrespire.mpp.base.UserPreference
 
 class ParisRespireApplication : Application() {
 

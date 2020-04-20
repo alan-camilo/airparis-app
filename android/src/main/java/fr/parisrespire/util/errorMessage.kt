@@ -2,7 +2,7 @@ package fr.parisrespire.util
 
 import android.content.Context
 import fr.parisrespire.R
-import parisrespire.data.*
+import fr.parisrespire.mpp.data.*
 
 fun getErrorMessage(context: Context, exception: CustomException): String {
     return when (exception) {
