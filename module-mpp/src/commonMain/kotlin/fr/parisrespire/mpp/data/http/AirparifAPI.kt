@@ -38,6 +38,7 @@ class AirparifAPI(private val client: HttpClient, private val apiKeyRepository: 
             encodedPath = PATH_INDICE_JOUR,
             parameters = argument
         )
+        NetworkConnectivity.checkConnectivity()
         try {
             val mBody = getBodyParam()
             return withContext(IO) {
@@ -54,6 +55,7 @@ class AirparifAPI(private val client: HttpClient, private val apiKeyRepository: 
     }
 
     suspend fun requestPollutionEpisode(): List<Episode> {
+        NetworkConnectivity.checkConnectivity()
         try {
             val mBody = getBodyParam()
             return withContext(IO) {
@@ -70,6 +72,7 @@ class AirparifAPI(private val client: HttpClient, private val apiKeyRepository: 
     }
 
     suspend fun requestIndex(): List<Indice> {
+        NetworkConnectivity.checkConnectivity()
         try {
             val mBody = getBodyParam()
             return withContext(IO) {

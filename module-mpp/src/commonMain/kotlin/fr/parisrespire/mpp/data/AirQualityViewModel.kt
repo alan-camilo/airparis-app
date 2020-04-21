@@ -9,7 +9,9 @@ import fr.parisrespire.mpp.data.http.model.Episode
 import fr.parisrespire.mpp.data.http.model.Indice
 import fr.parisrespire.mpp.data.http.model.IndiceJour
 import fr.parisrespire.mpp.data.http.model.util.Day
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 
 class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) : ViewModel() {
 
@@ -28,14 +30,16 @@ class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) : 
         Logger.d("AirQualityViewModel", "fetchDayIndex()")
         viewModelScope.launch {
             try {
-                Logger.d("AirQualityViewModel", "fetchDayIndex launch")
-                val result = airparifApi.requestDayIndex(day)
-                _dayIndex.postValue(result)
+                withTimeout(10_000) {
+                    val result = airparifApi.requestDayIndex(day)
+                    _dayIndex.postValue(result)
+                }
+            } catch (exception: TimeoutCancellationException) {
+                Logger.e("AirQualityViewModel", exception.toString())
+                uiExceptionHandler.showError(CustomHttpRequestTimeoutException(exception.message, exception.cause))
             } catch (exception: CustomException) {
-                Logger.e("AirQualityViewModel", exception.throwable.toString())
+                Logger.e("AirQualityViewModel", exception.toString())
                 uiExceptionHandler.showError(exception)
-            } catch (throwable: Throwable) {
-                throw throwable
             }
         }
     }
@@ -43,13 +47,16 @@ class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) : 
     fun fetchIndex(day: Day) {
         viewModelScope.launch {
             try {
-                val result = airparifApi.requestIndex()
-                _indexList.postValue(result.firstOrNull { it.date == day.value })
+                withTimeout(10_000) {
+                    val result = airparifApi.requestIndex()
+                    _indexList.postValue(result.firstOrNull { it.date == day.value })
+                }
+            } catch (exception: TimeoutCancellationException) {
+                Logger.e("AirQualityViewModel", exception.toString())
+                uiExceptionHandler.showError(CustomHttpRequestTimeoutException(exception.message, exception.cause))
             } catch (exception: CustomException) {
-                Logger.e("AirQualityViewModel", exception.throwable.toString())
+                Logger.e("AirQualityViewModel", exception.toString())
                 uiExceptionHandler.showError(exception)
-            } catch (throwable: Throwable) {
-                throw throwable
             }
         }
     }
@@ -57,13 +64,16 @@ class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) : 
     fun fetchPollutionEpisode(day: Day) {
         viewModelScope.launch {
             try {
-                val result = airparifApi.requestPollutionEpisode()
-                _pollutionEpisode.postValue(result.firstOrNull { it.date == day.value })
+                withTimeout(10_000) {
+                    val result = airparifApi.requestPollutionEpisode()
+                    _pollutionEpisode.postValue(result.firstOrNull { it.date == day.value })
+                }
+            } catch (exception: TimeoutCancellationException) {
+                Logger.e("AirQualityViewModel", exception.toString())
+                uiExceptionHandler.showError(CustomHttpRequestTimeoutException(exception.message, exception.cause))
             } catch (exception: CustomException) {
-                Logger.e("AirQualityViewModel", exception.throwable.toString())
+                Logger.e("AirQualityViewModel", exception.toString())
                 uiExceptionHandler.showError(exception)
-            } catch (throwable: Throwable) {
-                throw throwable
             }
         }
     }

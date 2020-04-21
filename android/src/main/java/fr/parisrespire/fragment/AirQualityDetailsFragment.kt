@@ -117,6 +117,6 @@ class AirQualityDetailsFragment :
             Snackbar.LENGTH_INDEFINITE
         )
         snackbar?.show()
-        Crashlytics.logException(exception.throwable)
+        Crashlytics.logException(exception)
     }
 }

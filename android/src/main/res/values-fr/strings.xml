@@ -45,4 +45,5 @@
     <string name="donate">M\'offrir une bière</string>
     <string name="rate">Noter l\'application</string>
     <string name="airparif_map_description">Carte de la qualité de l\'air</string>
+    <string name="no_connectivity">aucune connexion internet</string>
 </resources>

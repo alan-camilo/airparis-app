@@ -7,7 +7,7 @@ actual object UserPreference {
 
     private lateinit var sharedPreferences: SharedPreferences
 
-    fun init(context: Context) {
+    fun init(context: Context) = run {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
     }
 

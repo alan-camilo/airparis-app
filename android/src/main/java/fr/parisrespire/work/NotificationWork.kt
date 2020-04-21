@@ -80,7 +80,7 @@ class NotificationWork(
                 Crashlytics.logException(throwable)
                 sendNotification(
                     getErrorMessage(context,
-                        UnknownException(throwable)
+                        UnknownException(throwable.message, throwable.cause)
                     ),
                     R.drawable.baseline_error_outline_24
                 )

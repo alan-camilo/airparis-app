@@ -2,6 +2,7 @@ package fr.parisrespire.mpp.data
 
 import io.ktor.client.features.*
 import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonException
 
@@ -11,31 +12,40 @@ actual class ExceptionWrapper actual constructor(throwable: Throwable) {
 
     actual fun getCustomException(): CustomException {
         return when (throwable) {
-            is JsonException -> CustomJsonException(
-                throwable
-            )
+            is JsonException -> CustomJsonException(throwable.message, throwable.cause)
             is SerializationException -> CustomSerializationException(
-                throwable
+                throwable.message,
+                throwable.cause
             )
             is ClientRequestException -> CustomClientRequestException(
-                throwable
+                throwable.message,
+                throwable.cause
             )
             is HttpRequestTimeoutException -> CustomHttpRequestTimeoutException(
-                throwable
+                throwable.message,
+                throwable.cause
             )
             is RedirectResponseException -> CustomRedirectResponseException(
-                throwable
+                throwable.message,
+                throwable.cause
             )
             is SendCountExceedException -> CustomSendCountExceedException(
-                throwable
+                throwable.message,
+                throwable.cause
             )
             is ServerResponseException -> CustomServerResponseException(
-                throwable
+                throwable.message,
+                throwable.cause
             )
             is SocketTimeoutException -> CustomSocketTimeoutException(
-                throwable
+                throwable.message,
+                throwable.cause
             )
-            else -> UnknownException(throwable)
+            is UnknownHostException -> CustomUnknownHostException(
+                throwable.message,
+                throwable.cause
+            )
+            else -> UnknownException(throwable.message, throwable.cause)
         }
     }
 }

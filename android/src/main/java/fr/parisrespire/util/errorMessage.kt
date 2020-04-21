@@ -14,6 +14,8 @@ fun getErrorMessage(context: Context, exception: CustomException): String {
         is CustomSendCountExceedException -> context.getString(R.string.error_send_count).capitalize()
         is CustomServerResponseException -> context.getString(R.string.error_server).capitalize()
         is CustomSocketTimeoutException -> context.getString(R.string.error_socket_timeout).capitalize()
+        is CustomUnknownHostException -> context.getString(R.string.error_network).capitalize()
+        is NoConnectivityException -> context.getString(R.string.no_connectivity).capitalize()
         is UnknownException -> context.getString(R.string.error_unknown).capitalize()
     }
 }

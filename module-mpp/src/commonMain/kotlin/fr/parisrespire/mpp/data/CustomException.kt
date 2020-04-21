@@ -1,21 +1,27 @@
 package fr.parisrespire.mpp.data
 
-sealed class CustomException(val throwable: Throwable) : Throwable()
+sealed class CustomException(override val message: String?, override val cause: Throwable?) : Throwable()
 
-class CustomJsonException(throwable: Throwable) : CustomException(throwable)
+class CustomJsonException(message: String?, cause: Throwable?) : CustomException(message, cause)
 
-class CustomSerializationException(throwable: Throwable) : CustomException(throwable)
+class CustomSerializationException(message: String?, cause: Throwable?) : CustomException(message, cause)
 
-class CustomClientRequestException(throwable: Throwable) : CustomException(throwable)
+class CustomClientRequestException(message: String?, cause: Throwable?) : CustomException(message, cause)
 
-class CustomHttpRequestTimeoutException(throwable: Throwable) : CustomException(throwable)
+class CustomHttpRequestTimeoutException(message: String?, cause: Throwable?) : CustomException(message, cause)
 
-class CustomRedirectResponseException(throwable: Throwable) : CustomException(throwable)
+class CustomRedirectResponseException(message: String?, cause: Throwable?) : CustomException(message, cause)
 
-class CustomSendCountExceedException(throwable: Throwable) : CustomException(throwable)
+class CustomSendCountExceedException(message: String?, cause: Throwable?) : CustomException(message, cause)
 
-class CustomServerResponseException(throwable: Throwable) : CustomException(throwable)
+class CustomServerResponseException(message: String?, cause: Throwable?) : CustomException(message, cause)
 
-class CustomSocketTimeoutException(throwable: Throwable) : CustomException(throwable)
+class UnknownException(message: String?, cause: Throwable?) : CustomException(message, cause)
 
-class UnknownException(throwable: Throwable) : CustomException(throwable)
+sealed class CustomIOException(message: String?, cause: Throwable?) : CustomException(message, cause)
+
+class CustomSocketTimeoutException(message: String?, cause: Throwable?) : CustomIOException(message, cause)
+
+class CustomUnknownHostException(message: String?, cause: Throwable?) : CustomIOException(message, cause)
+
+class NoConnectivityException(message: String?, cause: Throwable?) : CustomIOException(message, cause)
