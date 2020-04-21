@@ -51,13 +51,13 @@ class AlertWorkUtilTest {
     @Test
     fun testFormatAlertMessage() {
         val alertPart = String.format(
-            context.resources.getQuantityString(R.plurals.alert_message, 1),
+            context.getString(R.string.pollution_message),
             context.getString(R.string.alert),
             context.getString(R.string.pm10)
         ).capitalize()
         val pollutants = "${context.getString(R.string.o3)}, ${context.getString(fr.parisrespire.R.string.no2)}"
         val infoPart = String.format(
-            context.resources.getQuantityString(R.plurals.alert_message, 2),
+            context.getString(R.string.pollution_message),
             context.getString(R.string.information),
             pollutants
         ).capitalize()

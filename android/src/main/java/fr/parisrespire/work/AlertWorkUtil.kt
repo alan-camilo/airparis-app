@@ -32,13 +32,10 @@ class AlertWorkUtil(val context: Context) {
         val filteredInfo = list.filter { it.second.niveau == PollutionLevel.INFO.value }
         var alertMessage: String? = null
         var infoMessage: String? = null
+        val baseMessage = context.getString(R.string.pollution_message)
         if (filteredAlert.count() > 0) {
             val pollutantAlert =
                 filteredAlert.joinToString(separator = ", ", transform = { it.first })
-            val baseMessage = context.resources.getQuantityString(
-                R.plurals.alert_message,
-                filteredAlert.count()
-            )
             alertMessage = String.format(
                 baseMessage,
                 context.getString(R.string.alert),
@@ -48,10 +45,6 @@ class AlertWorkUtil(val context: Context) {
         if (filteredInfo.count() > 0) {
             val pollutantInfo =
                 filteredInfo.joinToString(separator = ", ", transform = { it.first })
-            val baseMessage = context.resources.getQuantityString(
-                R.plurals.alert_message,
-                filteredInfo.count()
-            )
             infoMessage = String.format(
                 baseMessage,
                 context.getString(R.string.information),

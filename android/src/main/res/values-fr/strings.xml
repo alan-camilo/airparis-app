@@ -9,10 +9,10 @@
     <string name="today">Aujourd\'hui</string>
     <string name="tomorrow">Demain</string>
     <string name="global_index">Global : %d</string>
-    <string name="pm10">particules fines</string>
-    <string name="o3">ozone</string>
-    <string name="no2">dioxyde d\'azote</string>
-    <string name="so2">dioxyde de soufre</string>
+    <string name="pm10">les particules fines</string>
+    <string name="o3">l\'ozone</string>
+    <string name="no2">le dioxyde d\'azote</string>
+    <string name="so2">le dioxyde de soufre</string>
     <string name="pm10_index">Particules fines (PM10) : %d</string>
     <string name="o3_index">Ozone : %d</string>
     <string name="no2_index">Dioxyde d\'azote : %d</string>
@@ -27,8 +27,8 @@
     <string name="bad">mauvaise</string>
     <string name="very_bad">très mauvaise</string>
     <string name="notification_text">la qualité de l\'air est %1$s (indice %2$d)</string>
-    <string name="alert_channel_name">Alerte pollution</string>
-    <string name="alert_channel_description">Alerte pollution à Paris</string>
+    <string name="alert_channel_name">Prévision de pollution</string>
+    <string name="alert_channel_description">Prévision de pollution à Paris</string>
     <string name="alert">alerte</string>
     <string name="information">information</string>
     <string name="error_no_data">erreur pas de données</string>
@@ -46,4 +46,5 @@
     <string name="rate">Noter l\'application</string>
     <string name="airparif_map_description">Carte de la qualité de l\'air</string>
     <string name="no_connectivity">aucune connexion internet</string>
+    <string name="pollution_message">niveau d\'%1$s demain pour %2$s</string>
 </resources>

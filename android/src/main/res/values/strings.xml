@@ -10,10 +10,10 @@
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="global_index">Global: %d</string>
-    <string name="pm10">particulate matter</string>
-    <string name="o3">ozone</string>
-    <string name="no2">nitrogen</string>
-    <string name="so2">sulfur dioxide</string>
+    <string name="pm10">the particulate matter</string>
+    <string name="o3">the ozone</string>
+    <string name="no2">the nitrogen</string>
+    <string name="so2">the sulfur dioxide</string>
     <string name="pm10_index">Particulate matter (PM10): %d</string>
     <string name="o3_index">Ozone: %d</string>
     <string name="no2_index">Nitrogen dioxide: %d</string>
@@ -28,8 +28,8 @@
     <string name="bad">bad</string>
     <string name="very_bad">very bad</string>
     <string name="notification_text">the air quality is %1$s (index %2$d)</string>
-    <string name="alert_channel_name">Pollution alert</string>
-    <string name="alert_channel_description">Pollution alert in Paris</string>
+    <string name="alert_channel_name">Pollution forecast</string>
+    <string name="alert_channel_description">Pollution forecast in Paris</string>
     <string name="alert">alert</string>
     <string name="information">information</string>
     <string name="error_no_data">error no air quality data</string>
@@ -47,4 +47,5 @@
     <string name="rate">Rate the app</string>
     <string name="airparif_map_description">Map of the air quality</string>
     <string name="no_connectivity">no internet connectivity</string>
+    <string name="pollution_message">%1$s level tomorrow for %2$s</string>
 </resources>
