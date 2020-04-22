@@ -10,8 +10,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import fr.parisrespire.R
 import fr.parisrespire.util.TAB_ARG
-import kotlinx.android.synthetic.main.fragment_air_quality_collection.*
 import java.lang.ref.WeakReference
+import kotlinx.android.synthetic.main.fragment_air_quality_collection.*
 
 class CollectionAirQualityFragment : Fragment(), Refresh {
 

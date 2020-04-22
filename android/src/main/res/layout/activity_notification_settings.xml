@@ -1,49 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.NotificationSettingsActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <CheckBox
-        android:id="@+id/checkbox_notifications"
+    <data>
+        <variable
+            name="presenter"
+            type="fr.parisrespire.mpp.presenter.NotificationSettingsPresenter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="25dp"
-        android:checked="false"
-        android:onClick="onCheckBoxClicked"
-        android:text="@string/activate_notifications"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        tools:context=".activity.NotificationSettingsActivity">
 
-    <Button
-        android:id="@+id/btn_time_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:gravity="center_vertical"
-        android:onClick="showTimePickerDialog"
-        android:enabled="false"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:layout_marginTop="15dp"
-        android:drawableStart="@drawable/outline_access_time_black_24"
-        app:layout_constraintStart_toStartOf="@id/checkbox_notifications"
-        app:layout_constraintEnd_toEndOf="@id/checkbox_notifications"
-        app:layout_constraintTop_toBottomOf="@+id/checkbox_notifications" />
+        <CheckBox
+            android:id="@+id/checkbox_notifications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="25dp"
+            android:checked="@{presenter.getNotifyPreference()}"
+            android:onClick="onCheckBoxClicked"
+            android:text="@string/activate_notifications"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <CheckBox
-        android:id="@+id/checkbox_alerts"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:checked="true"
-        android:onClick="onCheckBoxClicked"
-        android:text="@string/activate_alerts"
-        app:layout_constraintEnd_toEndOf="@id/checkbox_notifications"
-        app:layout_constraintStart_toStartOf="@id/checkbox_notifications"
-        app:layout_constraintTop_toBottomOf="@id/btn_time_picker" />
+        <Button
+            android:id="@+id/btn_time_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            android:drawableStart="@drawable/outline_access_time_black_24"
+            android:enabled="@{presenter.getNotifyPreference()}"
+            android:gravity="center_vertical"
+            android:onClick="showTimePickerDialog"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="@{presenter.getTimeHour()}"
+            app:layout_constraintEnd_toEndOf="@id/checkbox_notifications"
+            app:layout_constraintStart_toStartOf="@id/checkbox_notifications"
+            app:layout_constraintTop_toBottomOf="@+id/checkbox_notifications" />
 
+        <CheckBox
+            android:id="@+id/checkbox_alerts"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:checked="@{presenter.getAlertPreference()}"
+            android:onClick="onCheckBoxClicked"
+            android:text="@string/activate_alerts"
+            app:layout_constraintEnd_toEndOf="@id/checkbox_notifications"
+            app:layout_constraintStart_toStartOf="@id/checkbox_notifications"
+            app:layout_constraintTop_toBottomOf="@id/btn_time_picker" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

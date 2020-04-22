@@ -6,7 +6,7 @@ interface NotificationSettingsPresenter {
 
     fun setAlertPreference(value: Boolean)
 
-    fun setTimePreference(timeInMillis: Long)
+    fun setTimePreference(hourOfDay: Int, minute: Int)
 
     fun getTimeHour(): String
 

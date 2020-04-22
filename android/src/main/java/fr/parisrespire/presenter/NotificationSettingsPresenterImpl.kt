@@ -20,6 +20,7 @@ import android.content.Context
 import android.util.Log
 import androidx.work.*
 import fr.parisrespire.mpp.data.NotificationSettingsModel
+import fr.parisrespire.mpp.presenter.NotificationSettingsPresenter
 import fr.parisrespire.util.scheduleAlert
 import fr.parisrespire.util.scheduleNotification
 import fr.parisrespire.util.unscheduleAlert
@@ -28,12 +29,15 @@ import fr.parisrespire.work.NotificationWork
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 
-class NotificationSettingsPresenter(private val context: Context) {
+class NotificationSettingsPresenterImpl(private val context: Context) :
+    NotificationSettingsPresenter {
 
     private val model = NotificationSettingsModel()
 
-    fun setNotifyPreference(value: Boolean) {
+    override fun setNotifyPreference(value: Boolean) {
         model.isNotified = value
         if (value) {
             scheduleNotification(model.getNotificationDelay())
@@ -41,7 +45,7 @@ class NotificationSettingsPresenter(private val context: Context) {
             unscheduleNotification()
         }
         // For debugging
-        GlobalScope.launch((Dispatchers.Main)) {
+        GlobalScope.launch(Dispatchers.Main) {
             val workManager = WorkManager.getInstance(context)
             val future =
                 workManager.getWorkInfosForUniqueWork(NotificationWork.NOTIFICATION_WORK)
@@ -51,7 +55,7 @@ class NotificationSettingsPresenter(private val context: Context) {
         }
     }
 
-    fun setAlertPreference(value: Boolean) {
+    override fun setAlertPreference(value: Boolean) {
         model.isAlerted = value
         if (value) {
             scheduleAlert(context)
@@ -60,16 +64,18 @@ class NotificationSettingsPresenter(private val context: Context) {
         }
     }
 
-    fun setTimePreference(timeInMillis: Long) {
-        model.timePreference = timeInMillis
+    override fun setTimePreference(hourOfDay: Int, minute: Int) {
+        val dateTime = DateTime().withTime(hourOfDay, minute, 0, 0)
+            .withZone(DateTimeZone.getDefault())
+        model.timePreference = dateTime.millis
         scheduleNotification(model.getNotificationDelay())
     }
 
-    fun getTimeHour(): String = model.getTimeHour()
+    override fun getTimeHour(): String = model.getTimeHour()
 
-    fun getNotifyPreference() = model.isNotified
+    override fun getNotifyPreference() = model.isNotified
 
-    fun getAlertPreference() = model.isAlerted
+    override fun getAlertPreference() = model.isAlerted
 
     private fun scheduleNotification(delay: Long) {
         Log.d(NotificationSettingsPresenter::class.simpleName, "scheduleNotification delay=$delay hours=${delay / 1000 / 3600}")

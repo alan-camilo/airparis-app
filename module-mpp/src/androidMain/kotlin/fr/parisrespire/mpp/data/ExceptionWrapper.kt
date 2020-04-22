@@ -1,9 +1,9 @@
 package fr.parisrespire.mpp.data
 
 import io.ktor.client.features.*
-import kotlinx.coroutines.TimeoutCancellationException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonException
 
