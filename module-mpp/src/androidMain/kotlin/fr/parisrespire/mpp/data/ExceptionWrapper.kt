@@ -1,6 +1,7 @@
 package fr.parisrespire.mpp.data
 
 import io.ktor.client.features.*
+import kotlinx.coroutines.TimeoutCancellationException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import kotlinx.serialization.SerializationException
@@ -42,6 +43,10 @@ actual class ExceptionWrapper actual constructor(throwable: Throwable) {
                 throwable.cause
             )
             is UnknownHostException -> CustomUnknownHostException(
+                throwable.message,
+                throwable.cause
+            )
+            is TimeoutCancellationException -> CustomHttpRequestTimeoutException(
                 throwable.message,
                 throwable.cause
             )

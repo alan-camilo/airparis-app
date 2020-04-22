@@ -35,7 +35,7 @@ class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) : 
                     _dayIndex.postValue(result)
                 }
             } catch (exception: TimeoutCancellationException) {
-                Logger.e("AirQualityViewModel", exception.toString())
+                Logger.e("AirQualityViewModel", "timeout $exception")
                 uiExceptionHandler.showError(CustomHttpRequestTimeoutException(exception.message, exception.cause))
             } catch (exception: CustomException) {
                 Logger.e("AirQualityViewModel", exception.toString())
@@ -69,7 +69,7 @@ class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) : 
                     _pollutionEpisode.postValue(result.firstOrNull { it.date == day.value })
                 }
             } catch (exception: TimeoutCancellationException) {
-                Logger.e("AirQualityViewModel", exception.toString())
+                Logger.e("AirQualityViewModel", "timeout $exception")
                 uiExceptionHandler.showError(CustomHttpRequestTimeoutException(exception.message, exception.cause))
             } catch (exception: CustomException) {
                 Logger.e("AirQualityViewModel", exception.toString())
