@@ -29,6 +29,7 @@ import fr.parisrespire.R
 import fr.parisrespire.fragment.CollectionAirQualityFragment
 import fr.parisrespire.mpp.base.ALERT_SHARED_PREFERENCE
 import fr.parisrespire.mpp.base.SHARED_PREFERENCES
+import fr.parisrespire.util.TAB_ARG
 import fr.parisrespire.util.scheduleAlert
 
 class MainActivity : AppCompatActivity() {
@@ -40,6 +41,19 @@ class MainActivity : AppCompatActivity() {
         val isAlerted = sharedPreferences.getBoolean(ALERT_SHARED_PREFERENCE, true)
         if (isAlerted) {
             scheduleAlert(this)
+        }
+        val tabIndex = intent.getIntExtra(TAB_ARG, 1)
+        with(supportFragmentManager) {
+            var fragment = this.findFragmentByTag("collection")
+            if (fragment == null) {
+                val transaction = this.beginTransaction()
+                fragment = CollectionAirQualityFragment()
+                fragment.arguments = Bundle().apply {
+                    putInt(TAB_ARG, tabIndex)
+                }
+                transaction.add(R.id.container, fragment, "collection")
+                transaction.commit()
+            }
         }
     }
 

@@ -32,6 +32,7 @@ import fr.parisrespire.activity.MainActivity
 import fr.parisrespire.mpp.data.http.AirparifAPI
 import fr.parisrespire.mpp.data.http.model.Episode
 import fr.parisrespire.mpp.data.http.model.util.Day
+import fr.parisrespire.util.TAB_ARG
 import fr.parisrespire.util.scheduleAlert
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -71,12 +72,18 @@ class AlertWork(
     private fun sendNotification(text: Pair<String, Boolean>) {
         val intent = Intent(applicationContext, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        intent.putExtra(TAB_ARG, 2)
 
         val manager =
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         val title = applicationContext.getString(R.string.alert_channel_name)
-        val pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, 0)
+        val pendingIntent = PendingIntent.getActivity(
+            applicationContext,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
         val notification = NotificationCompat.Builder(
             applicationContext,
             ALERT_CHANNEL_ID

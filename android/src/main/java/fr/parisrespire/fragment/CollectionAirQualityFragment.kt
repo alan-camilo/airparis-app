@@ -9,8 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import fr.parisrespire.R
-import java.lang.ref.WeakReference
+import fr.parisrespire.util.TAB_ARG
 import kotlinx.android.synthetic.main.fragment_air_quality_collection.*
+import java.lang.ref.WeakReference
 
 class CollectionAirQualityFragment : Fragment(), Refresh {
 
@@ -19,8 +20,16 @@ class CollectionAirQualityFragment : Fragment(), Refresh {
     private lateinit var airQualityCollectionAdapter: AirQualityCollectionAdapter
     private lateinit var viewPager: ViewPager2
     private var tabIndex: Int = 1
-    private val TAB_ARG = "tab"
-    private var detailsFragmentList: Array<WeakReference<AirQualityDetailsFragment>?> = arrayOfNulls(3)
+    private var detailsFragmentList: Array<WeakReference<AirQualityDetailsFragment>?> =
+        arrayOfNulls(3)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val bundle = arguments
+        bundle?.let {
+            tabIndex = bundle.getInt(TAB_ARG, 1)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +37,7 @@ class CollectionAirQualityFragment : Fragment(), Refresh {
         savedInstanceState: Bundle?
     ): View? {
         savedInstanceState?.let {
-            tabIndex = it.getInt(TAB_ARG, 1)
+            tabIndex = it.getInt(TAB_ARG)
         }
         return inflater.inflate(R.layout.fragment_air_quality_collection, container, false)
     }

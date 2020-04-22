@@ -82,15 +82,19 @@ class AirQualityDetailsFragment :
             if (it == null) {
                 // picasso default image
             } else if (context != null) {
-                Picasso.get().load(it.global?.url_carte).into(map_iv)
-                // make textviews visible
-                global_index_tv.visibility = View.VISIBLE
-                progress.visibility = View.GONE
-                global_index_tv.visibility = View.VISIBLE
                 map_iv.visibility = View.VISIBLE
-                pm10_index_tv.visibility = View.VISIBLE
-                no2_index_tv.visibility = View.VISIBLE
-                o3_index_tv.visibility = View.VISIBLE
+                // show image "données disponibles au bulletin de 11h"
+                if (it.url_carte != null) Picasso.get().load(it.url_carte).into(map_iv)
+                if (it.global != null) {
+                    // show pollution map
+                    Picasso.get().load(it.global?.url_carte).into(map_iv)
+                    // make textviews visible
+                    global_index_tv.visibility = View.VISIBLE
+                    pm10_index_tv.visibility = View.VISIBLE
+                    no2_index_tv.visibility = View.VISIBLE
+                    o3_index_tv.visibility = View.VISIBLE
+                }
+                progress.visibility = View.GONE
             }
         }
         viewModel.pollutionEpisode.addObserver {
