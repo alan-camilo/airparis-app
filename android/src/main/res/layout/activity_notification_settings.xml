@@ -37,6 +37,7 @@
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:text="@{presenter.getTimeHour()}"
+            android:backgroundTint="@color/primaryLightColor"
             app:layout_constraintEnd_toEndOf="@id/checkbox_notifications"
             app:layout_constraintStart_toStartOf="@id/checkbox_notifications"
             app:layout_constraintTop_toBottomOf="@+id/checkbox_notifications" />
