@@ -9,7 +9,7 @@
     <string name="yesterday">Yesterday</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
-    <string name="global_index">Global: %d</string>
+    <string name="global_index">Air quality</string>
     <string name="pm10">the particulate matter</string>
     <string name="o3">the ozone</string>
     <string name="no2">the nitrogen</string>

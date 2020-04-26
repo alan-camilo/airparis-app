@@ -1,6 +1,6 @@
 package fr.parisrespire.fragment
 
-import android.graphics.Color.BLACK
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -36,7 +36,7 @@ class AirQualityDetailsFragment :
     private var snackbar: Snackbar? = null
 
     // SlimChart
-    private val stats = arrayOf(90F, 72F, 54F, 36F, 18F)
+    private val stats = arrayOf(100F, 79.2F, 59.2F, 39.2F, 19.2F)
     private lateinit var colors: Array<Int>
 
     override fun viewModelFactory(): ViewModelProvider.Factory {
@@ -80,7 +80,8 @@ class AirQualityDetailsFragment :
 
     private fun displayLoading() {
         progress.visibility = View.VISIBLE
-        // global_index_tv.visibility = View.GONE
+        global_index_tv.visibility = View.GONE
+        global_index_label.visibility = View.GONE
         slimChart.visibility = View.GONE
         map_iv.visibility = View.GONE
         pm10_index_tv.visibility = View.GONE
@@ -101,15 +102,21 @@ class AirQualityDetailsFragment :
                     // show pollution map
                     Picasso.get().load(it.global?.url_carte).into(map_iv)
                     // make textviews visible
-                    // global_index_tv.visibility = View.VISIBLE
+                    global_index_label.visibility = View.VISIBLE
+                    global_index_tv.visibility = View.VISIBLE
                     pm10_index_tv.visibility = View.VISIBLE
                     no2_index_tv.visibility = View.VISIBLE
                     o3_index_tv.visibility = View.VISIBLE
+                    // Global air quality
+                    global_index_tv.text =
+                    getQualityAdjectiveFromIndex(it.global?.indice)?.capitalize()
+                    global_index_tv.setTextColor(getColorResFromIndex(it.global?.indice))
                     // SlimChart
                     it.global?.indice?.let { index ->
+                        val mIndex = minOf(100F, index * 0.8F)
                         val filteredStats =
-                            stats.filter { stat -> (stat * 0.9) < index }.toFloatArray()
-                        slimChart.stats = filteredStats
+                            listOf(mIndex) + stats.filter { stat -> stat < mIndex }
+                        slimChart.stats = filteredStats.toFloatArray()
                         slimChart.colors = colors.drop(5 - filteredStats.size).toIntArray()
                         slimChart.setStartAnimationDuration(1700)
                         slimChart.textColor = getColorFromIndex(index)
@@ -153,9 +160,45 @@ class AirQualityDetailsFragment :
             index in 0..24 -> R.color.very_good
             index in 25..49 -> R.color.good
             index in 50..74 -> R.color.mediocre
-            index in 75..99 -> R.color.good
-            index > 100 -> R.color.good
-            else -> BLACK
+            index in 75..99 -> R.color.bad
+            index > 99 -> R.color.very_bad
+            else -> R.color.black_900
+        }
+    }
+
+    private fun getColorResFromIndex(index: Int?): Int {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (index == null) return resources.getColor(R.color.black_900, null)
+            return when {
+                index in 0..24 -> resources.getColor(R.color.very_good, null)
+                index in 25..49 -> resources.getColor(R.color.good, null)
+                index in 50..74 -> resources.getColor(R.color.mediocre, null)
+                index in 75..99 -> resources.getColor(R.color.bad, null)
+                index > 99 -> resources.getColor(R.color.very_bad, null)
+                else -> resources.getColor(R.color.black_900, null)
+            }
+        } else {
+            if (index == null) return resources.getColor(R.color.black_900)
+            return when {
+                index in 0..24 -> resources.getColor(R.color.very_good)
+                index in 25..49 -> resources.getColor(R.color.good)
+                index in 50..74 -> resources.getColor(R.color.mediocre)
+                index in 75..99 -> resources.getColor(R.color.bad)
+                index > 99 -> resources.getColor(R.color.very_bad)
+                else -> resources.getColor(R.color.black_900)
+            }
+        }
+    }
+
+    private fun getQualityAdjectiveFromIndex(index: Int?): String? {
+        if (index == null) return null
+        return when {
+            index in 0..24 -> context?.getString(R.string.very_good)
+            index in 25..49 -> context?.getString(R.string.good)
+            index in 50..74 -> context?.getString(R.string.mediocre)
+            index in 75..99 -> context?.getString(R.string.bad)
+            index > 99 -> context?.getString(R.string.very_bad)
+            else -> null
         }
     }
 }

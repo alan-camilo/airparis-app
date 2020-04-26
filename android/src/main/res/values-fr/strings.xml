@@ -8,7 +8,7 @@
     <string name="yesterday">Hier</string>
     <string name="today">Aujourd\'hui</string>
     <string name="tomorrow">Demain</string>
-    <string name="global_index">Global : %d</string>
+    <string name="global_index">Qualité de l\'air</string>
     <string name="pm10">les particules fines</string>
     <string name="o3">l\'ozone</string>
     <string name="no2">le dioxyde d\'azote</string>
