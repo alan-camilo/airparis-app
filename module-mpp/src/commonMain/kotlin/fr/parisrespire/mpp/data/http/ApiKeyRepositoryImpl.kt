@@ -20,7 +20,7 @@ class ApiKeyRepositoryImpl(private val client: HttpClient) : ApiKeyRepository {
     override suspend fun getApiKey(): String {
         var apiKey = UserPreference.getString(
             API_KEY_PREFERENCE, null)
-        Logger.e("ApiKeyRepository", "UserPreference apiKey=$apiKey")
+        Logger.d("ApiKeyRepository", "UserPreference apiKey=$apiKey")
         if (apiKey == null) {
             apiKey = requestHttpApiKey()
             UserPreference.set(API_KEY_PREFERENCE, apiKey)

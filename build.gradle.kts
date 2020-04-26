@@ -26,6 +26,7 @@ allprojects {
         jcenter()
         maven("https://dl.bintray.com/icerockdev/moko")
         maven("https://dl.bintray.com/florent37/maven")
+        maven("https://jitpack.io")
     }
 }
 

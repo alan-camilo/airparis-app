@@ -13,4 +13,9 @@
   <color name="dark_gray">#212121</color>
   <color name="white_50">#ffffff</color>
   <color name="red_600">#e53935</color>
+  <color name="very_good">#29b8ab</color>
+  <color name="good">#bbcf4c</color>
+  <color name="mediocre">#eec209</color>
+  <color name="bad">#e21102</color>
+  <color name="very_bad">#94151b</color>
 </resources>

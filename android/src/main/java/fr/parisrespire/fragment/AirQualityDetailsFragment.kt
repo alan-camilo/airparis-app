@@ -1,8 +1,10 @@
 package fr.parisrespire.fragment
 
+import android.graphics.Color.BLACK
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.crashlytics.android.Crashlytics
 import com.google.android.material.snackbar.Snackbar
@@ -33,11 +35,13 @@ class AirQualityDetailsFragment :
     private var position = -1
     private var snackbar: Snackbar? = null
 
+    // SlimChart
+    private val stats = arrayOf(90F, 72F, 54F, 36F, 18F)
+    private lateinit var colors: Array<Int>
+
     override fun viewModelFactory(): ViewModelProvider.Factory {
         return createViewModelFactory {
-            AirQualityViewModel(
-                this
-            )
+            AirQualityViewModel(this)
         }
     }
 
@@ -52,6 +56,13 @@ class AirQualityDetailsFragment :
                 else -> throw Exception("There must be only 3 instances of AirQualityDetailsFragment")
             }
         }
+        colors = arrayOf(
+            ContextCompat.getColor(context!!, R.color.very_bad),
+            ContextCompat.getColor(context!!, R.color.bad),
+            ContextCompat.getColor(context!!, R.color.mediocre),
+            ContextCompat.getColor(context!!, R.color.good),
+            ContextCompat.getColor(context!!, R.color.very_good)
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,7 +80,8 @@ class AirQualityDetailsFragment :
 
     private fun displayLoading() {
         progress.visibility = View.VISIBLE
-        global_index_tv.visibility = View.GONE
+        // global_index_tv.visibility = View.GONE
+        slimChart.visibility = View.GONE
         map_iv.visibility = View.GONE
         pm10_index_tv.visibility = View.GONE
         no2_index_tv.visibility = View.GONE
@@ -89,10 +101,21 @@ class AirQualityDetailsFragment :
                     // show pollution map
                     Picasso.get().load(it.global?.url_carte).into(map_iv)
                     // make textviews visible
-                    global_index_tv.visibility = View.VISIBLE
+                    // global_index_tv.visibility = View.VISIBLE
                     pm10_index_tv.visibility = View.VISIBLE
                     no2_index_tv.visibility = View.VISIBLE
                     o3_index_tv.visibility = View.VISIBLE
+                    // SlimChart
+                    it.global?.indice?.let { index ->
+                        val filteredStats =
+                            stats.filter { stat -> (stat * 0.9) < index }.toFloatArray()
+                        slimChart.stats = filteredStats
+                        slimChart.colors = colors.drop(5 - filteredStats.size).toIntArray()
+                        slimChart.setStartAnimationDuration(1700)
+                        slimChart.textColor = getColorFromIndex(index)
+                        slimChart.playStartAnimation()
+                        slimChart.visibility = View.VISIBLE
+                    }
                 }
                 progress.visibility = View.GONE
             }
@@ -122,5 +145,17 @@ class AirQualityDetailsFragment :
         )
         snackbar?.show()
         Crashlytics.logException(exception)
+    }
+
+    private fun getColorFromIndex(index: Int?): Int {
+        if (index == null) return R.color.black_900
+        return when {
+            index in 0..24 -> R.color.very_good
+            index in 25..49 -> R.color.good
+            index in 50..74 -> R.color.mediocre
+            index in 75..99 -> R.color.good
+            index > 100 -> R.color.good
+            else -> BLACK
+        }
     }
 }

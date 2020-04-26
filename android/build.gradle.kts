@@ -97,4 +97,6 @@ dependencies {
     implementation("dev.icerock.moko:mvvm:0.6.0")
     // Binding
     kapt("com.android.databinding:compiler:3.6.2")
+    // SlimChart
+    implementation("com.github.mancj:SlimChart:0.1.2")
 }
