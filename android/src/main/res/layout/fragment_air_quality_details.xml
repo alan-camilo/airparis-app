@@ -72,49 +72,88 @@
                     app:layout_constraintTop_toBottomOf="@id/global_index_label"
                     app:layout_constraintBottom_toBottomOf="@id/slimChart" />
 
+                <ImageView
+                    android:id="@+id/color_label_pm10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/two_color_circle_shape_very_good"
+                    android:contentDescription="color label pm10"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintRight_toLeftOf="@id/pm10_index_tv"
+                    app:layout_constraintTop_toTopOf="@id/pm10_index_tv"
+                    app:layout_constraintBottom_toBottomOf="@id/pm10_index_tv"/>
+
                 <TextView
                     android:id="@+id/pm10_index_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{@string/pm10_index(viewModel.dayIndex.ld.pm10.indice)}"
+                    android:textAppearance="?attr/textAppearanceBody1"
                     android:layout_marginTop="25dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/slimChart" />
 
+                <ImageView
+                    android:id="@+id/color_label_no2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/two_color_circle_shape_good"
+                    android:contentDescription="color label no2"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/color_label_pm10"
+                    app:layout_constraintRight_toLeftOf="@id/no2_index_tv"
+                    app:layout_constraintTop_toTopOf="@id/no2_index_tv"
+                    app:layout_constraintBottom_toBottomOf="@id/no2_index_tv"/>
+
                 <TextView
                     android:id="@+id/no2_index_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBody1"
                     android:text="@{@string/no2_index(viewModel.dayIndex.ld.no2.indice)}"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintLeft_toLeftOf="@id/pm10_index_tv"
                     app:layout_constraintTop_toBottomOf="@id/pm10_index_tv" />
+
+                <ImageView
+                    android:id="@+id/color_label_o3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/two_color_circle_shape_mediocre"
+                    android:contentDescription="color label o3"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/color_label_pm10"
+                    app:layout_constraintRight_toLeftOf="@id/o3_index_tv"
+                    app:layout_constraintTop_toTopOf="@id/o3_index_tv"
+                    app:layout_constraintBottom_toBottomOf="@id/o3_index_tv"/>
 
                 <TextView
                     android:id="@+id/o3_index_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBody1"
                     android:text="@{@string/o3_index(viewModel.dayIndex.ld.o3.indice)}"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintLeft_toLeftOf="@id/pm10_index_tv"
                     app:layout_constraintTop_toBottomOf="@id/no2_index_tv" />
 
                 <TextView
                     android:id="@+id/pollution_advice_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBody1"
                     android:text="@{viewModel.pollutionEpisode.ld.detail}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/o3_index_tv" />
-
 
                 <ImageView
                     android:id="@+id/map_iv"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/map_height"
                     android:contentDescription="@string/airparif_map_description"
+                    android:layout_marginTop="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/pollution_advice_tv" />

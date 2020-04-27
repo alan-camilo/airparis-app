@@ -14,8 +14,13 @@
   <color name="white_50">#ffffff</color>
   <color name="red_600">#e53935</color>
   <color name="very_good">#29b8ab</color>
+  <color name="very_good_dark">#1EAA9D</color>
   <color name="good">#bbcf4c</color>
+  <color name="good_dark">#ABBF3B</color>
   <color name="mediocre">#eec209</color>
+  <color name="mediocre_dark">#E1B704</color>
   <color name="bad">#e21102</color>
+  <color name="bad_dark">#C60E00</color>
   <color name="very_bad">#94151b</color>
+  <color name="very_bad_dark">#7A070D</color>
 </resources>

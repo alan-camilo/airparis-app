@@ -1,5 +1,6 @@
 package fr.parisrespire.fragment
 
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -88,6 +89,22 @@ class AirQualityDetailsFragment :
         no2_index_tv.visibility = View.GONE
         o3_index_tv.visibility = View.GONE
         pollution_advice_tv.visibility = View.GONE
+        color_label_pm10.visibility = View.GONE
+        color_label_no2.visibility = View.GONE
+        color_label_o3.visibility = View.GONE
+    }
+
+    private fun displayViews() {
+        // textviews
+        global_index_label.visibility = View.VISIBLE
+        global_index_tv.visibility = View.VISIBLE
+        pm10_index_tv.visibility = View.VISIBLE
+        no2_index_tv.visibility = View.VISIBLE
+        o3_index_tv.visibility = View.VISIBLE
+        // color label
+        color_label_pm10.visibility = View.VISIBLE
+        color_label_no2.visibility = View.VISIBLE
+        color_label_o3.visibility = View.VISIBLE
     }
 
     private fun addObservers() {
@@ -101,12 +118,7 @@ class AirQualityDetailsFragment :
                 if (it.global != null) {
                     // show pollution map
                     Picasso.get().load(it.global?.url_carte).into(map_iv)
-                    // make textviews visible
-                    global_index_label.visibility = View.VISIBLE
-                    global_index_tv.visibility = View.VISIBLE
-                    pm10_index_tv.visibility = View.VISIBLE
-                    no2_index_tv.visibility = View.VISIBLE
-                    o3_index_tv.visibility = View.VISIBLE
+                    displayViews()
                     // Global air quality
                     global_index_tv.text =
                     getQualityAdjectiveFromIndex(it.global?.indice)?.capitalize()
@@ -123,6 +135,10 @@ class AirQualityDetailsFragment :
                         slimChart.playStartAnimation()
                         slimChart.visibility = View.VISIBLE
                     }
+                    // color label
+                    color_label_pm10.setImageDrawable(getColorDrawableFromIndex(it.pm10?.indice))
+                    color_label_no2.setImageDrawable(getColorDrawableFromIndex(it.no2?.indice))
+                    color_label_o3.setImageDrawable(getColorDrawableFromIndex(it.o3?.indice))
                 }
                 progress.visibility = View.GONE
             }
@@ -198,6 +214,18 @@ class AirQualityDetailsFragment :
             index in 50..74 -> context?.getString(R.string.mediocre)
             index in 75..99 -> context?.getString(R.string.bad)
             index > 99 -> context?.getString(R.string.very_bad)
+            else -> null
+        }
+    }
+
+    private fun getColorDrawableFromIndex(index: Int?): Drawable? {
+        if (index == null) return null
+        return when {
+            index in 0..24 -> context?.getDrawable(R.drawable.two_color_circle_shape_very_good)
+            index in 25..49 -> context?.getDrawable(R.drawable.two_color_circle_shape_good)
+            index in 50..74 -> context?.getDrawable(R.drawable.two_color_circle_shape_mediocre)
+            index in 75..99 -> context?.getDrawable(R.drawable.two_color_circle_shape_bad)
+            index > 99 -> context?.getDrawable(R.drawable.two_color_circle_shape_very_bad)
             else -> null
         }
     }
