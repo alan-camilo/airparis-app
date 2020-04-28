@@ -147,7 +147,12 @@ class AirQualityDetailsFragment :
             getErrorMessage(context!!, exception),
             Snackbar.LENGTH_INDEFINITE
         )
-        snackbar?.show()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            snackbar!!.setBackgroundTint(resources.getColor(R.color.red_600, null))
+        } else {
+            snackbar!!.setBackgroundTint(resources.getColor(R.color.red_600))
+        }
+        snackbar!!.show()
         Crashlytics.logException(exception)
     }
 
