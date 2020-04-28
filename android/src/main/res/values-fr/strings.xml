@@ -8,14 +8,14 @@
     <string name="yesterday">Hier</string>
     <string name="today">Aujourd\'hui</string>
     <string name="tomorrow">Demain</string>
-    <string name="global_index">Qualité de l\'air</string>
+    <string name="global_index">Niveau de pollution</string>
     <string name="pm10">les particules fines</string>
     <string name="o3">l\'ozone</string>
     <string name="no2">le dioxyde d\'azote</string>
     <string name="so2">le dioxyde de soufre</string>
-    <string name="pm10_index">Particules fines (PM10) : %d</string>
-    <string name="o3_index">Ozone : %d</string>
-    <string name="no2_index">Dioxyde d\'azote : %d</string>
+    <string name="pm10_index">Particules fines (PM10)</string>
+    <string name="o3_index">Ozone</string>
+    <string name="no2_index">Dioxyde d\'azote</string>
     <string name="refresh">Rafraîchir</string>
     <string name="notification_channel_name">Bulletin quotidien</string>
     <string name="notification_channel_description">Bulletin quotidien de la qualité de l\'air à Paris</string>
@@ -47,4 +47,8 @@
     <string name="airparif_map_description">Carte de la qualité de l\'air</string>
     <string name="no_connectivity">aucune connexion internet</string>
     <string name="pollution_message">niveau d\'%1$s demain pour %2$s</string>
+    <string name="very_low">très faible</string>
+    <string name="low">faible</string>
+    <string name="high">élevé</string>
+    <string name="very_high">très élevé</string>
 </resources>

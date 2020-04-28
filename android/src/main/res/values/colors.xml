@@ -11,6 +11,7 @@
   <color name="black_900">#000000</color>
   <color name="light_gray">#fafafa</color>
   <color name="dark_gray">#212121</color>
+  <color name="very_light_gray">#4DCACACA</color>
   <color name="white_50">#ffffff</color>
   <color name="red_600">#e53935</color>
   <color name="very_good">#29b8ab</color>

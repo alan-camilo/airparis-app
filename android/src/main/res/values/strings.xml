@@ -9,14 +9,14 @@
     <string name="yesterday">Yesterday</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
-    <string name="global_index">Air quality</string>
+    <string name="global_index">Pollution level</string>
     <string name="pm10">the particulate matter</string>
     <string name="o3">the ozone</string>
     <string name="no2">the nitrogen</string>
     <string name="so2">the sulfur dioxide</string>
-    <string name="pm10_index">Particulate matter (PM10): %d</string>
-    <string name="o3_index">Ozone: %d</string>
-    <string name="no2_index">Nitrogen dioxide: %d</string>
+    <string name="pm10_index">Particulate matter (PM10)</string>
+    <string name="o3_index">Ozone</string>
+    <string name="no2_index">Nitrogen dioxide</string>
     <string name="refresh">Refresh</string>
     <string name="notification_channel_name">Daily report</string>
     <string name="notification_channel_description">Daily notification of the Paris air quality report</string>
@@ -48,4 +48,8 @@
     <string name="airparif_map_description">Map of the air quality</string>
     <string name="no_connectivity">no internet connectivity</string>
     <string name="pollution_message">%1$s level tomorrow for %2$s</string>
+    <string name="very_low">very low</string>
+    <string name="low">low</string>
+    <string name="high">high</string>
+    <string name="very_high">very high</string>
 </resources>

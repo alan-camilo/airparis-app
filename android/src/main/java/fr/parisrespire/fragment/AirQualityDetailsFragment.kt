@@ -1,6 +1,5 @@
 package fr.parisrespire.fragment
 
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.crashlytics.android.Crashlytics
 import com.google.android.material.snackbar.Snackbar
+import com.mancj.slimchart.SlimChart
 import com.squareup.picasso.Picasso
 import dev.icerock.moko.mvvm.MvvmFragment
 import dev.icerock.moko.mvvm.createViewModelFactory
@@ -36,11 +36,6 @@ class AirQualityDetailsFragment :
     private var position = -1
     private var snackbar: Snackbar? = null
 
-    // SlimChart
-    private val stats = arrayOf(95F, 76F, 57F, 38F, 19F)
-    private lateinit var colors: Array<Int>
-    private lateinit var colorsLight: Array<Int>
-
     override fun viewModelFactory(): ViewModelProvider.Factory {
         return createViewModelFactory {
             AirQualityViewModel(this)
@@ -58,20 +53,6 @@ class AirQualityDetailsFragment :
                 else -> throw Exception("There must be only 3 instances of AirQualityDetailsFragment")
             }
         }
-        colors = arrayOf(
-            ContextCompat.getColor(context!!, R.color.very_bad),
-            ContextCompat.getColor(context!!, R.color.bad),
-            ContextCompat.getColor(context!!, R.color.mediocre),
-            ContextCompat.getColor(context!!, R.color.good),
-            ContextCompat.getColor(context!!, R.color.very_good)
-        )
-        colorsLight = arrayOf(
-            ContextCompat.getColor(context!!, R.color.very_bad_light),
-            ContextCompat.getColor(context!!, R.color.bad_light),
-            ContextCompat.getColor(context!!, R.color.mediocre_light),
-            ContextCompat.getColor(context!!, R.color.good_light),
-            ContextCompat.getColor(context!!, R.color.very_good_light)
-        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -89,31 +70,12 @@ class AirQualityDetailsFragment :
 
     private fun displayLoading() {
         progress.visibility = View.VISIBLE
-        global_index_tv.visibility = View.GONE
-        global_index_label.visibility = View.GONE
-        slimChart.visibility = View.GONE
+        air_quality_group.visibility = View.GONE
         map_iv.visibility = View.GONE
-        pm10_index_tv.visibility = View.GONE
-        no2_index_tv.visibility = View.GONE
-        o3_index_tv.visibility = View.GONE
-        pollution_advice_tv.visibility = View.GONE
-        //color_label_pm10.visibility = View.GONE
-        slimChart_pm10.visibility = View.GONE
-        color_label_no2.visibility = View.GONE
-        color_label_o3.visibility = View.GONE
     }
 
     private fun displayViews() {
-        // textviews
-        global_index_label.visibility = View.VISIBLE
-        global_index_tv.visibility = View.VISIBLE
-        pm10_index_tv.visibility = View.VISIBLE
-        no2_index_tv.visibility = View.VISIBLE
-        o3_index_tv.visibility = View.VISIBLE
-        // color label
-        //color_label_pm10.visibility = View.VISIBLE
-        color_label_no2.visibility = View.VISIBLE
-        color_label_o3.visibility = View.VISIBLE
+        air_quality_group.visibility = View.VISIBLE
     }
 
     private fun addObservers() {
@@ -130,40 +92,21 @@ class AirQualityDetailsFragment :
                     displayViews()
                     // Global air quality
                     global_index_tv.text =
-                    getQualityAdjectiveFromIndex(it.global?.indice)?.capitalize()
+                        getQualityAdjectiveFromIndex(it.global?.indice)?.capitalize()
                     global_index_tv.setTextColor(getColorResFromIndex(it.global?.indice))
                     // SlimChart
                     it.global?.indice?.let { index ->
-                        val mIndex = minOf(95F, index * 0.76F)
-                        val bottomStats = listOf(mIndex) + stats.filter { stat -> stat <= mIndex }
-                        val topStats = stats.filter { stat -> stat > mIndex }
-                        val mStats = topStats + bottomStats
-                        val mColors = (colorsLight.dropLast(bottomStats.size - 1) + colors.drop(5 - bottomStats.size)).toIntArray()
-                        slimChart.stats = mStats.toFloatArray()
-                        slimChart.colors = mColors
-                        Log.d(AirQualityDetailsFragment::class.simpleName, "bottomStats=$bottomStats topStats=$topStats mStats=$mStats colors=${mColors.size}")
-                        slimChart.setStartAnimationDuration(1700)
-                        slimChart.textColor = getColorFromIndex(index)
-                        slimChart.playStartAnimation()
-                        slimChart.visibility = View.VISIBLE
+                        setSlimChart(slimchart_global, index)
                     }
                     it.pm10?.indice?.let { index ->
-                        val mIndex = minOf(95F, index * 0.76F)
-                        val bottomStats = listOf(mIndex) + stats.filter { stat -> stat <= mIndex }
-                        val topStats = stats.filter { stat -> stat > mIndex }
-                        val mStats = topStats + bottomStats
-                        val mColors = (colorsLight.dropLast(bottomStats.size - 1) + colors.drop(5 - bottomStats.size)).toIntArray()
-                        slimChart_pm10.stats = mStats.toFloatArray()
-                        slimChart_pm10.colors = mColors
-                        slimChart_pm10.setStartAnimationDuration(1700)
-                        slimChart_pm10.textColor = getColorFromIndex(index)
-                        slimChart_pm10.playStartAnimation()
-                        slimChart_pm10.visibility = View.VISIBLE
+                        setSlimChart(slimchart_pm10, index)
                     }
-                    // color label
-                    //color_label_pm10.setImageDrawable(getColorDrawableFromIndex(it.pm10?.indice))
-                    color_label_no2.setImageDrawable(getColorDrawableFromIndex(it.no2?.indice))
-                    color_label_o3.setImageDrawable(getColorDrawableFromIndex(it.o3?.indice))
+                    it.no2?.indice?.let { index ->
+                        setSlimChart(slimchart_no2, index)
+                    }
+                    it.o3?.indice?.let { index ->
+                        setSlimChart(slimchart_o3, index)
+                    }
                 }
                 progress.visibility = View.GONE
             }
@@ -173,6 +116,19 @@ class AirQualityDetailsFragment :
                 pollution_advice_tv.visibility = View.VISIBLE
             }
         }
+    }
+
+    private fun setSlimChart(slimChart: SlimChart, index: Int) {
+        val mIndex = minOf(90F, index * 0.72F)
+        slimChart.stats = arrayOf(mIndex, 90F).toFloatArray()
+        slimChart.colors = arrayOf(
+            getColorResFromIndex(index),
+            ContextCompat.getColor(context!!, R.color.very_light_gray)
+        ).toIntArray()
+        slimChart.setStartAnimationDuration(1700)
+        slimChart.textColor = getColorFromIndex(index)
+        slimChart.playStartAnimation()
+        slimChart.visibility = View.VISIBLE
     }
 
     override fun refresh() {
@@ -234,23 +190,11 @@ class AirQualityDetailsFragment :
     private fun getQualityAdjectiveFromIndex(index: Int?): String? {
         if (index == null) return null
         return when {
-            index in 0..24 -> context?.getString(R.string.very_good)
-            index in 25..49 -> context?.getString(R.string.good)
+            index in 0..24 -> context?.getString(R.string.very_low)
+            index in 25..49 -> context?.getString(R.string.low)
             index in 50..74 -> context?.getString(R.string.mediocre)
-            index in 75..99 -> context?.getString(R.string.bad)
-            index > 99 -> context?.getString(R.string.very_bad)
-            else -> null
-        }
-    }
-
-    private fun getColorDrawableFromIndex(index: Int?): Drawable? {
-        if (index == null) return null
-        return when {
-            index in 0..24 -> context?.getDrawable(R.drawable.two_color_circle_shape_very_good)
-            index in 25..49 -> context?.getDrawable(R.drawable.two_color_circle_shape_good)
-            index in 50..74 -> context?.getDrawable(R.drawable.two_color_circle_shape_mediocre)
-            index in 75..99 -> context?.getDrawable(R.drawable.two_color_circle_shape_bad)
-            index > 99 -> context?.getDrawable(R.drawable.two_color_circle_shape_very_bad)
+            index in 75..99 -> context?.getString(R.string.high)
+            index > 99 -> context?.getString(R.string.very_high)
             else -> null
         }
     }
