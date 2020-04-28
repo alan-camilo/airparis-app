@@ -37,8 +37,9 @@ class AirQualityDetailsFragment :
     private var snackbar: Snackbar? = null
 
     // SlimChart
-    private val stats = arrayOf(100F, 79.2F, 59.2F, 39.2F, 19.2F)
+    private val stats = arrayOf(95F, 76F, 57F, 38F, 19F)
     private lateinit var colors: Array<Int>
+    private lateinit var colorsLight: Array<Int>
 
     override fun viewModelFactory(): ViewModelProvider.Factory {
         return createViewModelFactory {
@@ -63,6 +64,13 @@ class AirQualityDetailsFragment :
             ContextCompat.getColor(context!!, R.color.mediocre),
             ContextCompat.getColor(context!!, R.color.good),
             ContextCompat.getColor(context!!, R.color.very_good)
+        )
+        colorsLight = arrayOf(
+            ContextCompat.getColor(context!!, R.color.very_bad_light),
+            ContextCompat.getColor(context!!, R.color.bad_light),
+            ContextCompat.getColor(context!!, R.color.mediocre_light),
+            ContextCompat.getColor(context!!, R.color.good_light),
+            ContextCompat.getColor(context!!, R.color.very_good_light)
         )
     }
 
@@ -89,7 +97,8 @@ class AirQualityDetailsFragment :
         no2_index_tv.visibility = View.GONE
         o3_index_tv.visibility = View.GONE
         pollution_advice_tv.visibility = View.GONE
-        color_label_pm10.visibility = View.GONE
+        //color_label_pm10.visibility = View.GONE
+        slimChart_pm10.visibility = View.GONE
         color_label_no2.visibility = View.GONE
         color_label_o3.visibility = View.GONE
     }
@@ -102,7 +111,7 @@ class AirQualityDetailsFragment :
         no2_index_tv.visibility = View.VISIBLE
         o3_index_tv.visibility = View.VISIBLE
         // color label
-        color_label_pm10.visibility = View.VISIBLE
+        //color_label_pm10.visibility = View.VISIBLE
         color_label_no2.visibility = View.VISIBLE
         color_label_o3.visibility = View.VISIBLE
     }
@@ -125,18 +134,34 @@ class AirQualityDetailsFragment :
                     global_index_tv.setTextColor(getColorResFromIndex(it.global?.indice))
                     // SlimChart
                     it.global?.indice?.let { index ->
-                        val mIndex = minOf(100F, index * 0.8F)
-                        val filteredStats =
-                            listOf(mIndex) + stats.filter { stat -> stat < mIndex }
-                        slimChart.stats = filteredStats.toFloatArray()
-                        slimChart.colors = colors.drop(5 - filteredStats.size).toIntArray()
+                        val mIndex = minOf(95F, index * 0.76F)
+                        val bottomStats = listOf(mIndex) + stats.filter { stat -> stat <= mIndex }
+                        val topStats = stats.filter { stat -> stat > mIndex }
+                        val mStats = topStats + bottomStats
+                        val mColors = (colorsLight.dropLast(bottomStats.size - 1) + colors.drop(5 - bottomStats.size)).toIntArray()
+                        slimChart.stats = mStats.toFloatArray()
+                        slimChart.colors = mColors
+                        Log.d(AirQualityDetailsFragment::class.simpleName, "bottomStats=$bottomStats topStats=$topStats mStats=$mStats colors=${mColors.size}")
                         slimChart.setStartAnimationDuration(1700)
                         slimChart.textColor = getColorFromIndex(index)
                         slimChart.playStartAnimation()
                         slimChart.visibility = View.VISIBLE
                     }
+                    it.pm10?.indice?.let { index ->
+                        val mIndex = minOf(95F, index * 0.76F)
+                        val bottomStats = listOf(mIndex) + stats.filter { stat -> stat <= mIndex }
+                        val topStats = stats.filter { stat -> stat > mIndex }
+                        val mStats = topStats + bottomStats
+                        val mColors = (colorsLight.dropLast(bottomStats.size - 1) + colors.drop(5 - bottomStats.size)).toIntArray()
+                        slimChart_pm10.stats = mStats.toFloatArray()
+                        slimChart_pm10.colors = mColors
+                        slimChart_pm10.setStartAnimationDuration(1700)
+                        slimChart_pm10.textColor = getColorFromIndex(index)
+                        slimChart_pm10.playStartAnimation()
+                        slimChart_pm10.visibility = View.VISIBLE
+                    }
                     // color label
-                    color_label_pm10.setImageDrawable(getColorDrawableFromIndex(it.pm10?.indice))
+                    //color_label_pm10.setImageDrawable(getColorDrawableFromIndex(it.pm10?.indice))
                     color_label_no2.setImageDrawable(getColorDrawableFromIndex(it.no2?.indice))
                     color_label_o3.setImageDrawable(getColorDrawableFromIndex(it.o3?.indice))
                 }

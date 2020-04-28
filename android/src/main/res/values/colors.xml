@@ -15,12 +15,17 @@
   <color name="red_600">#e53935</color>
   <color name="very_good">#29b8ab</color>
   <color name="very_good_dark">#1EAA9D</color>
+  <color name="very_good_light">#1AB2DFDB</color>
   <color name="good">#bbcf4c</color>
   <color name="good_dark">#ABBF3B</color>
+  <color name="good_light">#1AC8E6C9</color>
   <color name="mediocre">#eec209</color>
   <color name="mediocre_dark">#E1B704</color>
+  <color name="mediocre_light">#1AFFE0B2</color>
   <color name="bad">#e21102</color>
   <color name="bad_dark">#C60E00</color>
+  <color name="bad_light">#1AFFCCBC</color>
   <color name="very_bad">#94151b</color>
   <color name="very_bad_dark">#7A070D</color>
+  <color name="very_bad_light">#1A953C40</color>
 </resources>
