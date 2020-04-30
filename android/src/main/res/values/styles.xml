@@ -9,12 +9,12 @@
         <item name="colorSecondary">@color/secondaryColor</item>
         <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
         <item name="android:colorBackground">@color/white_50</item>
-        <item name="colorSurface">@color/light_gray</item>
+        <item name="colorSurface">@color/light_grey</item>
         <item name="colorError">@color/red_600</item>
         <item name="colorOnPrimary">@color/white_50</item>
         <item name="colorOnSecondary">@color/black_900</item>
         <item name="colorOnBackground">@color/black_900</item>
-        <item name="colorOnSurface">@color/dark_gray</item>
+        <item name="colorOnSurface">@color/dark_grey</item>
         <item name="colorOnError">@color/red_600</item>
         <item name="android:statusBarColor">@color/primaryDarkColor</item>
         <!--Font-->

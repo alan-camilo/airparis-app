@@ -81,33 +81,46 @@ class AirQualityDetailsFragment :
     private fun addObservers() {
         viewModel.dayIndex.addObserver {
             if (it == null) {
-                // picasso default image
+                context?.let { context ->
+                    map_iv.setImageDrawable(context.getDrawable(R.drawable.baseline_highlight_off_24))
+                    showError(context.getString(R.string.error_no_data))
+                    map_iv.visibility = View.VISIBLE
+                    progress.visibility = View.GONE
+                }
             } else if (context != null) {
-                map_iv.visibility = View.VISIBLE
                 // show image "données disponibles au bulletin de 11h"
-                if (it.url_carte != null) Picasso.get().load(it.url_carte).into(map_iv)
-                if (it.global != null) {
-                    // show pollution map
-                    Picasso.get().load(it.global?.url_carte).into(map_iv)
-                    displayViews()
-                    // Global air quality
-                    global_index_tv.text =
-                        getQualityAdjectiveFromIndex(it.global?.indice)?.capitalize()
-                    global_index_tv.setTextColor(getColorResFromIndex(it.global?.indice))
-                    // SlimChart
-                    it.global?.indice?.let { index ->
-                        setSlimChart(slimchart_global, index)
+                when {
+                    it.url_carte != null -> Picasso.get().load(it.url_carte)
+                        .error(R.drawable.baseline_highlight_off_24).into(map_iv)
+                    it.global != null -> {
+                        // show pollution map
+                        Picasso.get().load(it.global?.url_carte)
+                            .error(R.drawable.baseline_highlight_off_24).into(map_iv)
+                        displayViews()
+                        // Global air quality
+                        global_index_tv.text =
+                            getQualityAdjectiveFromIndex(it.global?.indice)?.capitalize()
+                        global_index_tv.setTextColor(getColorResFromIndex(it.global?.indice))
+                        // SlimChart
+                        it.global?.indice?.let { index ->
+                            setSlimChart(slimchart_global, index)
+                        }
+                        it.pm10?.indice?.let { index ->
+                            setSlimChart(slimchart_pm10, index)
+                        }
+                        it.no2?.indice?.let { index ->
+                            setSlimChart(slimchart_no2, index)
+                        }
+                        it.o3?.indice?.let { index ->
+                            setSlimChart(slimchart_o3, index)
+                        }
                     }
-                    it.pm10?.indice?.let { index ->
-                        setSlimChart(slimchart_pm10, index)
-                    }
-                    it.no2?.indice?.let { index ->
-                        setSlimChart(slimchart_no2, index)
-                    }
-                    it.o3?.indice?.let { index ->
-                        setSlimChart(slimchart_o3, index)
+                    else -> {
+                        map_iv.setImageDrawable(context!!.getDrawable(R.drawable.baseline_highlight_off_24))
+                        showError(context!!.getString(R.string.error_no_data))
                     }
                 }
+                map_iv.visibility = View.VISIBLE
                 progress.visibility = View.GONE
             }
         }
@@ -123,7 +136,7 @@ class AirQualityDetailsFragment :
         slimChart.stats = arrayOf(mIndex, 90F).toFloatArray()
         slimChart.colors = arrayOf(
             getColorResFromIndex(index),
-            ContextCompat.getColor(context!!, R.color.very_light_gray)
+            ContextCompat.getColor(context!!, R.color.very_light_grey)
         ).toIntArray()
         slimChart.setStartAnimationDuration(1700)
         slimChart.textColor = getColorFromIndex(index)
@@ -139,20 +152,29 @@ class AirQualityDetailsFragment :
         snackbar?.dismiss()
     }
 
-    override fun showError(exception: CustomException) {
-        if (context == null) return
-        progress.visibility = View.GONE
-        snackbar = Snackbar.make(
-            coordinator_layout,
-            getErrorMessage(context!!, exception),
-            Snackbar.LENGTH_INDEFINITE
-        )
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            snackbar!!.setBackgroundTint(resources.getColor(R.color.red_600, null))
-        } else {
-            snackbar!!.setBackgroundTint(resources.getColor(R.color.red_600))
+    private fun showError(message: String) {
+        context?.let {
+            progress.visibility = View.GONE
+            snackbar = Snackbar.make(
+                coordinator_layout,
+                message,
+                Snackbar.LENGTH_INDEFINITE
+            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                snackbar!!.setBackgroundTint(resources.getColor(R.color.red_600, null))
+            } else {
+                snackbar!!.setBackgroundTint(resources.getColor(R.color.red_600))
+            }
+            snackbar!!.show()
+            map_iv.setImageDrawable(it.getDrawable(R.drawable.baseline_highlight_off_24))
+            map_iv.visibility = View.VISIBLE
         }
-        snackbar!!.show()
+    }
+
+    override fun showError(exception: CustomException) {
+        context?.let {
+            showError(getErrorMessage(it, exception))
+        }
         Crashlytics.logException(exception)
     }
 
