@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="fr.parisrespire.mpp.data.AirQualityViewModel" />
@@ -67,83 +66,6 @@
                     app:layout_constraintTop_toBottomOf="@id/global_index_label"
                     app:layout_constraintBottom_toBottomOf="@id/slimchart_global" />
 
-                <com.mancj.slimchart.SlimChart
-                    android:id="@+id/slimchart_pm10"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="15dp"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/pm10_index_tv"
-                    app:layout_constraintTop_toBottomOf="@id/slimchart_global"
-                    app:roundedEdges="true"
-                    app:strokeWidth="9dp"
-                    app:text="@{viewModel.dayIndex.ld.pm10.indice.toString()}" />
-
-                <TextView
-                    android:id="@+id/pm10_index_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:text="@string/pm10_index"
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    app:layout_constraintBottom_toBottomOf="@id/slimchart_pm10"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintLeft_toRightOf="@id/slimchart_pm10"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/slimchart_pm10" />
-
-                <com.mancj.slimchart.SlimChart
-                    android:id="@+id/slimchart_o3"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintLeft_toLeftOf="@id/slimchart_pm10"
-                    app:layout_constraintRight_toLeftOf="@id/o3_index_tv"
-                    app:layout_constraintTop_toBottomOf="@id/slimchart_pm10"
-                    app:roundedEdges="true"
-                    app:strokeWidth="9dp"
-                    app:text="@{viewModel.dayIndex.ld.o3.indice.toString()}" />
-
-                <TextView
-                    android:id="@+id/o3_index_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:text="@string/o3_index"
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    app:layout_constraintBottom_toBottomOf="@id/slimchart_o3"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintLeft_toRightOf="@id/slimchart_o3"
-                    app:layout_constraintTop_toTopOf="@id/slimchart_o3" />
-
-                <com.mancj.slimchart.SlimChart
-                    android:id="@+id/slimchart_no2"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintLeft_toLeftOf="@id/slimchart_pm10"
-                    app:layout_constraintRight_toLeftOf="@id/no2_index_tv"
-                    app:layout_constraintTop_toBottomOf="@id/slimchart_o3"
-                    app:roundedEdges="true"
-                    app:strokeWidth="9dp"
-                    app:text="@{viewModel.dayIndex.ld.no2.indice.toString()}" />
-
-                <TextView
-                    android:id="@+id/no2_index_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/no2_index"
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    app:layout_constraintBottom_toBottomOf="@id/slimchart_no2"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintLeft_toRightOf="@id/slimchart_no2"
-                    app:layout_constraintTop_toTopOf="@id/slimchart_no2" />
-
                 <TextView
                     android:id="@+id/pollution_advice_tv"
                     android:layout_width="wrap_content"
@@ -152,7 +74,20 @@
                     android:textAppearance="?attr/textAppearanceBody1"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/no2_index_tv" />
+                    app:layout_constraintTop_toBottomOf="@id/slimchart_global" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/pollution_details"
+                    android:name="fr.parisrespire.fragment.AirQualityDetailsFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    app:layout_constraintTop_toBottomOf="@id/pollution_advice_tv"
+                    app:layout_constraintBottom_toTopOf="@id/map_iv"
+                    app:layoutManager="LinearLayoutManager"
+                    tools:context=".fragment.AirQualityDetailsFragment"
+                    tools:listitem="@layout/item_pollutant_details" />
 
                 <ImageView
                     android:id="@+id/map_iv"
@@ -162,13 +97,13 @@
                     android:contentDescription="@string/airparif_map_description"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/pollution_advice_tv" />
+                    app:layout_constraintTop_toBottomOf="@id/pollution_details" />
 
                 <androidx.constraintlayout.widget.Group
                     android:id="@+id/air_quality_group"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:constraint_referenced_ids="slimchart_global,slimchart_pm10,pollution_advice_tv,global_index_tv,o3_index_tv,slimchart_o3,slimchart_no2,no2_index_tv,global_index_label,pm10_index_tv" />
+                    app:constraint_referenced_ids="slimchart_global,pollution_advice_tv,global_index_tv,pollution_details,global_index_label" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

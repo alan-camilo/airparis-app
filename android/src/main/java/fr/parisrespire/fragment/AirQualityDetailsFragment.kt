@@ -1,3 +1,19 @@
+/*
+This file is part of Paris respire.
+
+Paris respire is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or any
+later version.
+
+Paris respire is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
+*/
 package fr.parisrespire.fragment
 
 import android.os.Build
@@ -6,14 +22,16 @@ import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.crashlytics.android.Crashlytics
 import com.google.android.material.snackbar.Snackbar
-import com.mancj.slimchart.SlimChart
 import com.squareup.picasso.Picasso
 import dev.icerock.moko.mvvm.MvvmFragment
 import dev.icerock.moko.mvvm.createViewModelFactory
 import fr.parisrespire.R
 import fr.parisrespire.databinding.FragmentAirQualityDetailsBinding
+import fr.parisrespire.fragment.data.PollutantItem
 import fr.parisrespire.mpp.data.AirQualityViewModel
 import fr.parisrespire.mpp.data.CustomException
 import fr.parisrespire.mpp.data.UIExceptionHandler
@@ -21,6 +39,7 @@ import fr.parisrespire.mpp.data.http.model.util.Day
 import fr.parisrespire.util.FragmentUtil
 import fr.parisrespire.util.getErrorMessage
 import kotlinx.android.synthetic.main.fragment_air_quality_details.*
+import kotlinx.android.synthetic.main.fragment_air_quality_details.view.*
 
 const val POSITION_ARG = "position"
 
@@ -38,6 +57,11 @@ class AirQualityDetailsFragment :
     private var snackbar: Snackbar? = null
     private var hasError = false
     private lateinit var util: FragmentUtil
+    private lateinit var list: ArrayList<PollutantItem?>
+    private val PM10 = 0
+    private val O3 = 1
+    private val NO2 = 2
+    private var recyclerView: RecyclerView? = null
 
     override fun viewModelFactory(): ViewModelProvider.Factory {
         return createViewModelFactory {
@@ -57,6 +81,32 @@ class AirQualityDetailsFragment :
             }
         }
         util = FragmentUtil(resources)
+        list = arrayListOf(
+            PollutantItem(
+                null,
+                null,
+                context?.getString(R.string.pm10_index),
+                null,
+                context?.getString(R.string.pm10_wiki),
+                null
+            ),
+            PollutantItem(
+                null,
+                null,
+                context?.getString(R.string.o3_index),
+                null,
+                context?.getString(R.string.o3_wiki),
+                null
+            ),
+            PollutantItem(
+                null,
+                null,
+                context?.getString(R.string.no2_index),
+                null,
+                context?.getString(R.string.no2_wiki),
+                null
+            )
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,6 +114,13 @@ class AirQualityDetailsFragment :
         addObservers()
         viewModel.fetchDayIndex(day!!)
         viewModel.fetchPollutionEpisode(day!!)
+        // Set the adapter of the recyclerview
+        recyclerView = view.pollution_details as RecyclerView
+        with(view.pollution_details) {
+            layoutManager = LinearLayoutManager(context!!)
+            adapter = PollutantDetailsRecyclerViewAdapter(this, list)
+            isNestedScrollingEnabled = false
+        }
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -87,41 +144,35 @@ class AirQualityDetailsFragment :
         map_iv.visibility = View.GONE
     }
 
-    private fun displayViews() {
-        air_quality_group.visibility = View.VISIBLE
-    }
-
     private fun addObservers() {
         viewModel.dayIndex.addObserver {
             if (context != null && it != null) {
-                // show image "données disponibles au bulletin de 11h"
                 when {
+                    // show image "données disponibles au bulletin de 11h"
                     it.url_carte != null -> Picasso.get().load(it.url_carte)
                         .error(R.drawable.baseline_highlight_off_24).into(map_iv)
+                    //when there is data
                     it.global != null -> {
+                        air_quality_group.visibility = View.VISIBLE
                         // show pollution map
                         Picasso.get().load(it.global?.url_carte)
                             .error(R.drawable.baseline_highlight_off_24).into(map_iv)
-                        displayViews()
-                        // Global air quality
-                        global_index_tv.text =
-                            util.getQualityAdjectiveFromIndex(it.global?.indice, context)
-                                ?.capitalize()
-                        global_index_tv.setTextColor(util.getColorResFromIndex(it.global?.indice))
-                        // SlimChart
                         it.global?.indice?.let { index ->
-                            setSlimChart(slimchart_global, index)
+                            setGlobalIndexTextView(index)
+                            setGlobalSlimChart(index)
                         }
                         it.pm10?.indice?.let { index ->
-                            setSlimChart(slimchart_pm10, index)
+                            setPollutantItem(PM10, index)
                         }
                         it.no2?.indice?.let { index ->
-                            setSlimChart(slimchart_no2, index)
+                            setPollutantItem(NO2, index)
                         }
                         it.o3?.indice?.let { index ->
-                            setSlimChart(slimchart_o3, index)
+                            setPollutantItem(O3, index)
                         }
+                        recyclerView?.adapter?.notifyDataSetChanged()
                     }
+                    // no data
                     else -> {
                         map_iv.setImageDrawable(context!!.getDrawable(R.drawable.baseline_highlight_off_24))
                         showError(context!!.getString(R.string.error_no_data))
@@ -175,16 +226,34 @@ class AirQualityDetailsFragment :
         }
     }
 
-    private fun setSlimChart(slimChart: SlimChart, index: Int) {
+    private fun setGlobalSlimChart(index: Int) {
         val mIndex = minOf(90F, index * 0.72F)
-        slimChart.stats = arrayOf(mIndex, 90F).toFloatArray()
-        slimChart.colors = arrayOf(
+        slimchart_global.stats = arrayOf(mIndex, 90F).toFloatArray()
+        slimchart_global.colors = arrayOf(
             util.getColorResFromIndex(index),
             ContextCompat.getColor(context!!, R.color.very_light_grey)
         ).toIntArray()
-        slimChart.setStartAnimationDuration(1700)
-        slimChart.textColor = util.getColorFromIndex(index)
-        slimChart.playStartAnimation()
-        slimChart.visibility = View.VISIBLE
+        slimchart_global.setStartAnimationDuration(1700)
+        slimchart_global.textColor = util.getColorFromIndex(index)
+        slimchart_global.playStartAnimation()
+        slimchart_global.visibility = View.VISIBLE
+    }
+
+    private fun setPollutantItem(listPosition: Int, index: Int) {
+        with(list[listPosition]) {
+            this?.index = index
+            this?.colors = arrayOf(
+                util.getColorResFromIndex(index),
+                ContextCompat.getColor(context!!, R.color.very_light_grey)
+            ).toIntArray()
+            this?.textColor = util.getColorFromIndex(index)
+        }
+    }
+
+    private fun setGlobalIndexTextView(index: Int) {
+        global_index_tv.text =
+            util.getQualityAdjectiveFromIndex(index, context)
+                ?.capitalize()
+        global_index_tv.setTextColor(util.getColorResFromIndex(index))
     }
 }

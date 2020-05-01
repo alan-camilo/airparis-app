@@ -51,4 +51,7 @@
     <string name="low">faible</string>
     <string name="high">élevé</string>
     <string name="very_high">très élevé</string>
+    <string name="pm10_wiki">Les matières particulaires sont les particules en suspension dans l\'atmosphère terrestre. Un taux élevé de particules fines et ultrafines dans l\'air est un facteur de risque sanitaire (maladies cardio-vasculaires, altération des fonctions pulmonaires, cancer du poumon), induisant une nette diminution de l\'espérance de vie.</string>
+    <string name="no2_wiki">Le dioxyde d\'azote est un polluant majeur de l\'atmosphère terrestre produit par les moteurs à combustion interne et les centrales thermiques ; il est responsable à ce titre du caractère eutrophisant et acidifiant des « pluies acides » non soufrées.</string>
+    <string name="o3_wiki">L\'ozone troposphérique est l\'ozone formée dans la basse atmosphère. Il est principalement émis par les activités humaines et la flore, sous l\'effet des UV solaires. Les pics d’ozone apparaissent donc quand l’ensoleillement est important, et en conditions anticyclonique, l\'épisode s\'aggravant si l\'anticyclonique persiste.</string>
 </resources>
