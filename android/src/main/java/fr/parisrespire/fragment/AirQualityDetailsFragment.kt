@@ -37,16 +37,17 @@ import fr.parisrespire.mpp.data.CustomException
 import fr.parisrespire.mpp.data.UIExceptionHandler
 import fr.parisrespire.mpp.data.http.model.util.Day
 import fr.parisrespire.util.FragmentUtil
+import fr.parisrespire.util.MarginItemDecoration
 import fr.parisrespire.util.getErrorMessage
 import kotlinx.android.synthetic.main.fragment_air_quality_details.*
 import kotlinx.android.synthetic.main.fragment_air_quality_details.view.*
+import java.net.URL
 
 const val POSITION_ARG = "position"
 
 class AirQualityDetailsFragment :
-    MvvmFragment<FragmentAirQualityDetailsBinding, AirQualityViewModel>(),
-    Refresh,
-    UIExceptionHandler {
+    MvvmFragment<FragmentAirQualityDetailsBinding, AirQualityViewModel>(), Refresh,
+    UIExceptionHandler, MapDisplayer {
 
     override val layoutId = R.layout.fragment_air_quality_details
     override val viewModelClass: Class<AirQualityViewModel> = AirQualityViewModel::class.java
@@ -58,9 +59,10 @@ class AirQualityDetailsFragment :
     private var hasError = false
     private lateinit var util: FragmentUtil
     private lateinit var list: ArrayList<PollutantItem?>
-    private val PM10 = 0
-    private val O3 = 1
-    private val NO2 = 2
+    private val GLOBAL = 0
+    private val PM10 = 1
+    private val O3 = 2
+    private val NO2 = 3
     private var recyclerView: RecyclerView? = null
 
     override fun viewModelFactory(): ViewModelProvider.Factory {
@@ -82,6 +84,14 @@ class AirQualityDetailsFragment :
         }
         util = FragmentUtil(resources)
         list = arrayListOf(
+            PollutantItem(
+                null,
+                null,
+                context?.getString(R.string.idf_global_index),
+                null,
+                context?.getString(R.string.idf_global_wiki),
+                null
+            ),
             PollutantItem(
                 null,
                 null,
@@ -110,7 +120,7 @@ class AirQualityDetailsFragment :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        displayLoading()
+        loading()
         addObservers()
         viewModel.fetchDayIndex(day!!)
         viewModel.fetchPollutionEpisode(day!!)
@@ -118,8 +128,14 @@ class AirQualityDetailsFragment :
         recyclerView = view.pollution_details as RecyclerView
         with(view.pollution_details) {
             layoutManager = LinearLayoutManager(context!!)
-            adapter = PollutantDetailsRecyclerViewAdapter(this, list)
+            adapter = PollutionRecyclerViewAdapter(this, list, this@AirQualityDetailsFragment)
             isNestedScrollingEnabled = false
+            addItemDecoration(
+                MarginItemDecoration(
+                    resources.getDimension(R.dimen.default_margin).toInt(),
+                    resources.getDimension(R.dimen.margin_large).toInt()
+                )
+            )
         }
         super.onViewCreated(view, savedInstanceState)
     }
@@ -138,10 +154,10 @@ class AirQualityDetailsFragment :
         (parentFragment as CollectionAirQualityFragment).setCurrentPage(position, this)
     }
 
-    private fun displayLoading() {
+    private fun loading() {
         progress.visibility = View.VISIBLE
+        info_iv.visibility = View.GONE
         air_quality_group.visibility = View.GONE
-        map_iv.visibility = View.GONE
     }
 
     private fun addObservers() {
@@ -149,36 +165,37 @@ class AirQualityDetailsFragment :
             if (context != null && it != null) {
                 when {
                     // show image "données disponibles au bulletin de 11h"
-                    it.url_carte != null -> Picasso.get().load(it.url_carte)
-                        .error(R.drawable.baseline_highlight_off_24).into(map_iv)
+                    it.url_carte != null -> {
+                        Picasso.get().load(it.url_carte)
+                            .error(R.drawable.baseline_highlight_off_24).into(info_iv)
+                        info_iv.visibility = View.VISIBLE
+                    }
                     //when there is data
                     it.global != null -> {
                         air_quality_group.visibility = View.VISIBLE
-                        // show pollution map
-                        Picasso.get().load(it.global?.url_carte)
-                            .error(R.drawable.baseline_highlight_off_24).into(map_iv)
                         it.global?.indice?.let { index ->
                             setGlobalIndexTextView(index)
                             setGlobalSlimChart(index)
                         }
+                        it.global?.indice?.let { index ->
+                            setPollutantItem(GLOBAL, index, it.global?.url_carte)
+                        }
                         it.pm10?.indice?.let { index ->
-                            setPollutantItem(PM10, index)
+                            setPollutantItem(PM10, index, it.pm10?.url_carte)
                         }
                         it.no2?.indice?.let { index ->
-                            setPollutantItem(NO2, index)
+                            setPollutantItem(NO2, index, it.no2?.url_carte)
                         }
                         it.o3?.indice?.let { index ->
-                            setPollutantItem(O3, index)
+                            setPollutantItem(O3, index, it.o3?.url_carte)
                         }
                         recyclerView?.adapter?.notifyDataSetChanged()
                     }
                     // no data
                     else -> {
-                        map_iv.setImageDrawable(context!!.getDrawable(R.drawable.baseline_highlight_off_24))
                         showError(context!!.getString(R.string.error_no_data))
                     }
                 }
-                map_iv.visibility = View.VISIBLE
                 progress.visibility = View.GONE
             }
         }
@@ -192,10 +209,20 @@ class AirQualityDetailsFragment :
     override fun refresh() {
         hasError = false
         Log.d(AirQualityDetailsFragment::class.simpleName, "refresh() day=$day")
-        displayLoading()
+        loading()
         snackbar?.dismiss()
         viewModel.fetchDayIndex(day!!)
         viewModel.fetchPollutionEpisode(day!!)
+    }
+
+    override fun showMap(url: URL?, message: String?) {
+        Log.d(AirQualityDetailsFragment::class.simpleName, url.toString())
+        val dialog = MapDialogFragment()
+        val bundle = Bundle()
+        bundle.putString("url", url.toString())
+        bundle.putString("message", message)
+        dialog.arguments = bundle
+        dialog.show(childFragmentManager, url.toString())
     }
 
     override fun showError(exception: CustomException) {
@@ -221,8 +248,8 @@ class AirQualityDetailsFragment :
                 snackbar!!.setBackgroundTint(resources.getColor(R.color.red_600))
             }
             snackbar!!.show()
-            map_iv.setImageDrawable(it.getDrawable(R.drawable.baseline_highlight_off_24))
-            map_iv.visibility = View.VISIBLE
+            info_iv.setImageDrawable(it.getDrawable(R.drawable.baseline_highlight_off_24))
+            info_iv.visibility = View.VISIBLE
         }
     }
 
@@ -239,7 +266,7 @@ class AirQualityDetailsFragment :
         slimchart_global.visibility = View.VISIBLE
     }
 
-    private fun setPollutantItem(listPosition: Int, index: Int) {
+    private fun setPollutantItem(listPosition: Int, index: Int, url: String?) {
         with(list[listPosition]) {
             this?.index = index
             this?.colors = arrayOf(
@@ -247,6 +274,8 @@ class AirQualityDetailsFragment :
                 ContextCompat.getColor(context!!, R.color.very_light_grey)
             ).toIntArray()
             this?.textColor = util.getColorFromIndex(index)
+            if (url != null)
+                this?.url = URL(url)
         }
     }
 

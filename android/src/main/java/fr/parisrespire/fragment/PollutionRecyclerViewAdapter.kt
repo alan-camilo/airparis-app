@@ -16,20 +16,11 @@ import net.cachapa.expandablelayout.ExpandableLayout
 /**
  * [RecyclerView.Adapter] that can display a [PollutantItem]
  */
-class PollutantDetailsRecyclerViewAdapter(
+class PollutionRecyclerViewAdapter(
     private val recyclerView: RecyclerView,
-    private val mValues: List<PollutantItem?>
-) : RecyclerView.Adapter<PollutantDetailsRecyclerViewAdapter.ViewHolder>() {
-
-    private val mOnClickListener: View.OnClickListener
-
-    init {
-        mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as PollutantItem
-            // Notify the active callbacks interface (the activity, if the fragment is attached to
-            // one) that an item has been selected.
-        }
-    }
+    private val mValues: List<PollutantItem?>,
+    private val displayer: MapDisplayer
+) : RecyclerView.Adapter<PollutionRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -41,6 +32,7 @@ class PollutantDetailsRecyclerViewAdapter(
         val item = mValues[position]
         item?.let {
             Log.d("Adapter", item.toString())
+            // set textviews and the slimchart
             holder.name.text = item.name
             holder.wiki.text = item.wiki
             holder.slimchart.text = item.index.toString()
@@ -56,12 +48,10 @@ class PollutantDetailsRecyclerViewAdapter(
                 holder.slimchart.colors = item.colors
                 holder.slimchart.playStartAnimation()
             }
-        }
-
-        with(holder.mView) {
-            tag = item
-            setOnClickListener {
-
+            // set map button
+            holder.mapButton.isEnabled = item.url != null
+            holder.mapButton.setOnClickListener {
+                displayer.showMap(item.url, item.name)
             }
         }
     }
@@ -75,6 +65,7 @@ class PollutantDetailsRecyclerViewAdapter(
         val expandableLayout = mView.expandable_layout
         val slimchart = mView.slimchart
         val infoButton = mView.btn_info
+        val mapButton = mView.btn_map
 
         init {
             expandableLayout.setOnExpansionUpdateListener(this)

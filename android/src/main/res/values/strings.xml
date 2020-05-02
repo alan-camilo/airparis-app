@@ -55,4 +55,7 @@
     <string name="no2_wiki">Nitrogen dioxide is a major pollutant of the earth\'s atmosphere produced by internal combustion engines and thermal power stations; as such, it is responsible for the eutrophying and acidifying nature of non-sulphur \"acid rain\".</string>
     <string name="pm10_wiki">Particulate matter is the particles suspended in the Earth\'s atmosphere. A high level of fine and ultrafine particles in the air is a health risk factor (cardiovascular disease, impaired lung function, lung cancer), leading to a marked decrease in life expectancy.</string>
     <string name="o3_wiki">Ground-level ozone is the ozone formed in the lower atmosphere. It is mainly emitted by human activities and flora, under the effect of solar UV. Ozone peaks therefore appear when there is a lot of sunshine, and under anticyclonic conditions, the episode worsening if the anticyclonic persists.</string>
+    <string name="idf_global_index">Ile-de-France global index</string>
+    <string name="idf_global_wiki">The global index of the Ile-de-France region. This index is based on the worst index of the 3 pollutants above.</string>
+    <string name="close">close</string>
 </resources>

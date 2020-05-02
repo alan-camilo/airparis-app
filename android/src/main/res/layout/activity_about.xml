@@ -6,7 +6,7 @@
 
     <com.codesgood.views.JustifiedTextView
         android:id="@+id/license_tv"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="25dp"
         android:text="@string/license_text"
@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/git_url_tv"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/git_url"
         android:layout_marginStart="25dp"
@@ -29,7 +29,7 @@
 
     <TextView
         android:id="@+id/developed_by_tv"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/developed_by"
         android:layout_marginStart="25dp"
@@ -42,7 +42,7 @@
 
     <TextView
         android:id="@+id/copyleft_tv"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/copyleft"
         android:layout_marginStart="25dp"
