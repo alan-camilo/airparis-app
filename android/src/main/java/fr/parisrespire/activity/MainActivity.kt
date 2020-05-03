@@ -16,14 +16,19 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 */
 package fr.parisrespire.activity
 
+import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import fr.parisrespire.R
 import fr.parisrespire.fragment.CollectionAirQualityFragment
 import fr.parisrespire.mpp.base.ALERT_SHARED_PREFERENCE
@@ -33,26 +38,61 @@ import fr.parisrespire.util.scheduleAlert
 
 class MainActivity : AppCompatActivity() {
 
+    private var permissionDialog: AlertDialog? = null
+    private val REQUEST_LOCATION_PERMISSION = 420
+    private val IS_REQUESTING_PERMISSION = "420"
+    private var isRequestingPermission = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        savedInstanceState?.let {
+            isRequestingPermission = it.getBoolean(IS_REQUESTING_PERMISSION)
+        }
         val sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
         val isAlerted = sharedPreferences.getBoolean(ALERT_SHARED_PREFERENCE, true)
         if (isAlerted) {
             scheduleAlert(this)
         }
-        val tabIndex = intent.getIntExtra(TAB_ARG, 1)
-        with(supportFragmentManager) {
-            var fragment = this.findFragmentByTag("collection")
-            if (fragment == null) {
-                val transaction = this.beginTransaction()
-                fragment = CollectionAirQualityFragment()
-                fragment.arguments = Bundle().apply {
-                    putInt(TAB_ARG, tabIndex)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (hasLocationPermission())
+            setFragment()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        permissionDialog?.dismiss()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean(IS_REQUESTING_PERMISSION, isRequestingPermission)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray
+    ) {
+        Log.d(MainActivity::class.simpleName, "permission result")
+        when (requestCode) {
+            REQUEST_LOCATION_PERMISSION -> {
+                isRequestingPermission = false
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // permission was granted
+                    Log.d(MainActivity::class.simpleName, "permission granted")
+                    permissionDialog?.dismiss()
+                    setFragment()
+                } else {
+                    Log.d(MainActivity::class.simpleName, "permission refused")
+                    showPermissionDialog()
                 }
-                transaction.add(R.id.container, fragment, "collection")
-                transaction.commit()
+                return
             }
+            else -> Unit
         }
     }
 
@@ -92,9 +132,55 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setFragment() {
+        val tabIndex = intent.getIntExtra(TAB_ARG, 1)
+        with(supportFragmentManager) {
+            var fragment = this.findFragmentByTag("collection")
+            if (fragment == null) {
+                val transaction = this.beginTransaction()
+                fragment = CollectionAirQualityFragment()
+                fragment.arguments = Bundle().apply {
+                    putInt(TAB_ARG, tabIndex)
+                }
+                transaction.add(R.id.container, fragment, "collection")
+                transaction.commit()
+            }
+        }
+    }
+
     private fun refreshCollectionFragment() {
         Log.d(MainActivity::class.simpleName, "refreshCollectionFragment")
         val fragment = supportFragmentManager.fragments.first() as CollectionAirQualityFragment
         fragment.refresh()
+    }
+
+    private fun hasLocationPermission(): Boolean {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            // Permission is not granted
+            if (!isRequestingPermission)
+                showPermissionDialog()
+            return false
+        }
+        return true
+    }
+
+    private fun showPermissionDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(R.string.location_permission_message)
+            ?.setPositiveButton(R.string.share_location) { _, _ ->
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+                    REQUEST_LOCATION_PERMISSION
+                )
+                isRequestingPermission = true
+            }
+        builder.setCancelable(false)
+        permissionDialog = builder.show()
     }
 }

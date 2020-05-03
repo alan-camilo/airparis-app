@@ -57,4 +57,6 @@
     <string name="idf_global_index">Indice agglomération parisienne</string>
     <string name="idf_global_wiki">Indice globale de la région Ile-de-France. Cet indice se base sur le moins bon des 3 indices ci-dessous.</string>
     <string name="close">fermer</string>
+    <string name="location_permission_message">Votre location ne sera ni sauvegardée ni partagée.</string>
+    <string name="share_location">Autoriser ma localisation</string>
 </resources>
