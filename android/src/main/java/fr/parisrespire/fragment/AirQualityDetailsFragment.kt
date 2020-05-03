@@ -132,8 +132,8 @@ class AirQualityDetailsFragment :
             isNestedScrollingEnabled = false
             addItemDecoration(
                 MarginItemDecoration(
-                    resources.getDimension(R.dimen.default_margin).toInt(),
-                    resources.getDimension(R.dimen.margin_large).toInt()
+                    resources.getDimension(R.dimen.vertical_margin).toInt(),
+                    resources.getDimension(R.dimen.horizontal_margin).toInt()
                 )
             )
         }

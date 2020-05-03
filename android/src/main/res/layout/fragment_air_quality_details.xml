@@ -27,7 +27,7 @@
                     android:id="@+id/progress"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="@dimen/vertical_margin"
                     android:visibility="visible"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -35,16 +35,16 @@
 
                 <com.mancj.slimchart.SlimChart
                     android:id="@+id/slimchart_global"
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_width="@dimen/big_chart"
+                    android:layout_height="@dimen/big_chart"
+                    android:layout_marginTop="@dimen/large_vertical_margin"
+                    android:layout_marginEnd="@dimen/horizontal_margin"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/global_index_label"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:roundedEdges="true"
-                    app:strokeWidth="13dp"
+                    app:strokeWidth="@dimen/big_stroke_width"
                     app:text="@{viewModel.dayIndex.ld.global.indice.toString()}"/>
 
                 <TextView
@@ -68,15 +68,20 @@
                     app:layout_constraintTop_toBottomOf="@id/global_index_label"
                     app:layout_constraintBottom_toBottomOf="@id/slimchart_global" />
 
-                <TextView
+                <com.codesgood.views.JustifiedTextView
                     android:id="@+id/pollution_advice_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.pollutionEpisode.ld.detail}"
+                    android:layout_marginTop="@dimen/vertical_margin"
+                    android:layout_marginBottom="@dimen/vertical_margin"
+                    android:layout_marginLeft="@dimen/horizontal_margin"
+                    android:layout_marginRight="@dimen/horizontal_margin"
                     android:textAppearance="?attr/textAppearanceBody1"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/slimchart_global" />
+                    app:layout_constraintTop_toBottomOf="@id/slimchart_global"
+                    app:layout_constraintBottom_toTopOf="@id/pollution_details"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/pollution_details"
@@ -95,7 +100,7 @@
                     android:id="@+id/info_iv"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/map_height"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/small_vertical_margin"
                     android:visibility="gone"
                     android:contentDescription="@string/airparif_map_description"
                     app:layout_constraintLeft_toLeftOf="parent"
