@@ -125,8 +125,8 @@ class AirQualityDetailsFragment :
         viewModel.fetchDayIndex(day!!)
         viewModel.fetchPollutionEpisode(day!!)
         // Set the adapter of the recyclerview
-        recyclerView = view.pollution_details as RecyclerView
-        with(view.pollution_details) {
+        recyclerView = view.recyclerview as RecyclerView
+        with(view.recyclerview) {
             layoutManager = LinearLayoutManager(context!!)
             adapter = PollutionRecyclerViewAdapter(this, list, this@AirQualityDetailsFragment)
             isNestedScrollingEnabled = false
@@ -137,6 +137,7 @@ class AirQualityDetailsFragment :
                 )
             )
         }
+        advice_tv.visibility = View.GONE
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -200,8 +201,8 @@ class AirQualityDetailsFragment :
             }
         }
         viewModel.pollutionEpisode.addObserver {
-            if (it != null && context != null) {
-                pollution_advice_tv.visibility = View.VISIBLE
+            if (context != null && it != null && it.isNotEmpty()) {
+                advice_tv.visibility = View.VISIBLE
             }
         }
     }

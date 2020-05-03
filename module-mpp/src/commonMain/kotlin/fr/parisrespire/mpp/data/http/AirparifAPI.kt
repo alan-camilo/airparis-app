@@ -5,6 +5,7 @@ import fr.parisrespire.mpp.base.IO
 import fr.parisrespire.mpp.base.UserPreference
 import fr.parisrespire.mpp.data.ExceptionWrapper
 import fr.parisrespire.mpp.data.http.model.Episode
+import fr.parisrespire.mpp.data.http.model.Idxville
 import fr.parisrespire.mpp.data.http.model.Indice
 import fr.parisrespire.mpp.data.http.model.IndiceJour
 import fr.parisrespire.mpp.data.http.model.util.Day
@@ -24,9 +25,16 @@ import kotlinx.serialization.builtins.list
 import kotlinx.serialization.json.Json
 
 @UnstableDefault
-class AirparifAPI(private val client: HttpClient, private val apiKeyRepository: ApiKeyRepository) {
+class AirparifAPI(
+    private val client: HttpClient,
+    private val apiKeyRepository: ApiKeyRepository,
+    private val networkConnectivity: () -> Unit
+) {
 
-    constructor() : this(customHttpClient, ApiKeyRepositoryImpl())
+    constructor() : this(
+        customHttpClient,
+        ApiKeyRepositoryImpl(),
+        { NetworkConnectivity.checkConnectivity() })
 
     suspend fun requestDayIndex(day: Day): IndiceJour {
         val argument = ParametersBuilder().apply {
@@ -38,7 +46,7 @@ class AirparifAPI(private val client: HttpClient, private val apiKeyRepository: 
             encodedPath = PATH_INDICE_JOUR,
             parameters = argument
         )
-        NetworkConnectivity.checkConnectivity()
+        networkConnectivity()
         try {
             val mBody = getBodyParam()
             return withContext(IO) {
@@ -55,7 +63,7 @@ class AirparifAPI(private val client: HttpClient, private val apiKeyRepository: 
     }
 
     suspend fun requestPollutionEpisode(): List<Episode> {
-        NetworkConnectivity.checkConnectivity()
+        networkConnectivity()
         try {
             val mBody = getBodyParam()
             return withContext(IO) {
@@ -72,7 +80,7 @@ class AirparifAPI(private val client: HttpClient, private val apiKeyRepository: 
     }
 
     suspend fun requestIndex(): List<Indice> {
-        NetworkConnectivity.checkConnectivity()
+        networkConnectivity()
         try {
             val mBody = getBodyParam()
             return withContext(IO) {
@@ -81,6 +89,32 @@ class AirparifAPI(private val client: HttpClient, private val apiKeyRepository: 
                     body = mBody
                 }
                 Json.parse(Indice.serializer().list, response)
+            }
+        } catch (throwable: Throwable) {
+            handleWrongApiKey(throwable)
+            throw ExceptionWrapper(throwable).getCustomException()
+        }
+    }
+
+    suspend fun requestByCity(postalCode: Int): List<Idxville> {
+        val argument = ParametersBuilder().apply {
+            append("villes", postalCode.toString())
+        }
+        val urlBuilder = URLBuilder(
+            protocol = URLProtocol.HTTPS,
+            host = HOST,
+            encodedPath = PATH_IDXVILLE,
+            parameters = argument
+        )
+        networkConnectivity()
+        try {
+            val mBody = getBodyParam()
+            return withContext(IO) {
+                val response: String = client.post {
+                    url(urlBuilder.buildString())
+                    body = mBody
+                }
+                Json.parse(Idxville.serializer().list, response)
             }
         } catch (throwable: Throwable) {
             handleWrongApiKey(throwable)

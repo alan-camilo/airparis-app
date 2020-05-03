@@ -12,10 +12,4 @@ data class IndiceJour(
     // The two properties below are not in the documentation but are real! Do not delete
     val url_carte: String? = null,
     val indices: String? = null
-) {
-    fun isEmpty() =
-        date.isEmpty() && global == null && no2 == null && o3 == null && pm10 == null
-
-    fun isNotEmpty() =
-        !isEmpty()
-}
+)

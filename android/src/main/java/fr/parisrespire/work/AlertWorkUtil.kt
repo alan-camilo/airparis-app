@@ -26,7 +26,7 @@ class AlertWorkUtil(val context: Context) {
 
     fun formatAlertMessage(
         list: List<Pair<String, PollutantDetails>>,
-        advice: String?
+        advice: String
     ): Pair<String, Boolean> {
         val filteredAlert = list.filter { it.second.niveau == PollutionLevel.ALERT.value }
         val filteredInfo = list.filter { it.second.niveau == PollutionLevel.INFO.value }

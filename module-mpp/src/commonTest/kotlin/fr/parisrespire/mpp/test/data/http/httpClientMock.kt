@@ -17,6 +17,7 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 package fr.parisrespire.mpp.test.data.http
 
 import fr.parisrespire.mpp.data.http.URL_EPISODE_POLLUTION
+import fr.parisrespire.mpp.data.http.URL_IDXVILLE
 import fr.parisrespire.mpp.data.http.URL_INDICE
 import fr.parisrespire.mpp.data.http.URL_INDICE_JOUR
 import io.ktor.client.HttpClient
@@ -40,6 +41,9 @@ val mockResponseOK = HttpClient(MockEngine) {
                 URL_EPISODE_POLLUTION.encodedPath -> {
                     respondOk(jsonEpisodePollution)
                 }
+                URL_IDXVILLE.encodedPath -> {
+                    respondOk(jsonIdxville)
+                }
                 else -> error("Unhandled ${request.url.fullUrl} ${request.method}")
             }
         }
@@ -51,13 +55,16 @@ val mockResponseBadJson = HttpClient(MockEngine) {
         addHandler { request ->
             when (request.url.encodedPath) {
                 URL_INDICE.encodedPath -> {
-                    respondOk(jsonIndiceJour)
+                    respondOk(jsonIdxville)
                 }
                 URL_INDICE_JOUR.encodedPath -> {
                     respondOk(jsonEpisodePollution)
                 }
                 URL_EPISODE_POLLUTION.encodedPath -> {
                     respondOk(jsonIndice)
+                }
+                URL_IDXVILLE.encodedPath -> {
+                    respondOk(jsonIndiceJour)
                 }
                 else -> error("Unhandled ${request.url.fullUrl} ${request.method}")
             }
@@ -147,5 +154,29 @@ const val jsonEpisodePollution = "[ \n" +
         "            \"criteres\": [\"km\"] \n" +
         "        },\n" +
         "        \"detail\": \"Il est conseillé d'éviter les déplacements en Ile de France\" \n" +
+        "    }\n" +
+        "]"
+
+const val jsonIdxville = "[\n" +
+        "    {\n" +
+        "        \"ninsee\": \"91228\",\n" +
+        "        \"hier\": {\n" +
+        "            \"indice\": 38,\n" +
+        "            \"polluants\": [\n" +
+        "                \"o3\"\n" +
+        "            ]\n" +
+        "        },\n" +
+        "        \"jour\": {\n" +
+        "            \"indice\": 35,\n" +
+        "            \"polluants\": [\n" +
+        "                \"o3\"\n" +
+        "            ]\n" +
+        "        },\n" +
+        "        \"demain\": {\n" +
+        "            \"indice\": 40,\n" +
+        "            \"polluants\": [\n" +
+        "                \"o3\"\n" +
+        "            ]\n" +
+        "        }\n" +
         "    }\n" +
         "]"

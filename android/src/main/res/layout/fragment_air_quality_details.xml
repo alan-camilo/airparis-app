@@ -68,30 +68,31 @@
                     app:layout_constraintTop_toBottomOf="@id/global_index_label"
                     app:layout_constraintBottom_toBottomOf="@id/slimchart_global" />
 
-                <com.codesgood.views.JustifiedTextView
-                    android:id="@+id/pollution_advice_tv"
+                <TextView
+                    android:id="@+id/advice_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:text="@{viewModel.pollutionEpisode.ld.detail}"
                     android:layout_marginTop="@dimen/vertical_margin"
-                    android:layout_marginBottom="@dimen/vertical_margin"
                     android:layout_marginLeft="@dimen/horizontal_margin"
                     android:layout_marginRight="@dimen/horizontal_margin"
+                    android:layout_marginBottom="@dimen/vertical_margin"
                     android:textAppearance="?attr/textAppearanceBody1"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/slimchart_global"
-                    app:layout_constraintBottom_toTopOf="@id/pollution_details"/>
+                    app:layout_constraintTop_toBottomOf="@id/slimchart_global" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/pollution_details"
+                    android:id="@+id/recyclerview"
                     android:name="fr.parisrespire.fragment.AirQualityDetailsFragment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/vertical_margin"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/pollution_advice_tv"
-                    app:layout_constraintBottom_toTopOf="@id/info_iv"
+                    app:layout_constraintTop_toBottomOf="@id/advice_tv"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layoutManager="LinearLayoutManager"
                     tools:context=".fragment.AirQualityDetailsFragment"
                     tools:listitem="@layout/item_pollutant_details" />
@@ -105,13 +106,13 @@
                     android:contentDescription="@string/airparif_map_description"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/pollution_details" />
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <androidx.constraintlayout.widget.Group
                     android:id="@+id/air_quality_group"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:constraint_referenced_ids="slimchart_global,pollution_advice_tv,global_index_tv,pollution_details,global_index_label" />
+                    app:constraint_referenced_ids="slimchart_global,global_index_tv,recyclerview,global_index_label" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
