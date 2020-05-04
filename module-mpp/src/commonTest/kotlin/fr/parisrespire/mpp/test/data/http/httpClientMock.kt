@@ -16,10 +16,7 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 */
 package fr.parisrespire.mpp.test.data.http
 
-import fr.parisrespire.mpp.data.http.URL_EPISODE_POLLUTION
-import fr.parisrespire.mpp.data.http.URL_IDXVILLE
-import fr.parisrespire.mpp.data.http.URL_INDICE
-import fr.parisrespire.mpp.data.http.URL_INDICE_JOUR
+import fr.parisrespire.mpp.data.http.*
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respondBadRequest
@@ -44,6 +41,9 @@ val mockResponseOK = HttpClient(MockEngine) {
                 URL_IDXVILLE.encodedPath -> {
                     respondOk(jsonIdxville)
                 }
+                URL_GEO_API.encodedPath -> {
+                    respondOk(jsonCommune)
+                }
                 else -> error("Unhandled ${request.url.fullUrl} ${request.method}")
             }
         }
@@ -65,6 +65,9 @@ val mockResponseBadJson = HttpClient(MockEngine) {
                 }
                 URL_IDXVILLE.encodedPath -> {
                     respondOk(jsonIndiceJour)
+                }
+                URL_GEO_API.encodedPath -> {
+                    respondOk(jsonIndice)
                 }
                 else -> error("Unhandled ${request.url.fullUrl} ${request.method}")
             }
@@ -178,5 +181,12 @@ const val jsonIdxville = "[\n" +
         "                \"o3\"\n" +
         "            ]\n" +
         "        }\n" +
+        "    }\n" +
+        "]"
+
+const val jsonCommune = "[\n" +
+        "    {\n" +
+        "        \"code\": \"91228\",\n" +
+        "        \"nom\": \"Évry-Courcouronnes\"\n" +
         "    }\n" +
         "]"

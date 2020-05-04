@@ -42,7 +42,7 @@ class AirparifAPI(
         }
         val urlBuilder = URLBuilder(
             protocol = URLProtocol.HTTPS,
-            host = HOST,
+            host = HOST_AIRPARIF,
             encodedPath = PATH_INDICE_JOUR,
             parameters = argument
         )
@@ -102,7 +102,7 @@ class AirparifAPI(
         }
         val urlBuilder = URLBuilder(
             protocol = URLProtocol.HTTPS,
-            host = HOST,
+            host = HOST_AIRPARIF,
             encodedPath = PATH_IDXVILLE,
             parameters = argument
         )
