@@ -38,9 +38,9 @@ class GeoApi(
         customHttpClient,
         { NetworkConnectivity.checkConnectivity() })
 
-    suspend fun requestInseeCode(postalCode: Int): Commune {
+    suspend fun requestInseeCode(postalCode: String): Commune {
         val argument = ParametersBuilder().apply {
-            append("codePostal", postalCode.toString())
+            append("codePostal", postalCode)
             append("fields", "code")
         }
         val urlBuilder = URLBuilder(

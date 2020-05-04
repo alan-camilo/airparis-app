@@ -21,6 +21,9 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -29,19 +32,34 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.crashlytics.android.Crashlytics
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import fr.parisrespire.R
 import fr.parisrespire.fragment.CollectionAirQualityFragment
 import fr.parisrespire.mpp.base.ALERT_SHARED_PREFERENCE
+import fr.parisrespire.mpp.base.INSEE_CODE_PREFERENCE
 import fr.parisrespire.mpp.base.SHARED_PREFERENCES
+import fr.parisrespire.mpp.data.CustomException
+import fr.parisrespire.mpp.data.UIExceptionHandler
+import fr.parisrespire.util.InseeCodeProvider
 import fr.parisrespire.util.TAB_ARG
 import fr.parisrespire.util.scheduleAlert
+import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), UIExceptionHandler {
 
     private var permissionDialog: AlertDialog? = null
-    private val REQUEST_LOCATION_PERMISSION = 420
-    private val IS_REQUESTING_PERMISSION = "420"
+    private val REQUEST_LOCATION_PERMISSION = 42
+    private val IS_REQUESTING_PERMISSION = "42"
     private var isRequestingPermission = false
+    private val PLAY_SERVICES_ERROR = 43
+
+    // Insee city code for Paris 75001
+    private val defaultInseeCode = "75056"
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,12 +72,25 @@ class MainActivity : AppCompatActivity() {
         if (isAlerted) {
             scheduleAlert(this)
         }
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (hasLocationPermission())
-            setFragment()
+    override fun onResume() {
+        super.onResume()
+        val instance = GoogleApiAvailability.getInstance()
+        val result = instance.isGooglePlayServicesAvailable(this)
+        if (result != ConnectionResult.SUCCESS) {
+            instance.getErrorDialog(this, result, PLAY_SERVICES_ERROR)
+        }
+        if (hasLocationPermission()) {
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    provideInseeCode(location)
+                }
+                .addOnFailureListener {
+                    handleLocationFailure(it)
+                }
+        }
     }
 
     override fun onStop() {
@@ -82,10 +113,16 @@ class MainActivity : AppCompatActivity() {
                 isRequestingPermission = false
                 // If request is cancelled, the result arrays are empty.
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    // permission was granted
+                    // permission was granted, now retrieve insee city code
                     Log.d(MainActivity::class.simpleName, "permission granted")
                     permissionDialog?.dismiss()
-                    setFragment()
+                    fusedLocationClient.lastLocation
+                        .addOnSuccessListener { location: Location? ->
+                            provideInseeCode(location)
+                        }
+                        .addOnFailureListener {
+                            handleLocationFailure(it)
+                        }
                 } else {
                     Log.d(MainActivity::class.simpleName, "permission refused")
                     showPermissionDialog()
@@ -182,5 +219,46 @@ class MainActivity : AppCompatActivity() {
             }
         builder.setCancelable(false)
         permissionDialog = builder.show()
+    }
+
+    override fun showError(exception: CustomException) {
+        handleLocationFailure(exception)
+    }
+
+    private fun provideInseeCode(location: Location?) {
+        if (location == null) {
+            handleLocationFailure(null)
+            return
+        }
+        val geocoder = Geocoder(this, Locale.FRANCE)
+        var list: List<Address>? = null
+        try {
+            list = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+        } catch (exception: Exception) {
+            handleLocationFailure(exception)
+            return
+        }
+        val address = list?.firstOrNull()
+        if (address != null && address.adminArea == "Île-de-France") {
+            val postalCode = address.postalCode
+            val provider = InseeCodeProvider(this)
+            provider.inseeCode.addObserver {
+                setFragment()
+            }
+            provider.getInseeCode(postalCode)
+        } else {
+            handleLocationFailure(null)
+        }
+    }
+
+    private fun handleLocationFailure(exception: Throwable?) {
+        val sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putString(INSEE_CODE_PREFERENCE, defaultInseeCode)
+            apply()
+        }
+        if (exception != null)
+            Crashlytics.logException(exception)
+        setFragment()
     }
 }

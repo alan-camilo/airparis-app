@@ -102,4 +102,6 @@ dependencies {
     implementation("com.github.mancj:SlimChart:0.1.2")
     // expandable layout
     implementation("net.cachapa.expandablelayout:expandablelayout:2.9.2")
+    // google play services
+    implementation("com.google.android.gms:play-services-location:17.0.0")
 }
