@@ -40,6 +40,7 @@ import com.google.android.gms.location.LocationServices
 import fr.parisrespire.R
 import fr.parisrespire.fragment.CollectionAirQualityFragment
 import fr.parisrespire.mpp.base.ALERT_SHARED_PREFERENCE
+import fr.parisrespire.mpp.base.CITY_NAME_PREFERENCE
 import fr.parisrespire.mpp.base.INSEE_CODE_PREFERENCE
 import fr.parisrespire.mpp.base.SHARED_PREFERENCES
 import fr.parisrespire.mpp.data.CustomException
@@ -59,6 +60,7 @@ class MainActivity : AppCompatActivity(), UIExceptionHandler {
 
     // Insee city code for Paris 75001
     private val defaultInseeCode = "75056"
+    private val defaultCity = "Paris"
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -140,7 +142,7 @@ class MainActivity : AppCompatActivity(), UIExceptionHandler {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.notification -> {
+            R.id.notification -> {INSEE_CODE_PREFERENCE
                 val intent = Intent(this, NotificationSettingsActivity::class.java)
                 startActivity(intent)
                 true
@@ -240,6 +242,12 @@ class MainActivity : AppCompatActivity(), UIExceptionHandler {
         }
         val address = list?.firstOrNull()
         if (address != null && address.adminArea == "Île-de-France") {
+            with(getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE).edit()) {
+                // save city name
+                putString(CITY_NAME_PREFERENCE, address.locality)
+                apply()
+            }
+            // get insee code
             val postalCode = address.postalCode
             val provider = InseeCodeProvider(this)
             provider.inseeCode.addObserver {
