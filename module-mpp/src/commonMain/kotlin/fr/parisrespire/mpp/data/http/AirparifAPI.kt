@@ -96,9 +96,9 @@ class AirparifAPI(
         }
     }
 
-    suspend fun requestByCity(postalCode: Int): List<Idxville> {
+    suspend fun requestByCity(postalCode: String): List<Idxville> {
         val argument = ParametersBuilder().apply {
-            append("villes", postalCode.toString())
+            append("villes", postalCode)
         }
         val urlBuilder = URLBuilder(
             protocol = URLProtocol.HTTPS,

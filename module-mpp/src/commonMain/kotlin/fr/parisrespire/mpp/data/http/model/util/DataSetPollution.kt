@@ -16,19 +16,17 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 */
 package fr.parisrespire.mpp.data.http.model.util
 
-import dev.icerock.moko.mvvm.livedata.LiveData
-import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import fr.parisrespire.mpp.data.http.model.Episode
+import fr.parisrespire.mpp.data.http.model.IdxvilleInfo
 import fr.parisrespire.mpp.data.http.model.Indice
 import fr.parisrespire.mpp.data.http.model.IndiceJour
 
-class DataSetPollution(
-    private val mDayIndex: MutableLiveData<IndiceJour?>,
-    private val mIndexList: MutableLiveData<Indice?>,
-    private val mPollutionEpoisode: MutableLiveData<Episode?>
+data class DataSetPollution(
+    val mDayIndex: IndiceJour? = null,
+    val mIndex: Indice? = null,
+    val mPollutionEpisode: Episode? = null,
+    val mIdxvilleInfo: IdxvilleInfo? = null
 ) {
-
-    val dayIndex: LiveData<IndiceJour?> = mDayIndex
-    val index: LiveData<Indice?> = mIndexList
-    val pollutionEpisode: LiveData<Episode?> = mPollutionEpoisode
+    fun isComplete() =
+        mDayIndex != null && mIndex != null && mPollutionEpisode != null && mIdxvilleInfo != null
 }

@@ -1,28 +1,13 @@
 package fr.parisrespire.mpp.data
 
-import com.github.florent37.log.Logger
-import dev.icerock.moko.mvvm.livedata.LiveData
-import dev.icerock.moko.mvvm.livedata.MutableLiveData
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import fr.parisrespire.mpp.data.http.AirparifAPI
-import fr.parisrespire.mpp.data.http.model.Episode
-import fr.parisrespire.mpp.data.http.model.Indice
-import fr.parisrespire.mpp.data.http.model.IndiceJour
-import fr.parisrespire.mpp.data.http.model.util.Day
-import kotlinx.coroutines.TimeoutCancellationException
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeout
 
 class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) : ViewModel() {
 
-    private val _dayIndex = MutableLiveData<IndiceJour?>(null)
-    val dayIndex: LiveData<IndiceJour?> = _dayIndex
-
-    private val _indexList = MutableLiveData<Indice?>(null)
-    val index: LiveData<Indice?> = _indexList
-
-    private val _pollutionEpisode = MutableLiveData<Episode?>(null)
-    val pollutionEpisode: LiveData<Episode?> = _pollutionEpisode
+    /*val mutex = Mutex()
+    private var dataSetPollution = DataSetPollution()
+    private val _dataSet = MutableLiveData<DataSetPollution?>(null)
+    val dataSet: LiveData<DataSetPollution?> = _dataSet
 
     private val airparifApi = AirparifAPI()
 
@@ -32,11 +17,19 @@ class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) : 
             try {
                 withTimeout(10_000) {
                     val result = airparifApi.requestDayIndex(day)
-                    _dayIndex.postValue(result)
+                    mutex.withLock {
+                        dataSetPollution = dataSetPollution.copy(mDayIndex = result)
+                        _dataSet.postValue(dataSetPollution)
+                    }
                 }
             } catch (exception: TimeoutCancellationException) {
                 Logger.e("AirQualityViewModel", "timeout $exception")
-                uiExceptionHandler.showError(CustomHttpRequestTimeoutException(exception.message, exception.cause))
+                uiExceptionHandler.showError(
+                    CustomHttpRequestTimeoutException(
+                        exception.message,
+                        exception.cause
+                    )
+                )
             } catch (exception: CustomException) {
                 Logger.e("AirQualityViewModel", exception.toString())
                 uiExceptionHandler.showError(exception)
@@ -48,12 +41,20 @@ class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) : 
         viewModelScope.launch {
             try {
                 withTimeout(10_000) {
-                    val result = airparifApi.requestIndex()
-                    _indexList.postValue(result.firstOrNull { it.date == day.value })
+                    val result = airparifApi.requestIndex().firstOrNull { it.date == day.value }
+                    mutex.withLock {
+                        dataSetPollution = dataSetPollution.copy(mIndex = result)
+                        _dataSet.postValue(dataSetPollution)
+                    }
                 }
             } catch (exception: TimeoutCancellationException) {
                 Logger.e("AirQualityViewModel", exception.toString())
-                uiExceptionHandler.showError(CustomHttpRequestTimeoutException(exception.message, exception.cause))
+                uiExceptionHandler.showError(
+                    CustomHttpRequestTimeoutException(
+                        exception.message,
+                        exception.cause
+                    )
+                )
             } catch (exception: CustomException) {
                 Logger.e("AirQualityViewModel", exception.toString())
                 uiExceptionHandler.showError(exception)
@@ -65,16 +66,62 @@ class AirQualityViewModel(private val uiExceptionHandler: UIExceptionHandler) : 
         viewModelScope.launch {
             try {
                 withTimeout(10_000) {
-                    val result = airparifApi.requestPollutionEpisode()
-                    _pollutionEpisode.postValue(result.firstOrNull { it.date == day.value })
+                    val result =
+                        airparifApi.requestPollutionEpisode().firstOrNull { it.date == day.value }
+                    mutex.withLock {
+                        dataSetPollution = dataSetPollution.copy(mPollutionEpisode = result)
+                        _dataSet.postValue(dataSetPollution)
+                    }
                 }
             } catch (exception: TimeoutCancellationException) {
                 Logger.e("AirQualityViewModel", "timeout $exception")
-                uiExceptionHandler.showError(CustomHttpRequestTimeoutException(exception.message, exception.cause))
+                uiExceptionHandler.showError(
+                    CustomHttpRequestTimeoutException(
+                        exception.message,
+                        exception.cause
+                    )
+                )
             } catch (exception: CustomException) {
                 Logger.e("AirQualityViewModel", exception.toString())
                 uiExceptionHandler.showError(exception)
             }
         }
     }
+
+    fun fetchIdxville(postalCode: String, day: Day) {
+        viewModelScope.launch {
+            try {
+                withTimeout(10_000) {
+                    val result = airparifApi.requestByCity(postalCode).firstOrNull()
+                    mutex.withLock {
+                        when (day) {
+                            Day.YESTERDAY -> {
+                                dataSetPollution = dataSetPollution.copy(mIdxvilleInfo = result?.hier)
+                                _dataSet.postValue(dataSetPollution)
+                            }
+                            Day.TODAY -> {
+                                dataSetPollution = dataSetPollution.copy(mIdxvilleInfo = result?.jour)
+                                _dataSet.postValue(dataSetPollution)
+                            }
+                            Day.TOMORROW -> {
+                                dataSetPollution = dataSetPollution.copy(mIdxvilleInfo = result?.demain)
+                                _dataSet.postValue(dataSetPollution)
+                            }
+                        }
+                    }
+                }
+            } catch (exception: TimeoutCancellationException) {
+                Logger.e("AirQualityViewModel", "timeout $exception")
+                uiExceptionHandler.showError(
+                    CustomHttpRequestTimeoutException(
+                        exception.message,
+                        exception.cause
+                    )
+                )
+            } catch (exception: CustomException) {
+                Logger.e("AirQualityViewModel", exception.toString())
+                uiExceptionHandler.showError(exception)
+            }
+        }
+    }*/
 }
