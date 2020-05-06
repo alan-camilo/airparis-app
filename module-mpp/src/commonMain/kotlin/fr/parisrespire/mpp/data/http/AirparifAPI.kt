@@ -28,13 +28,14 @@ import kotlinx.serialization.json.Json
 class AirparifAPI(
     private val client: HttpClient,
     private val apiKeyRepository: ApiKeyRepository,
-    private val networkConnectivity: () -> Unit
+    private val networkConnectivity: NetworkConnectivity
 ) {
 
     constructor() : this(
         customHttpClient,
         ApiKeyRepositoryImpl(),
-        { NetworkConnectivity.checkConnectivity() })
+        NetworkConnectivityImpl
+    )
 
     suspend fun requestDayIndex(day: Day): IndiceJour {
         val argument = ParametersBuilder().apply {
@@ -46,7 +47,7 @@ class AirparifAPI(
             encodedPath = PATH_INDICE_JOUR,
             parameters = argument
         )
-        networkConnectivity()
+        networkConnectivity.checkConnectivity()
         try {
             val mBody = getBodyParam()
             return withContext(IO) {
@@ -63,7 +64,7 @@ class AirparifAPI(
     }
 
     suspend fun requestPollutionEpisode(): List<Episode> {
-        networkConnectivity()
+        networkConnectivity.checkConnectivity()
         try {
             val mBody = getBodyParam()
             return withContext(IO) {
@@ -80,7 +81,7 @@ class AirparifAPI(
     }
 
     suspend fun requestIndex(): List<Indice> {
-        networkConnectivity()
+        networkConnectivity.checkConnectivity()
         try {
             val mBody = getBodyParam()
             return withContext(IO) {
@@ -96,9 +97,9 @@ class AirparifAPI(
         }
     }
 
-    suspend fun requestByCity(postalCode: String): List<Idxville> {
+    suspend fun requestByCity(inseeCode: String): List<Idxville> {
         val argument = ParametersBuilder().apply {
-            append("villes", postalCode)
+            append("villes", inseeCode)
         }
         val urlBuilder = URLBuilder(
             protocol = URLProtocol.HTTPS,
@@ -106,7 +107,7 @@ class AirparifAPI(
             encodedPath = PATH_IDXVILLE,
             parameters = argument
         )
-        networkConnectivity()
+        networkConnectivity.checkConnectivity()
         try {
             val mBody = getBodyParam()
             return withContext(IO) {

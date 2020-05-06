@@ -33,7 +33,7 @@ class AirparifAPITest {
     @Test
     fun testRequestIndex() {
         runBlocking {
-            val result = AirparifAPI(mockResponseOK, ApiKeyRepositoryMock()) {}
+            val result = AirparifAPI(mockResponseOK, ApiKeyRepositoryMock(), NetworkConnectivityMock())
                 .requestIndex()
             assertNotNull(result)
         }
@@ -45,8 +45,9 @@ class AirparifAPITest {
             assertFailsWith<CustomClientRequestException> {
                 AirparifAPI(
                     mockResponseBadRequest,
-                    ApiKeyRepositoryMock()
-                ) {}.requestIndex()
+                    ApiKeyRepositoryMock(),
+                    NetworkConnectivityMock()
+                ).requestIndex()
             }
         }
     }
@@ -57,8 +58,9 @@ class AirparifAPITest {
             assertFailsWith<CustomJsonException> {
                 AirparifAPI(
                     mockResponseBadJson,
-                    ApiKeyRepositoryMock()
-                ) {}.requestIndex()
+                    ApiKeyRepositoryMock(),
+                    NetworkConnectivityMock()
+                ).requestIndex()
             }
         }
     }
@@ -68,7 +70,7 @@ class AirparifAPITest {
     @Test
     fun testRequestDayIndex() {
         runBlocking {
-            val result = AirparifAPI(mockResponseOK, ApiKeyRepositoryMock()) {}
+            val result = AirparifAPI(mockResponseOK, ApiKeyRepositoryMock(), NetworkConnectivityMock())
                 .requestDayIndex(Day.TODAY)
             assertNotNull(result)
         }
@@ -78,7 +80,7 @@ class AirparifAPITest {
     fun testRequestDayIndexBadRequest() {
         runBlocking {
             assertFailsWith<CustomClientRequestException> {
-                AirparifAPI(mockResponseBadRequest, ApiKeyRepositoryMock()) {}
+                AirparifAPI(mockResponseBadRequest, ApiKeyRepositoryMock(), NetworkConnectivityMock())
                     .requestDayIndex(
                     Day.TODAY
                 )
@@ -90,7 +92,7 @@ class AirparifAPITest {
     fun testRequestDayIndexParserException() {
         runBlocking {
             assertFailsWith<CustomJsonException> {
-                AirparifAPI(mockResponseBadJson, ApiKeyRepositoryMock()) {}.requestDayIndex(
+                AirparifAPI(mockResponseBadJson, ApiKeyRepositoryMock(), NetworkConnectivityMock()).requestDayIndex(
                     Day.TODAY
                 )
             }
@@ -102,7 +104,7 @@ class AirparifAPITest {
     @Test
     fun testRequestPollutionEpisode() {
         runBlocking {
-            val result = AirparifAPI(mockResponseOK, ApiKeyRepositoryMock()) {}
+            val result = AirparifAPI(mockResponseOK, ApiKeyRepositoryMock(), NetworkConnectivityMock())
                 .requestPollutionEpisode()
             assertNotNull(result)
             assertEquals(result.first().so2?.niveau, PollutionLevel.ALERT.value)
@@ -117,7 +119,7 @@ class AirparifAPITest {
     fun testRequestPollutionEpisodeBadRequest() {
         runBlocking {
             assertFailsWith<CustomClientRequestException> {
-                AirparifAPI(mockResponseBadRequest, ApiKeyRepositoryMock()) {}
+                AirparifAPI(mockResponseBadRequest, ApiKeyRepositoryMock(), NetworkConnectivityMock())
                     .requestPollutionEpisode()
             }
         }
@@ -127,7 +129,7 @@ class AirparifAPITest {
     fun testRequestPollutionEpisodeParserException() {
         runBlocking {
             assertFailsWith<CustomJsonException> {
-                AirparifAPI(mockResponseBadJson, ApiKeyRepositoryMock()) {}.requestPollutionEpisode()
+                AirparifAPI(mockResponseBadJson, ApiKeyRepositoryMock(), NetworkConnectivityMock()).requestPollutionEpisode()
             }
         }
     }
@@ -136,8 +138,8 @@ class AirparifAPITest {
     @Test
     fun testRequestByCity() {
         runBlocking {
-            val result = AirparifAPI(mockResponseOK, ApiKeyRepositoryMock()) {}
-                .requestByCity(91000)
+            val result = AirparifAPI(mockResponseOK, ApiKeyRepositoryMock(), NetworkConnectivityMock())
+                .requestByCity("91000")
             assertNotNull(result)
             assertEquals(result.first().ninsee, "91228")
             assertEquals(result.first().demain?.indice, 40)
@@ -148,7 +150,7 @@ class AirparifAPITest {
     fun testRequestByCityBadRequest() {
         runBlocking {
             assertFailsWith<CustomClientRequestException> {
-                AirparifAPI(mockResponseBadRequest, ApiKeyRepositoryMock()) {}
+                AirparifAPI(mockResponseBadRequest, ApiKeyRepositoryMock(), NetworkConnectivityMock())
                     .requestPollutionEpisode()
             }
         }
@@ -158,7 +160,7 @@ class AirparifAPITest {
     fun testRequestByCityException() {
         runBlocking {
             assertFailsWith<CustomJsonException> {
-                AirparifAPI(mockResponseBadJson, ApiKeyRepositoryMock()) {}.requestPollutionEpisode()
+                AirparifAPI(mockResponseBadJson, ApiKeyRepositoryMock(), NetworkConnectivityMock()).requestPollutionEpisode()
             }
         }
     }

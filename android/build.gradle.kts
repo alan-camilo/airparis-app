@@ -78,7 +78,7 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:$workVersion")
     androidTestImplementation("androidx.work:work-testing:$workVersion")
     // Hyperion debug tool
-    debugImplementation("com.willowtreeapps.hyperion:hyperion-core:0.9.27")
+    /*debugImplementation("com.willowtreeapps.hyperion:hyperion-core:0.9.27")
     debugImplementation("com.willowtreeapps.hyperion:hyperion-attr:0.9.27")
     debugImplementation("com.willowtreeapps.hyperion:hyperion-build-config:0.9.27")
     debugImplementation("com.willowtreeapps.hyperion:hyperion-crash:0.9.27")
@@ -86,7 +86,7 @@ dependencies {
     debugImplementation("com.willowtreeapps.hyperion:hyperion-measurement:0.9.27")
     debugImplementation("com.willowtreeapps.hyperion:hyperion-phoenix:0.9.27")
     debugImplementation("com.willowtreeapps.hyperion:hyperion-recorder:0.9.27")
-    debugImplementation("com.willowtreeapps.hyperion:hyperion-shared-preferences:0.9.27")
+    debugImplementation("com.willowtreeapps.hyperion:hyperion-shared-preferences:0.9.27")*/
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.4")
     // Joda time

@@ -14,21 +14,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 */
-package fr.parisrespire.mpp.data.http.model.util
+package fr.parisrespire.mpp.test.data.http
 
-import fr.parisrespire.mpp.data.http.model.Episode
-import fr.parisrespire.mpp.data.http.model.IdxvilleInfo
-import fr.parisrespire.mpp.data.http.model.Indice
-import fr.parisrespire.mpp.data.http.model.IndiceJour
+import fr.parisrespire.mpp.data.http.NetworkConnectivity
 
-data class DataSetPollution(
-    val dayIndex: IndiceJour? = null,
-    val index: Indice? = null,
-    val pollutionEpisode: Episode? = null,
-    val idxvilleInfo: IdxvilleInfo? = null
-) {
-
-    // index is not used, so it's ignored
-    fun isComplete() =
-        dayIndex != null && pollutionEpisode != null && idxvilleInfo != null
+class NetworkConnectivityMock: NetworkConnectivity {
+    override fun checkConnectivity() = true
 }

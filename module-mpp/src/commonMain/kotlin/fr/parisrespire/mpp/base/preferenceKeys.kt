@@ -7,4 +7,7 @@ const val API_KEY_PREFERENCE = "airparif_api_key"
 const val SHARED_PREFERENCES = "paris_respire_shared_preferences"
 const val INSEE_CODE_PREFERENCE = "insee_code_preference"
 const val CITY_NAME_PREFERENCE = "city_name_preference"
+// Insee city code for Paris 75001
+const val defaultInseeCode = "75101"
+const val defaultCityName = "PARIS 01"
 

@@ -39,13 +39,10 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import fr.parisrespire.R
 import fr.parisrespire.fragment.CollectionAirQualityFragment
-import fr.parisrespire.mpp.base.ALERT_SHARED_PREFERENCE
-import fr.parisrespire.mpp.base.CITY_NAME_PREFERENCE
-import fr.parisrespire.mpp.base.INSEE_CODE_PREFERENCE
-import fr.parisrespire.mpp.base.SHARED_PREFERENCES
+import fr.parisrespire.mpp.base.*
 import fr.parisrespire.mpp.data.CustomException
+import fr.parisrespire.mpp.data.InseeCodeProvider
 import fr.parisrespire.mpp.data.UIExceptionHandler
-import fr.parisrespire.util.InseeCodeProvider
 import fr.parisrespire.util.TAB_ARG
 import fr.parisrespire.util.scheduleAlert
 import java.util.*
@@ -58,9 +55,6 @@ class MainActivity : AppCompatActivity(), UIExceptionHandler {
     private var isRequestingPermission = false
     private val PLAY_SERVICES_ERROR = 43
 
-    // Insee city code for Paris 75001
-    private val defaultInseeCode = "75056"
-    private val defaultCity = "Paris"
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -142,7 +136,8 @@ class MainActivity : AppCompatActivity(), UIExceptionHandler {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.notification -> {INSEE_CODE_PREFERENCE
+            R.id.notification -> {
+                INSEE_CODE_PREFERENCE
                 val intent = Intent(this, NotificationSettingsActivity::class.java)
                 startActivity(intent)
                 true
@@ -189,8 +184,10 @@ class MainActivity : AppCompatActivity(), UIExceptionHandler {
 
     private fun refreshCollectionFragment() {
         Log.d(MainActivity::class.simpleName, "refreshCollectionFragment")
-        val fragment = supportFragmentManager.fragments.first() as CollectionAirQualityFragment
-        fragment.refresh()
+        val fragment =
+            supportFragmentManager.fragments.firstOrNull { it is CollectionAirQualityFragment }
+        fragment as CollectionAirQualityFragment?
+        fragment?.onRefresh()
     }
 
     private fun hasLocationPermission(): Boolean {
@@ -229,14 +226,16 @@ class MainActivity : AppCompatActivity(), UIExceptionHandler {
 
     private fun provideInseeCode(location: Location?) {
         if (location == null) {
+            Log.d(MainActivity::class.simpleName, "location is null")
             handleLocationFailure(null)
             return
         }
         val geocoder = Geocoder(this, Locale.FRANCE)
-        var list: List<Address>? = null
+        val list: List<Address>?
         try {
             list = geocoder.getFromLocation(location.latitude, location.longitude, 1)
         } catch (exception: Exception) {
+            Log.e(MainActivity::class.simpleName, exception.toString())
             handleLocationFailure(exception)
             return
         }
@@ -251,10 +250,12 @@ class MainActivity : AppCompatActivity(), UIExceptionHandler {
             val postalCode = address.postalCode
             val provider = InseeCodeProvider(this)
             provider.inseeCode.addObserver {
-                setFragment()
+                if (it != null)
+                    setFragment()
             }
             provider.getInseeCode(postalCode)
         } else {
+            Log.d(MainActivity::class.simpleName, "address=$address")
             handleLocationFailure(null)
         }
     }
@@ -263,6 +264,7 @@ class MainActivity : AppCompatActivity(), UIExceptionHandler {
         val sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             putString(INSEE_CODE_PREFERENCE, defaultInseeCode)
+            putString(CITY_NAME_PREFERENCE, defaultCityName)
             apply()
         }
         if (exception != null)

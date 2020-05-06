@@ -29,7 +29,7 @@ class GeoApiTest {
     @Test
     fun testRequestCodeInsee() {
         runBlocking {
-            val result = GeoApi(mockResponseOK) {}.requestInseeCode(91000)
+            val result = GeoApi(mockResponseOK, NetworkConnectivityMock()).requestInseeCode("91000")
             assertNotNull(result)
         }
     }
@@ -38,7 +38,7 @@ class GeoApiTest {
     fun testRequestCodeInseeBadRequest() {
         runBlocking {
             assertFailsWith<CustomClientRequestException> {
-                val result = GeoApi(mockResponseBadRequest) {}.requestInseeCode(91000)
+                GeoApi(mockResponseBadRequest, NetworkConnectivityMock()).requestInseeCode("91000")
             }
         }
     }
@@ -47,7 +47,7 @@ class GeoApiTest {
     fun testRequestCodeInseeParserException() {
         runBlocking {
             assertFailsWith<CustomJsonException> {
-                val result = GeoApi(mockResponseBadJson) {}.requestInseeCode(91000)
+                GeoApi(mockResponseBadJson, NetworkConnectivityMock()).requestInseeCode("91000")
             }
         }
     }

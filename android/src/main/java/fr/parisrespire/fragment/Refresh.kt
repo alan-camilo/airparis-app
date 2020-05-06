@@ -17,5 +17,5 @@ along with Paris respire.  If not, see <https://www.gnu.org/licenses/>.
 package fr.parisrespire.fragment
 
 interface Refresh {
-    fun refresh()
+    fun onRefresh()
 }

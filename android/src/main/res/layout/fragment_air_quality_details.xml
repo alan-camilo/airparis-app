@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="fr.parisrespire.mpp.data.AirQualityViewModel" />
@@ -39,13 +40,33 @@
                     android:layout_height="@dimen/big_chart"
                     android:layout_marginTop="@dimen/large_vertical_margin"
                     android:layout_marginEnd="@dimen/horizontal_margin"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/global_index_label"
-                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:roundedEdges="true"
                     app:strokeWidth="@dimen/big_stroke_width"
-                    app:text="@{viewModel.dayIndex.ld.global.indice.toString()}"/>
+                    app:text="@{viewModel.dataSet.ld.idxvilleInfo.indice.toString()}" />
+
+                <ImageView
+                    android:id="@+id/location_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:src="@drawable/baseline_location_on_24"
+                    app:layout_constraintTop_toTopOf="@id/city_name_tv"
+                    app:layout_constraintBottom_toBottomOf="@id/city_name_tv"
+                    app:layout_constraintLeft_toLeftOf="@id/global_index_label"
+                    app:layout_constraintRight_toLeftOf="@id/city_name_tv" />
+
+                <TextView
+                    android:id="@+id/city_name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.cityName.ld}"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    app:layout_constraintBottom_toTopOf="@id/global_index_label"
+                    app:layout_constraintLeft_toRightOf="@id/location_icon"
+                    app:layout_constraintTop_toTopOf="@id/slimchart_global" />
 
                 <TextView
                     android:id="@+id/global_index_label"
@@ -53,32 +74,32 @@
                     android:layout_height="wrap_content"
                     android:text="@string/global_index"
                     android:textAppearance="?attr/textAppearanceHeadline6"
-                    app:layout_constraintTop_toTopOf="@id/slimchart_global"
                     app:layout_constraintBottom_toTopOf="@id/global_index_tv"
                     app:layout_constraintLeft_toRightOf="@id/slimchart_global"
-                    app:layout_constraintRight_toRightOf="parent" />
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/city_name_tv" />
 
                 <TextView
                     android:id="@+id/global_index_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?attr/textAppearanceHeadline5"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/slimchart_global"
                     app:layout_constraintLeft_toLeftOf="@id/global_index_label"
-                    app:layout_constraintTop_toBottomOf="@id/global_index_label"
-                    app:layout_constraintBottom_toBottomOf="@id/slimchart_global" />
+                    app:layout_constraintTop_toBottomOf="@id/global_index_label" />
 
                 <TextView
                     android:id="@+id/advice_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="@{viewModel.pollutionEpisode.ld.detail}"
-                    android:layout_marginTop="@dimen/vertical_margin"
                     android:layout_marginLeft="@dimen/horizontal_margin"
+                    android:layout_marginTop="@dimen/vertical_margin"
                     android:layout_marginRight="@dimen/horizontal_margin"
                     android:layout_marginBottom="@dimen/vertical_margin"
+                    android:text="@{viewModel.dataSet.ld.pollutionEpisode.detail}"
                     android:textAppearance="?attr/textAppearanceBody1"
+                    android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/slimchart_global" />
@@ -89,11 +110,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/vertical_margin"
+                    app:layoutManager="LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/advice_tv"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layoutManager="LinearLayoutManager"
                     tools:context=".fragment.AirQualityDetailsFragment"
                     tools:listitem="@layout/item_pollutant_details" />
 
@@ -102,17 +123,17 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/map_height"
                     android:layout_marginTop="@dimen/small_vertical_margin"
-                    android:visibility="gone"
                     android:contentDescription="@string/airparif_map_description"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
+                    app:layout_constraintRight_toRightOf="parent" />
 
                 <androidx.constraintlayout.widget.Group
                     android:id="@+id/air_quality_group"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:constraint_referenced_ids="slimchart_global,global_index_tv,recyclerview,global_index_label" />
+                    app:constraint_referenced_ids="slimchart_global,global_index_tv,recyclerview,global_index_label,city_name_tv,city_name_tv" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

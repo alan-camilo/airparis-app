@@ -71,6 +71,7 @@ class CollectionAirQualityFragment : Fragment(), Refresh {
             }
         }.attach()
         tab_layout.getTabAt(tabIndex)?.select()
+        Log.d(CollectionAirQualityFragment::class.simpleName, "tab index=$tabIndex tab=${tab_layout.getTabAt(tabIndex)?.isSelected}")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -83,10 +84,10 @@ class CollectionAirQualityFragment : Fragment(), Refresh {
         detailsFragmentList[position] = WeakReference(page)
     }
 
-    override fun refresh() {
+    override fun onRefresh() {
         Log.d(CollectionAirQualityFragment::class.simpleName, "refresh")
         detailsFragmentList.forEach {
-            it?.get()?.refresh()
+            it?.get()?.onRefresh()
         }
     }
 }

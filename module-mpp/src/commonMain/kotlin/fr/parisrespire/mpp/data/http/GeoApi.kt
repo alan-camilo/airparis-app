@@ -18,7 +18,7 @@ package fr.parisrespire.mpp.data.http
 
 import fr.parisrespire.mpp.base.IO
 import fr.parisrespire.mpp.data.ExceptionWrapper
-import fr.parisrespire.mpp.data.http.model.Commune
+import fr.parisrespire.mpp.data.http.model.LaPoste
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.url
@@ -26,36 +26,38 @@ import io.ktor.http.ParametersBuilder
 import io.ktor.http.URLBuilder
 import io.ktor.http.URLProtocol
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.builtins.list
 import kotlinx.serialization.json.Json
 
 class GeoApi(
     private val client: HttpClient,
-    private val networkConnectivity: () -> Unit
+    private val networkConnectivity: NetworkConnectivity
 ) {
 
     constructor() : this(
         customHttpClient,
-        { NetworkConnectivity.checkConnectivity() })
+        NetworkConnectivityImpl
+    )
 
-    suspend fun requestInseeCode(postalCode: String): Commune {
+    suspend fun requestInseeCode(postalCode: String): LaPoste {
         val argument = ParametersBuilder().apply {
-            append("codePostal", postalCode)
-            append("fields", "code")
+            append("dataset", "laposte_hexasmal")
+            append("facet", "code_commune_insee")
+            append("facet", "code_postal")
+            append("refine.code_postal", postalCode)
         }
         val urlBuilder = URLBuilder(
             protocol = URLProtocol.HTTPS,
             host = HOST_GEO_API,
-            encodedPath = PATH_COMMUNE,
+            encodedPath = PATH_SEARCH,
             parameters = argument
         )
-        networkConnectivity()
+        networkConnectivity.checkConnectivity()
         try {
             return withContext(IO) {
                 val response = client.get<String> {
                     url(urlBuilder.buildString())
                 }
-                Json.parse(Commune.serializer().list, response).first()
+                Json.parse(LaPoste.serializer(), response)
             }
         } catch (throwable: Throwable) {
             throw ExceptionWrapper(throwable).getCustomException()

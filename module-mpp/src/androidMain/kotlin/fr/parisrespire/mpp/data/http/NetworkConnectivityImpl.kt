@@ -6,16 +6,18 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import fr.parisrespire.mpp.data.NoConnectivityException
 
-actual object NetworkConnectivity {
+actual object NetworkConnectivityImpl: NetworkConnectivity {
 
     private lateinit var context: Context
 
     fun init(context: Context) = run { this.context = context }
 
-    actual fun checkConnectivity() {
+    actual override fun checkConnectivity(): Boolean {
         if (!this::context.isInitialized) throw RuntimeException("First call NetworkConnectivity.init(context) in your application class")
         if (!isInternetAvailable())
             throw NoConnectivityException("No internet connectivity", null)
+        else
+            return true
     }
 
     private fun isInternetAvailable(): Boolean {
