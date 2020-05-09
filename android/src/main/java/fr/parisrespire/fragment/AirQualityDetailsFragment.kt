@@ -172,6 +172,7 @@ class AirQualityDetailsFragment :
             dataSetPollution.idxvilleInfo?.indice?.let { index ->
                 Log.d(AirQualityDetailsFragment::class.simpleName, "index local $index")
                 setGlobalSlimChart(index)
+                setGlobalIndexTextView(index)
             }
 
             when {
@@ -183,9 +184,6 @@ class AirQualityDetailsFragment :
                 }
                 //when there is data
                 indexDay.global != null -> {
-                    indexDay.global?.indice?.let { index ->
-                        setGlobalIndexTextView(index)
-                    }
                     indexDay.global?.indice?.let { index ->
                         setPollutantItem(GLOBAL, index, indexDay.global?.url_carte)
                     }
