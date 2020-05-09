@@ -26,8 +26,9 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import fr.parisrespire.R
 import fr.parisrespire.util.TAB_ARG
-import java.lang.ref.WeakReference
 import kotlinx.android.synthetic.main.fragment_air_quality_collection.*
+import kotlinx.android.synthetic.main.fragment_air_quality_collection.view.*
+import java.lang.ref.WeakReference
 
 class CollectionAirQualityFragment : Fragment(), Refresh {
 
@@ -55,14 +56,11 @@ class CollectionAirQualityFragment : Fragment(), Refresh {
         savedInstanceState?.let {
             tabIndex = it.getInt(TAB_ARG)
         }
-        return inflater.inflate(R.layout.fragment_air_quality_collection, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val view = inflater.inflate(R.layout.fragment_air_quality_collection, container, false)
         airQualityCollectionAdapter = AirQualityCollectionAdapter(this)
-        viewPager = pager
+        viewPager = view.pager
         viewPager.adapter = airQualityCollectionAdapter
-        TabLayoutMediator(tab_layout, viewPager) { tab, position ->
+        TabLayoutMediator(view.tab_layout, viewPager) { tab, position ->
             tab.text = when (position) {
                 0 -> getString(R.string.yesterday)
                 1 -> getString(R.string.today)
@@ -70,8 +68,8 @@ class CollectionAirQualityFragment : Fragment(), Refresh {
                 else -> null
             }
         }.attach()
-        tab_layout.getTabAt(tabIndex)?.select()
-        Log.d(CollectionAirQualityFragment::class.simpleName, "tab index=$tabIndex tab=${tab_layout.getTabAt(tabIndex)?.isSelected}")
+        view.tab_layout.getTabAt(tabIndex)?.select()
+        return view
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
