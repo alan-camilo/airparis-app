@@ -26,17 +26,23 @@ import android.location.Geocoder
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
+import androidx.core.view.get
 import com.crashlytics.android.Crashlytics
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.material.navigation.NavigationView
 import fr.parisrespire.R
 import fr.parisrespire.fragment.CollectionAirQualityFragment
 import fr.parisrespire.mpp.base.*
@@ -45,9 +51,11 @@ import fr.parisrespire.mpp.data.InseeCodeProvider
 import fr.parisrespire.mpp.data.UIExceptionHandler
 import fr.parisrespire.util.TAB_ARG
 import fr.parisrespire.util.scheduleAlert
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-class MainActivity : AppCompatActivity(), UIExceptionHandler {
+class MainActivity : AppCompatActivity(), UIExceptionHandler,
+    NavigationView.OnNavigationItemSelectedListener, Toolbar.OnMenuItemClickListener {
 
     private var permissionDialog: AlertDialog? = null
     private val REQUEST_LOCATION_PERMISSION = 42
@@ -56,6 +64,7 @@ class MainActivity : AppCompatActivity(), UIExceptionHandler {
     private val PLAY_SERVICES_ERROR = 43
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +78,24 @@ class MainActivity : AppCompatActivity(), UIExceptionHandler {
             scheduleAlert(this)
         }
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        setSupportActionBar(toolbar)
+        toggle = ActionBarDrawerToggle(
+            this,
+            drawer_layout,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
+        drawer_layout.addDrawerListener(toggle)
+        toggle.syncState()
+        navigation_view.setNavigationItemSelectedListener(this)
+        navigation_view.menu.getItem(0).isChecked = true
+        toolbar.setOnMenuItemClickListener(this)
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onPostCreate(savedInstanceState, persistentState)
+        toggle.syncState()
     }
 
     override fun onResume() {
@@ -92,6 +119,15 @@ class MainActivity : AppCompatActivity(), UIExceptionHandler {
     override fun onStop() {
         super.onStop()
         permissionDialog?.dismiss()
+    }
+
+    override fun onBackPressed() {
+        // 5 - Handle back click to close menu
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -130,40 +166,8 @@ class MainActivity : AppCompatActivity(), UIExceptionHandler {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
+        menuInflater.inflate(R.menu.toolbar, menu)
         return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.notification -> {
-                INSEE_CODE_PREFERENCE
-                val intent = Intent(this, NotificationSettingsActivity::class.java)
-                startActivity(intent)
-                true
-            }
-            R.id.about -> {
-                val intent = Intent(this, AboutActivity::class.java)
-                startActivity(intent)
-                true
-            }
-            R.id.refresh -> {
-                refreshCollectionFragment()
-                true
-            }
-            R.id.donate -> {
-                val webIntent: Intent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X3Q8Y8E5CPNN6&source=url")
-                )
-                startActivity(webIntent)
-                true
-            }
-            R.id.rate -> {
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     private fun setFragment() {
@@ -271,4 +275,49 @@ class MainActivity : AppCompatActivity(), UIExceptionHandler {
             Crashlytics.logException(exception)
         setFragment()
     }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        drawer_layout.closeDrawer(GravityCompat.START)
+        return onItemClicked(item)
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean = onItemClicked(item)
+
+    private fun onItemClicked(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.air_report -> true // this is the MainActivity
+            R.id.map -> {
+                // TODO fragment map
+                true
+            }
+            R.id.notification -> {
+                val intent = Intent(this, NotificationSettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.about -> {
+                val intent = Intent(this, AboutActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.refresh -> {
+                refreshCollectionFragment()
+                true
+            }
+            R.id.donate -> {
+                val webIntent: Intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X3Q8Y8E5CPNN6&source=url")
+                )
+                startActivity(webIntent)
+                true
+            }
+            R.id.rate -> {
+                // TODO
+                true
+            }
+            else -> true
+        }
+    }
+
 }

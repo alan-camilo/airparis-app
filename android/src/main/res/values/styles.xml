@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <!--Colors-->
         <item name="colorPrimary">@color/primaryColor</item>
@@ -24,5 +24,16 @@
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.MyApp.SmallComponent</item>
         <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.MyApp.MediumComponent</item>
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.MyApp.LargeComponent</item>
+=    </style>
+    <!--Toolbar-->
+    <style name="ToolBarStyle" parent="AppTheme">
+        <item name="android:textColorPrimary">@color/white_50</item>
+        <item name="android:textColorSecondary">@color/black_900</item>
+        <item name="colorControlNormal">@color/white_50</item>
+        <item name="popupTheme">@style/PopupStyle</item>
+    </style>
+    <style name="PopupStyle" parent="AppTheme">
+        <item name="android:colorBackground">@color/primaryColor</item>
+        <item name="android:textColor">@color/black_900</item>
     </style>
 </resources>

@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Idxville(
-    val demain: IdxvilleInfo?,
     val hier: IdxvilleInfo?,
     val jour: IdxvilleInfo?,
+    val demain: IdxvilleInfo? = null,
     val ninsee: String?
 )

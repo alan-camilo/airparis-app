@@ -47,7 +47,7 @@ class NotificationSettingsActivity : AppCompatActivity() {
         // Back button
         val actionBar: ActionBar? = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        actionBar?.title = null
+        actionBar?.title = getString(R.string.notification)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

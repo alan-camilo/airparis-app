@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/air_report"
+            android:icon="@drawable/baseline_today_24"
+            android:title="@string/daily_air_report" />
+        <item
+            android:id="@+id/map"
+            android:icon="@drawable/baseline_map_24"
+            android:title="@string/map" />
+    </group>
+
+
+    <item android:title="@string/config_info_subtitle">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/notification"
+                    android:icon="@drawable/baseline_notifications_none_white_24"
+                    android:title="@string/notification" />
+                <item
+                    android:id="@+id/rate"
+                    android:icon="@drawable/baseline_star_24"
+                    android:title="@string/rate" />
+                <item
+                    android:id="@+id/donate"
+                    android:icon="@drawable/baseline_local_drink_24"
+                    android:title="@string/donate" />
+                <item
+                    android:id="@+id/about"
+                    android:icon="@drawable/baseline_help_24"
+                    android:title="@string/about" />
+            </group>
+        </menu>
+    </item>
+</menu>

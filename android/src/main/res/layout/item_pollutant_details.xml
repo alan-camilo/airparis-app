@@ -24,7 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="@dimen/small_horizontal_margin"
+        android:layout_marginStart="@dimen/medium_horizontal_margin"
         android:layout_marginEnd="@dimen/small_horizontal_margin"
         android:text="@{pollutant.name}"
         android:textAppearance="?attr/textAppearanceBody2"

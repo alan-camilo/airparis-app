@@ -59,4 +59,9 @@
     <string name="close">fermer</string>
     <string name="location_permission_message">La localisation est nécessaire aux fonctionnalités de l\'application. Elle ne sera ni sauvegardée ni partagée.</string>
     <string name="share_location">Autoriser ma localisation</string>
+    <string name="map">Carte</string>
+    <string name="daily_air_report">Bulletin quotidien</string>
+    <string name="config_info_subtitle">Configuration &amp; Information</string>
+    <string name="navigation_drawer_open">ouverture du menu latéral</string>
+    <string name="navigation_drawer_close">fermeture du menu latéral</string>
 </resources>

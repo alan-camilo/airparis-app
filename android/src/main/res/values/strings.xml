@@ -60,4 +60,10 @@
     <string name="close">close</string>
     <string name="location_permission_message">The location is necessary for the app features. It will not be saved or shared.</string>
     <string name="share_location">Authorize my location</string>
+    <string name="map">Map</string>
+    <string name="daily_air_report">Daily air report</string>
+    <string name="config_info_subtitle">Configuration &amp; Information</string>
+    <string name="content_description_logo_paris_respire" translatable="false">logo Paris respire</string>
+    <string name="navigation_drawer_close">close navigation drawer</string>
+    <string name="navigation_drawer_open">open navigation drawer</string>
 </resources>

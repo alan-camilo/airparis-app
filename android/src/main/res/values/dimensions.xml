@@ -5,6 +5,7 @@
     <dimen name="vertical_margin">16dp</dimen>
     <dimen name="large_vertical_margin">18dp</dimen>
     <dimen name="small_horizontal_margin">8dp</dimen>
+    <dimen name="medium_horizontal_margin">12dp</dimen>
     <dimen name="horizontal_margin">25dp</dimen>
     <dimen name="button_padding">12dp</dimen>
     <dimen name="icon_button_width">40dp</dimen>

@@ -30,7 +30,7 @@ class AboutActivity : AppCompatActivity() {
         setContentView(R.layout.activity_about)
         val actionBar: ActionBar? = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        actionBar?.title = null
+        actionBar?.title = getString(R.string.about)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
